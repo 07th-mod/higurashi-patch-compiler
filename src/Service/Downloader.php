@@ -56,16 +56,24 @@ class Downloader
         $this->filesystem->mkdir(dirname($path));
         $this->filesystem->remove($path);
 
+        $progress = 0;
+
         $this->promises[] = $this->client->getAsync(
             $url,
             [
                 RequestOptions::SINK => $path,
-                RequestOptions::PROGRESS => function ($downloadSizeTotal, $downloadSize) use ($url) {
+                RequestOptions::PROGRESS => function ($downloadSizeTotal, $downloadSize) use ($url, &$progress) {
                     if ($downloadSizeTotal === 0) {
                         return;
                     }
 
-                    $progress = round($downloadSize / $downloadSizeTotal * 100);
+                    $newProgress = round($downloadSize / $downloadSizeTotal * 100);
+
+                    if ($newProgress === $progress) {
+                        return;
+                    }
+
+                    $progress = $newProgress;
 
                     $this->writer->send(sprintf('Downloading (%d%%): %s.', $progress, $url));
                 }
