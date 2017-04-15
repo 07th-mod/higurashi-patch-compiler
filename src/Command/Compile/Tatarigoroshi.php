@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Higurashi\Command;
+namespace Higurashi\Command\Compile;
 
 use Higurashi\Constants;
 use Higurashi\Service\Patch;
@@ -16,7 +16,7 @@ class Tatarigoroshi extends Command
     protected function configure()
     {
         $this
-            ->setName('higurashi:tatarigoroshi')
+            ->setName('higurashi:compile:tatarigoroshi')
             ->setDescription('Compiles patch for Tatarigoroshi.');
     }
 
