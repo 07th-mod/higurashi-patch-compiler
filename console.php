@@ -11,4 +11,6 @@ $application = new Application();
 $application->add(new \Higurashi\Command\Download());
 $application->add(new \Higurashi\Command\Unpack());
 
+$application->add(new \Higurashi\Command\Tatarigoroshi());
+
 $application->run();
