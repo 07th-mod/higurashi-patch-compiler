@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Higurashi\Command;
 
-use Higurashi\Service\Links;
+use Higurashi\Constants;
 use Higurashi\Service\Unpacker;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -29,7 +29,7 @@ class Unpack extends Command
         /** @var string $chapter */
         $chapter = $input->getArgument('chapter');
 
-        if ($chapter && ! isset(Links::PATCHES[$chapter])) {
+        if ($chapter && ! isset(Constants::PATCHES[$chapter])) {
             $output->writeln(sprintf('Chapter "%s" not found.', $chapter));
 
             return 1;
@@ -46,7 +46,7 @@ class Unpack extends Command
         );
 
         if ($chapter) {
-            foreach (Links::PATCHES[$chapter] as $type => $url) {
+            foreach (Constants::PATCHES[$chapter] as $type => $url) {
                 $unpacker->unpackIfNeeded(
                     sprintf('%s/download/%s_%s.zip', TEMP_DIR, $chapter, $type),
                     sprintf('%s/unpack/%s_%s', TEMP_DIR, $chapter, $type)
@@ -58,7 +58,7 @@ class Unpack extends Command
                     function ($path) {
                         return sprintf('%s/%s', TEMP_DIR, $path);
                     },
-                    array_keys(Links::VOICES)
+                    array_keys(Constants::VOICES)
                 ),
                 sprintf('%s/unpack/voices', TEMP_DIR)
             );

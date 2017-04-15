@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Higurashi\Service;
+namespace Higurashi;
 
-class Links
+class Constants
 {
     const VOICES = [
         'download/voices_1.zip' => 'https://github.com/07th-mod/resources/releases/download/Nipah/HigurashiPS3-Voices01.zip',

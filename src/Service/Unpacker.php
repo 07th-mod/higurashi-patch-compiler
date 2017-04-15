@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace Higurashi\Service;
 
-use GuzzleHttp\Client;
-use GuzzleHttp\Promise\Promise;
-use function GuzzleHttp\Promise\unwrap;
-use GuzzleHttp\RequestOptions;
 use Symfony\Component\Filesystem\Filesystem;
 
 class Unpacker
