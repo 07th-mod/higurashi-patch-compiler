@@ -23,11 +23,17 @@ class Patch
      */
     private $directory;
 
-    public function __construct(Filesystem $filesystem, string $chapter, string $directory)
+    /**
+     * @var string
+     */
+    private $gameDirectory;
+
+    public function __construct(Filesystem $filesystem, string $chapter, string $directory, string $gameDirectory)
     {
         $this->filesystem = $filesystem;
         $this->chapter = $chapter;
         $this->directory = $directory;
+        $this->gameDirectory = $gameDirectory;
     }
 
     public function initialize(): void
@@ -41,7 +47,7 @@ class Patch
         $this->mergeDirectory(sprintf('%s/unpack/%s_%s', TEMP_DIR, $this->chapter, 'graphics'), $this->directory);
     }
 
-    public function copyPatch(): void
+    public function copyVoicePatch(): void
     {
         $this->mergeDirectory(sprintf('%s/unpack/%s_%s', TEMP_DIR, $this->chapter, 'patch'), $this->directory);
         $this->delete('README.md');
@@ -60,6 +66,24 @@ class Patch
     public function renameGraphicsDirectory(): void
     {
         $this->filesystem->rename(sprintf('%s/CGAlt', $this->directory), sprintf('%s/CG', $this->directory));
+    }
+
+    public function copyGameFiles(): void
+    {
+        $this->mergeDirectory(sprintf('%s/%s', $this->gameDirectory, 'CGAlt'), sprintf('%s/CGAlt', $this->directory));
+    }
+
+    public function copySteamPatch(): void
+    {
+        $this->mergeDirectory(sprintf('%s/unpack/%s_%s', TEMP_DIR, $this->chapter, 'steam'), $this->directory);
+        $this->delete('README.txt');
+    }
+
+    public function useAlternativeChieSprites(string $directory): void
+    {
+        // The directory name is slightly different for different chapters.
+        $this->mergeDirectory(sprintf('%s/CGAlt/%s', $this->directory, $directory), sprintf('%s/CGAlt', $this->directory));
+        $this->delete(sprintf('CGAlt/%s', $directory));
     }
 
     private function mergeDirectory(string $source, string $dest): void

@@ -46,12 +46,17 @@ class Unpacker
         $this->unpack($source, $target);
 
         $extracted = glob(sprintf('%s/*', $target));
-        if (count($extracted) === 1) {
+        while (count($extracted) === 1 && pathinfo($extracted[0], PATHINFO_BASENAME) !== 'CGAlt') {
             $files = glob(sprintf('%s/*', $extracted[0]));
             foreach ($files as $file) {
-                $this->filesystem->rename($file, sprintf('%s/%s', $target, pathinfo($file, PATHINFO_BASENAME)));
+                $name = pathinfo($file, PATHINFO_BASENAME);
+                if ($name === pathinfo($extracted[0], PATHINFO_BASENAME)) {
+                    $name .= '_temp';
+                }
+                $this->filesystem->rename($file, sprintf('%s/%s', $target, $name));
             }
             $this->filesystem->remove($extracted[0]);
+            $extracted = glob(sprintf('%s/*', $target));
         }
     }
 

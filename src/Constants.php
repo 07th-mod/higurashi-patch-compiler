@@ -6,23 +6,26 @@ namespace Higurashi;
 
 class Constants
 {
-    const VOICES = [
+    public const VOICES = [
         'download/voices_1.zip' => 'https://github.com/07th-mod/resources/releases/download/Nipah/HigurashiPS3-Voices01.zip',
         'download/voices_2.zip' => 'https://github.com/07th-mod/resources/releases/download/Nipah/HigurashiPS3-Voices02.zip',
     ];
 
-    const PATCHES = [
+    public const PATCHES = [
         'onikakushi' => [
             'graphics' => 'https://gitlab.com/07th-mod/onikakushi-graphics/repository/archive.zip?ref=master',
             'patch' => 'https://github.com/07th-mod/onikakushi/archive/master.zip',
+            'steam' => 'https://github.com/jwgrlrrajn/higurashi-steam-sprite-mods/releases/download/1.0.1/onikakushi-steam-sprites.zip',
         ],
         'watanagashi' => [
             'graphics' => 'https://gitlab.com/07th-mod/watanagashi-graphics/repository/archive.zip?ref=master',
             'patch' => 'https://github.com/07th-mod/watanagashi/archive/master.zip',
+            'steam' => 'https://github.com/jwgrlrrajn/higurashi-steam-sprite-mods/releases/download/1.0.1/watanagashi-steam-sprites.zip',
         ],
         'tatarigoroshi' => [
             'graphics' => 'https://gitlab.com/07th-mod/tatarigoroshi-graphics/repository/archive.zip?ref=master',
             'patch' => 'https://github.com/07th-mod/tatarigoroshi/archive/master.zip',
+            'steam' => 'https://github.com/jwgrlrrajn/higurashi-steam-sprite-mods/releases/download/1.0.1/tatarigoroshi-steam-sprites.zip',
         ],
         'himatsubushi' => [
             'graphics' => 'https://gitlab.com/07th-mod/himatsubushi-graphics/repository/archive.zip?ref=master',
@@ -30,7 +33,14 @@ class Constants
         ],
     ];
 
-    const SPRITE_PREFIXES = [
+    public const GAMES = [
+        'onikakushi' => 'C:\Program Files (x86)\Steam\steamapps\common\Higurashi When They Cry\HigurashiEp01_Data\StreamingAssets',
+        'watanagashi' => 'C:\Program Files (x86)\Steam\steamapps\common\Higurashi 02 - Watanagashi\HigurashiEp02_Data\StreamingAssets',
+        'tatarigoroshi' => 'C:\Program Files (x86)\Steam\steamapps\common\Higurashi 03 - Tatarigoroshi\HigurashiEp03_Data\StreamingAssets',
+        'himatsubushi' => 'C:\Program Files (x86)\Steam\steamapps\common\Higurashi 04 - Himatsubushi\HigurashiEp04_Data\StreamingAssets',
+    ];
+
+    public const SPRITE_PREFIXES = [
         'chibimion_',
         'ir_',
         'iri2_',
