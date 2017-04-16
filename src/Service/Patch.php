@@ -101,6 +101,8 @@ class Patch
 
         $i = 0;
         foreach ($files as $file) {
+            set_time_limit(300);
+
             $image = Image::fromFile($file->getPathname());
             $image->save($file->getPathname());
             $image->destroy();

@@ -80,7 +80,7 @@ class Downloader
             ]
         );
 
-        $this->writer->send(sprintf('Downloading (0%%): %s.', $url));
+        $this->writer->send(sprintf('Downloading: %s.', $url));
     }
 
     public function save(): void
