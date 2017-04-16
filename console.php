@@ -10,6 +10,7 @@ $application = new Application();
 
 $application->add(new \Higurashi\Command\Download());
 $application->add(new \Higurashi\Command\Unpack());
+$application->add(new \Higurashi\Command\Clean());
 
 $application->add(new \Higurashi\Command\Compile\Tatarigoroshi());
 
