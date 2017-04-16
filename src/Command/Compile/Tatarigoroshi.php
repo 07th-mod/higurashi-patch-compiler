@@ -31,7 +31,7 @@ class Tatarigoroshi extends Command
         // 1. Copy graphics patch.
         $output->writeln('Copying graphics patch.');
         $patch->copyGameCG();
-        $patch->copyGraphics();
+        $patch->copyGraphics('tatarigoroshi_graphics');
 
         // 2. Copy voices.
         $output->writeln('Copying voices.');

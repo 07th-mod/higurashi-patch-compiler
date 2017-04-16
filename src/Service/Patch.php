@@ -45,9 +45,9 @@ class Patch
         $this->filesystem->mkdir($this->directory);
     }
 
-    public function copyGraphics(): void
+    public function copyGraphics(string $name): void
     {
-        $this->mergeDirectory(sprintf('%s/unpack/%s_%s', TEMP_DIR, $this->chapter, 'graphics'), $this->directory);
+        $this->mergeDirectory(sprintf('%s/unpack/%s', TEMP_DIR, $name), $this->directory);
     }
 
     public function copyVoicePatch(): void

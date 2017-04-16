@@ -46,10 +46,10 @@ class Unpack extends Command
         );
 
         if ($chapter) {
-            foreach (Constants::PATCHES[$chapter] as $type => $url) {
+            foreach (Constants::PATCHES[$chapter] as $name => $url) {
                 $unpacker->unpackIfNeeded(
-                    sprintf('%s/download/%s_%s.zip', TEMP_DIR, $chapter, $type),
-                    sprintf('%s/unpack/%s_%s', TEMP_DIR, $chapter, $type)
+                    sprintf('%s/download/%s.zip', TEMP_DIR, $name),
+                    sprintf('%s/unpack/%s', TEMP_DIR, $name)
                 );
             }
         } else {

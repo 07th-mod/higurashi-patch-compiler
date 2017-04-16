@@ -13,23 +13,24 @@ class Constants
 
     public const PATCHES = [
         'onikakushi' => [
-            'graphics' => 'https://gitlab.com/07th-mod/onikakushi-graphics/repository/archive.zip?ref=master',
-            'patch' => 'https://github.com/07th-mod/onikakushi/archive/master.zip',
-            'steam' => 'https://github.com/jwgrlrrajn/higurashi-steam-sprite-mods/releases/download/1.0.1/onikakushi-steam-sprites.zip',
+            'onikakushi_graphics' => 'https://gitlab.com/07th-mod/onikakushi-graphics/repository/archive.zip?ref=master',
+            'onikakushi_patch' => 'https://github.com/07th-mod/onikakushi/archive/master.zip',
+            'onikakushi_steam' => 'https://github.com/jwgrlrrajn/higurashi-steam-sprite-mods/releases/download/1.0.1/onikakushi-steam-sprites.zip',
         ],
         'watanagashi' => [
-            'graphics' => 'https://gitlab.com/07th-mod/watanagashi-graphics/repository/archive.zip?ref=master',
-            'patch' => 'https://github.com/07th-mod/watanagashi/archive/master.zip',
-            'steam' => 'https://github.com/jwgrlrrajn/higurashi-steam-sprite-mods/releases/download/1.0.1/watanagashi-steam-sprites.zip',
+            'watanagashi_graphics' => 'https://gitlab.com/07th-mod/watanagashi-graphics/repository/archive.zip?ref=master',
+            'watanagashi_patch' => 'https://github.com/07th-mod/watanagashi/archive/master.zip',
+            'onikakushi_steam' => 'https://github.com/jwgrlrrajn/higurashi-steam-sprite-mods/releases/download/1.0.1/onikakushi-steam-sprites.zip',
+            'watanagashi_steam' => 'https://github.com/jwgrlrrajn/higurashi-steam-sprite-mods/releases/download/1.0.1/watanagashi-steam-sprites.zip',
         ],
         'tatarigoroshi' => [
-            'graphics' => 'https://gitlab.com/07th-mod/tatarigoroshi-graphics/repository/archive.zip?ref=master',
-            'patch' => 'https://github.com/07th-mod/tatarigoroshi/archive/master.zip',
-            'steam' => 'https://github.com/jwgrlrrajn/higurashi-steam-sprite-mods/releases/download/1.0.1/tatarigoroshi-steam-sprites.zip',
+            'tatarigoroshi_graphics' => 'https://gitlab.com/07th-mod/tatarigoroshi-graphics/repository/archive.zip?ref=master',
+            'tatarigoroshi_patch' => 'https://github.com/07th-mod/tatarigoroshi/archive/master.zip',
+            'tatarigoroshi_steam' => 'https://github.com/jwgrlrrajn/higurashi-steam-sprite-mods/releases/download/1.0.1/tatarigoroshi-steam-sprites.zip',
         ],
         'himatsubushi' => [
-            'graphics' => 'https://gitlab.com/07th-mod/himatsubushi-graphics/repository/archive.zip?ref=master',
-            'patch' => 'https://github.com/07th-mod/himatsubushi/archive/master.zip',
+            'himatsubushi_graphics' => 'https://gitlab.com/07th-mod/himatsubushi-graphics/repository/archive.zip?ref=master',
+            'himatsubushi_patch' => 'https://github.com/07th-mod/himatsubushi/archive/master.zip',
         ],
     ];
 
