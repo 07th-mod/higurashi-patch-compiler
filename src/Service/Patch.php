@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Higurashi\Service;
 
+use Nette\Utils\Finder;
 use Nette\Utils\Image;
 use Nette\Utils\Strings;
 use Symfony\Component\Filesystem\Filesystem;
@@ -93,18 +94,18 @@ class Patch
         $this->delete(sprintf('CGAlt/%s', $directory));
     }
 
-    public function compressImages(string $directory): void
+    public function compressImages(string $directory): \Generator
     {
-        $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator(sprintf('%s/%s', $this->directory, $directory)));
+        $files = Finder::findFiles('*.png')->from(sprintf('%s/%s', $this->directory, $directory));
+        $count = count($files);
 
-        foreach ($iterator as $file) {
-            if ($file->isDir() || !Strings::endsWith($file->getPathname(), '.png')) {
-                continue;
-            }
-
+        $i = 0;
+        foreach ($files as $file) {
             $image = Image::fromFile($file->getPathname());
             $image->save($file->getPathname());
             $image->destroy();
+
+            yield [++$i, $count];
         }
     }
 

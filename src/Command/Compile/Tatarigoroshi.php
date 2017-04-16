@@ -29,30 +29,40 @@ class Tatarigoroshi extends Command
         $patch->initialize();
 
         // 1. Copy graphics patch.
+        $output->writeln('Copying graphics patch.');
         $patch->copyGameCG();
         $patch->copyGraphics();
 
         // 2. Copy voices.
+        $output->writeln('Copying voices.');
         $patch->copyVoices('s03');
         $patch->copyVoices('s19');
         $patch->copyVoices('s20');
 
         // 3. Copy voice patch.
+        $output->writeln('Copying voice patch.');
         $patch->copyVoicePatch();
 
-        // 4. Make PS3 sprites default.
+        // 4. Copy Steam sprites patch.
+        $output->writeln('Copying Steam sprites patch.');
         $patch->renameGraphicsDirectory();
-
-        // 5. Copy CGAlt directory from game files.
         $patch->copyGameCGAlt();
-
-        // 6. Copy Steam patch.
         $patch->copySteamPatch();
         $patch->useAlternativeChieSprites('Alternate Chie-sensei sprites');
 
-        // 7. Load and save all PNG images to reduce size.
-        $patch->compressImages('CG');
-        $patch->compressImages('CGAlt');
+        // 5. Load and save all PNG images to reduce size.
+        $output->write('Compressing images in CG directory.');
+        foreach ($patch->compressImages('CG') as list($done, $total)) {
+            $output->write("\x0D");
+            $output->write(sprintf('Compressing images in CG directory (%d/%d).', $done, $total));
+        }
+        $output->writeln('');
+        $output->write('Compressing images in CGAlt directory.');
+        foreach ($patch->compressImages('CGAlt') as list($done, $total)) {
+            $output->write("\x0D");
+            $output->write(sprintf('Compressing images in CGAlt directory (%d/%d).', $done, $total));
+        }
+        $output->writeln('');
         
         return 0;
     }

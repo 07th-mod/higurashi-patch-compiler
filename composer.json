@@ -3,7 +3,8 @@
         "guzzlehttp/guzzle": "^6.2",
         "symfony/console": "^3.2",
         "symfony/filesystem": "^3.2",
-        "nette/utils": "^2.4"
+        "nette/utils": "^2.4",
+        "nette/finder": "^2.4"
     },
     "autoload": {
         "psr-4": {
