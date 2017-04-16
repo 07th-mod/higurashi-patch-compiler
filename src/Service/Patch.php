@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Higurashi\Service;
 
+use Nette\Utils\Image;
+use Nette\Utils\Strings;
 use Symfony\Component\Filesystem\Filesystem;
 
 class Patch
@@ -68,7 +70,12 @@ class Patch
         $this->filesystem->rename(sprintf('%s/CGAlt', $this->directory), sprintf('%s/CG', $this->directory));
     }
 
-    public function copyGameFiles(): void
+    public function copyGameCG(): void
+    {
+        $this->mergeDirectory(sprintf('%s/%s', $this->gameDirectory, 'CG'), sprintf('%s/CGAlt', $this->directory));
+    }
+
+    public function copyGameCGAlt(): void
     {
         $this->mergeDirectory(sprintf('%s/%s', $this->gameDirectory, 'CGAlt'), sprintf('%s/CGAlt', $this->directory));
     }
@@ -84,6 +91,21 @@ class Patch
         // The directory name is slightly different for different chapters.
         $this->mergeDirectory(sprintf('%s/CGAlt/%s', $this->directory, $directory), sprintf('%s/CGAlt', $this->directory));
         $this->delete(sprintf('CGAlt/%s', $directory));
+    }
+
+    public function compressImages(string $directory): void
+    {
+        $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator(sprintf('%s/%s', $this->directory, $directory)));
+
+        foreach ($iterator as $file) {
+            if ($file->isDir() || !Strings::endsWith($file->getPathname(), '.png')) {
+                continue;
+            }
+
+            $image = Image::fromFile($file->getPathname());
+            $image->save($file->getPathname());
+            $image->destroy();
+        }
     }
 
     private function mergeDirectory(string $source, string $dest): void

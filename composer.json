@@ -1,8 +1,9 @@
 {
     "require": {
-        "symfony/filesystem": "^3.2",
         "guzzlehttp/guzzle": "^6.2",
-        "symfony/console": "^3.2"
+        "symfony/console": "^3.2",
+        "symfony/filesystem": "^3.2",
+        "nette/utils": "^2.4"
     },
     "autoload": {
         "psr-4": {
@@ -14,7 +15,8 @@
             "php console.php higurashi:download tatarigoroshi",
             "php console.php higurashi:unpack",
             "php console.php higurashi:unpack tatarigoroshi",
-            "php console.php higurashi:compile:tatarigoroshi"
+            "php console.php higurashi:compile:tatarigoroshi",
+            "php console.php higurashi:clean tatarigoroshi"
         ]
     }
 }

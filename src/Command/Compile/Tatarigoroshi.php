@@ -29,6 +29,7 @@ class Tatarigoroshi extends Command
         $patch->initialize();
 
         // 1. Copy graphics patch.
+        $patch->copyGameCG();
         $patch->copyGraphics();
 
         // 2. Copy voices.
@@ -42,13 +43,17 @@ class Tatarigoroshi extends Command
         // 4. Make PS3 sprites default.
         $patch->renameGraphicsDirectory();
 
-        // 5. Copy CG directory from game files.
-        $patch->copyGameFiles();
+        // 5. Copy CGAlt directory from game files.
+        $patch->copyGameCGAlt();
 
         // 6. Copy Steam patch.
         $patch->copySteamPatch();
         $patch->useAlternativeChieSprites('Alternate Chie-sensei sprites');
 
+        // 7. Load and save all PNG images to reduce size.
+        $patch->compressImages('CG');
+        $patch->compressImages('CGAlt');
+        
         return 0;
     }
 }
