@@ -54,6 +54,11 @@ class Patch
     {
         $this->mergeDirectory(sprintf('%s/unpack/%s_%s', TEMP_DIR, $this->chapter, 'patch'), $this->directory);
         $this->delete('README.md');
+        $this->delete('CHANGELOG.md');
+        $this->delete('Extra');
+        $this->delete('Screenshots');
+        $this->filesystem->remove(sprintf('%s/Update/init.txt', $this->directory));
+        $this->filesystem->copy(__DIR__ . '/../../data/init.txt', sprintf('%s/Update/init.txt', $this->directory));
     }
 
     public function copyVoices(string $voices): void
