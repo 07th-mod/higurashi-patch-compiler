@@ -11,13 +11,13 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
-class Onikakushi extends Command
+class Watanagashi extends Command
 {
     protected function configure()
     {
         $this
-            ->setName('higurashi:compile:onikakushi')
-            ->setDescription('Compiles patch for Onikakushi.');
+            ->setName('higurashi:compile:watanagashi')
+            ->setDescription('Compiles patch for Watanagashi.');
     }
 
     public function execute(InputInterface $input, OutputInterface $output): int
@@ -31,11 +31,11 @@ class Onikakushi extends Command
         // 1. Copy graphics patch.
         $output->writeln('Copying graphics patch.');
         $patch->copyGameCG();
-        $patch->copyGraphics('onikakushi_graphics');
+        $patch->copyGraphics();
 
         // 2. Copy voices.
         $output->writeln('Copying voices.');
-        $patch->copyVoices('s01');
+        $patch->copyVoices('s02');
         $patch->copyVoices('s19');
         $patch->copyVoices('s20');
 
@@ -48,6 +48,7 @@ class Onikakushi extends Command
         $patch->renameGraphicsDirectory();
         $patch->copyGameCGAlt();
         $patch->copySteamPatch('onikakushi_steam');
+        $patch->copySteamPatch('watanagashi_steam');
         $patch->useAlternativeChieSprites('Alternate Chie-Sensei Sprites');
 
         // 5. Load and save all PNG images to reduce size.

@@ -57,7 +57,7 @@ class Download extends Command
         foreach (Constants::PATCHES[$chapter] as $name => $url) {
             $downloader->startDownloadIfNeeded(
                 $url,
-                sprintf('%s/download/%s.zip', TEMP_DIR, $chapter, $name)
+                sprintf('%s/download/%s.zip', TEMP_DIR, $name)
             );
         }
 

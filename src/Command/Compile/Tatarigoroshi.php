@@ -47,7 +47,7 @@ class Tatarigoroshi extends Command
         $output->writeln('Copying Steam sprites patch.');
         $patch->renameGraphicsDirectory();
         $patch->copyGameCGAlt();
-        $patch->copySteamPatch();
+        $patch->copySteamPatch('tatarigoroshi_steam');
         $patch->useAlternativeChieSprites('Alternate Chie-sensei sprites');
 
         // 5. Load and save all PNG images to reduce size.

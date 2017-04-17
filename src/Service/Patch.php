@@ -45,9 +45,9 @@ class Patch
         $this->filesystem->mkdir($this->directory);
     }
 
-    public function copyGraphics(string $name): void
+    public function copyGraphics(): void
     {
-        $this->mergeDirectory(sprintf('%s/unpack/%s', TEMP_DIR, $name), $this->directory);
+        $this->mergeDirectory(sprintf('%s/unpack/%s_%s', TEMP_DIR, $this->chapter, 'graphics'), $this->directory);
     }
 
     public function copyVoicePatch(): void
@@ -57,6 +57,7 @@ class Patch
         $this->delete('CHANGELOG.md');
         $this->delete('Extra');
         $this->delete('Screenshots');
+        $this->delete('dev');
         $this->filesystem->remove(sprintf('%s/Update/init.txt', $this->directory));
         $this->filesystem->copy(__DIR__ . '/../../data/init.txt', sprintf('%s/Update/init.txt', $this->directory));
     }
@@ -86,9 +87,9 @@ class Patch
         $this->mergeDirectory(sprintf('%s/%s', $this->gameDirectory, 'CGAlt'), sprintf('%s/CGAlt', $this->directory));
     }
 
-    public function copySteamPatch(): void
+    public function copySteamPatch(string $name): void
     {
-        $this->mergeDirectory(sprintf('%s/unpack/%s_%s', TEMP_DIR, $this->chapter, 'steam'), $this->directory);
+        $this->mergeDirectory(sprintf('%s/unpack/%s', TEMP_DIR, $name), $this->directory);
         $this->delete('README.txt');
     }
 
