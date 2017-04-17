@@ -51,8 +51,9 @@ class Cleaner
 
     public function getMissingFiles(): array
     {
-        sort($this->missingFiles);
-        return $this->missingFiles;
+        $files = array_unique($this->missingFiles);
+        sort($files);
+        return $files;
     }
 
     private function deleteUnusedFiles(string $directory): \Generator
