@@ -124,7 +124,7 @@ class Cleaner
             return $argument;
         }
 
-        $path = realpath($file);
+        $path = str_replace('\\', '/', realpath($file));
 
         if (strlen($path) !== strlen($file)) {
             throw new \Exception();
