@@ -146,7 +146,7 @@ class Cleaner
 
     private function shouldHaveSteamSprite(string $asset): bool
     {
-        if (strtolower($asset) === 'si_tatarigorosi') {
+        if (strtolower($asset) === 'si_' . str_replace('shi', 'si', $this->chapter)) {
             return false;
         }
 
