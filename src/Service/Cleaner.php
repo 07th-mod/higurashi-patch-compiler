@@ -58,15 +58,16 @@ class Cleaner
 
     private function deleteUnusedFiles(string $directory): \Generator
     {
-        $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($directory));
+        $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($directory), \RecursiveIteratorIterator::CHILD_FIRST);
         $prefixLength = strlen($this->directory) + 1;
 
         foreach ($iterator as $file) {
             if ($file->isDir()){
+                @rmdir($file->getPathname());
                 continue;
             }
 
-            if (! in_array(substr($file->getPathname(), $prefixLength), $this->usedFiles, true)) {
+            if (! in_array(str_replace('\\', '/', substr($file->getPathname(), $prefixLength)), $this->usedFiles, true)) {
                 unlink($file->getPathname());
                 yield $file->getPathname();
             }
@@ -120,7 +121,7 @@ class Cleaner
             if ($ignoreMissing) {
                 return null;
             }
-            $this->missingFiles[] = substr($file, strlen($this->directory) + 1 + strlen($prefix), - strlen($suffix));
+            $this->missingFiles[] = $prefix . substr($file, strlen($this->directory) + 1 + strlen($prefix), - strlen($suffix));
             return $argument;
         }
 
@@ -147,6 +148,9 @@ class Cleaner
 
     private function shouldHaveSteamSprite(string $asset): bool
     {
+        if (strpos($asset, '/') !== false) {
+            $asset = substr($asset, strrpos($asset, '/') + 1);
+        }
         if (strtolower($asset) === 'si_' . str_replace('shi', 'si', $this->chapter)) {
             return false;
         }
