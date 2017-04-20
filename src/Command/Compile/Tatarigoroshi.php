@@ -50,20 +50,6 @@ class Tatarigoroshi extends Command
         $patch->copySteamPatch('tatarigoroshi_steam');
         $patch->useAlternativeChieSprites('Alternate Chie-sensei sprites');
 
-        // 5. Load and save all PNG images to reduce size.
-        $output->write('Compressing images in CG directory.');
-        foreach ($patch->compressImages('CG') as list($done, $total)) {
-            $output->write("\x0D");
-            $output->write(sprintf('Compressing images in CG directory (%d/%d).', $done, $total));
-        }
-        $output->writeln('');
-        $output->write('Compressing images in CGAlt directory.');
-        foreach ($patch->compressImages('CGAlt') as list($done, $total)) {
-            $output->write("\x0D");
-            $output->write(sprintf('Compressing images in CGAlt directory (%d/%d).', $done, $total));
-        }
-        $output->writeln('');
-        
         return 0;
     }
 }
