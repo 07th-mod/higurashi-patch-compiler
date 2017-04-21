@@ -7,6 +7,7 @@ namespace Higurashi\Command;
 use Higurashi\Constants;
 use Higurashi\Service\Compressor;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -16,7 +17,8 @@ class Compress extends Command
     {
         $this
             ->setName('higurashi:compress')
-            ->setDescription('Compresses the compiled patch.');
+            ->setDescription('Compresses the compiled patch.')
+            ->addArgument('chapter', InputArgument::REQUIRED, 'Chapter to clean.');
     }
 
     public function execute(InputInterface $input, OutputInterface $output): int
@@ -24,7 +26,7 @@ class Compress extends Command
         /** @var string $chapter */
         $chapter = $input->getArgument('chapter');
 
-        if ($chapter && ! isset(Constants::PATCHES[$chapter])) {
+        if (! isset(Constants::PATCHES[$chapter])) {
             $output->writeln(sprintf('Chapter "%s" not found.', $chapter));
 
             return 1;
