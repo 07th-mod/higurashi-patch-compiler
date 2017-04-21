@@ -1,5 +1,6 @@
 {
     "require": {
+        "php": "^7.1",
         "guzzlehttp/guzzle": "^6.2",
         "symfony/console": "^3.2",
         "symfony/filesystem": "^3.2",
