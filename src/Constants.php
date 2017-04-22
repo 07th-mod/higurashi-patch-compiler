@@ -6,6 +6,13 @@ namespace Higurashi;
 
 class Constants
 {
+    public const GAMES = [
+        'onikakushi' => 'C:\Program Files (x86)\Steam\steamapps\common\Higurashi When They Cry\HigurashiEp01_Data\StreamingAssets',
+        'watanagashi' => 'C:\Program Files (x86)\Steam\steamapps\common\Higurashi 02 - Watanagashi\HigurashiEp02_Data\StreamingAssets',
+        'tatarigoroshi' => 'C:\Program Files (x86)\Steam\steamapps\common\Higurashi 03 - Tatarigoroshi\HigurashiEp03_Data\StreamingAssets',
+        'himatsubushi' => 'C:\Program Files (x86)\Steam\steamapps\common\Higurashi 04 - Himatsubushi\HigurashiEp04_Data\StreamingAssets',
+    ];
+
     public const VOICES = [
         'download/voices_1.zip' => 'https://github.com/07th-mod/resources/releases/download/Nipah/HigurashiPS3-Voices01.zip',
         'download/voices_2.zip' => 'https://github.com/07th-mod/resources/releases/download/Nipah/HigurashiPS3-Voices02.zip',
@@ -32,13 +39,6 @@ class Constants
             'himatsubushi_graphics' => 'https://gitlab.com/07th-mod/himatsubushi-graphics/repository/archive.zip?ref=master',
             'himatsubushi_patch' => 'https://github.com/07th-mod/himatsubushi/archive/master.zip',
         ],
-    ];
-
-    public const GAMES = [
-        'onikakushi' => 'C:\Program Files (x86)\Steam\steamapps\common\Higurashi When They Cry\HigurashiEp01_Data\StreamingAssets',
-        'watanagashi' => 'C:\Program Files (x86)\Steam\steamapps\common\Higurashi 02 - Watanagashi\HigurashiEp02_Data\StreamingAssets',
-        'tatarigoroshi' => 'C:\Program Files (x86)\Steam\steamapps\common\Higurashi 03 - Tatarigoroshi\HigurashiEp03_Data\StreamingAssets',
-        'himatsubushi' => 'C:\Program Files (x86)\Steam\steamapps\common\Higurashi 04 - Himatsubushi\HigurashiEp04_Data\StreamingAssets',
     ];
 
     public const SPRITE_PREFIXES = [
