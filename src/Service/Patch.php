@@ -55,7 +55,7 @@ class Patch
         $this->mergeDirectory(sprintf('%s/unpack/%s_%s', TEMP_DIR, $this->chapter, 'patch'), $this->directory);
         $this->delete('README.md');
         $this->delete('CHANGELOG.md');
-        $this->delete('Extra');
+        $this->delete('Extras');
         $this->delete('Screenshots');
         $this->delete('dev');
         $this->filesystem->remove(sprintf('%s/Update/init.txt', $this->directory));
