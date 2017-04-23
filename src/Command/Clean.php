@@ -23,10 +23,6 @@ class Clean extends Command
 
     public function execute(InputInterface $input, OutputInterface $output): int
     {
-        if (DIRECTORY_SEPARATOR !== '\\') {
-            throw new \Exception('This command only works on Windows. It realies on finding files without case sensitivity.');
-        }
-
         /** @var string $chapter */
         $chapter = $input->getArgument('chapter');
 
