@@ -30,7 +30,9 @@ class Onikakushi extends Command
 
         // 1. Copy graphics patch.
         $output->writeln('Copying graphics patch.');
-        $patch->copyGameCG();
+        if (! $patch->copyGameCG()) {
+            $output->writeln('Game files missing, you may get false-positive results about missing sprites.');
+        }
         $patch->copyGraphics('onikakushi_graphics');
 
         // 2. Copy voices.
@@ -46,7 +48,9 @@ class Onikakushi extends Command
         // 4. Copy Steam sprites patch.
         $output->writeln('Copying Steam sprites patch.');
         $patch->renameGraphicsDirectory();
-        $patch->copyGameCGAlt();
+        if (! $patch->copyGameCGAlt()) {
+            $output->writeln('Game files missing, you may get false-positive results about missing sprites.');
+        }
         $patch->copySteamPatch('onikakushi_steam');
         $patch->useAlternativeChieSprites('Alternate Chie-Sensei Sprites');
 

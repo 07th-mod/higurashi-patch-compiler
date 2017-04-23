@@ -77,14 +77,24 @@ class Patch
         $this->filesystem->rename(sprintf('%s/CGAlt', $this->directory), sprintf('%s/CG', $this->directory));
     }
 
-    public function copyGameCG(): void
+    public function copyGameCG(): bool
     {
-        $this->mergeDirectory(sprintf('%s/%s', $this->gameDirectory, 'CG'), sprintf('%s/CGAlt', $this->directory));
+        $directory = sprintf('%s/%s', $this->gameDirectory, 'CG');
+        if (! file_exists($directory)) {
+            return false;
+        }
+        $this->mergeDirectory($directory, sprintf('%s/CGAlt', $this->directory));
+        return true;
     }
 
-    public function copyGameCGAlt(): void
+    public function copyGameCGAlt(): bool
     {
-        $this->mergeDirectory(sprintf('%s/%s', $this->gameDirectory, 'CGAlt'), sprintf('%s/CGAlt', $this->directory));
+        $directory = sprintf('%s/%s', $this->gameDirectory, 'CGAlt');
+        if (! file_exists($directory)) {
+            return false;
+        }
+        $this->mergeDirectory($directory, sprintf('%s/CGAlt', $this->directory));
+        return true;
     }
 
     public function copySteamPatch(string $name): void
