@@ -70,14 +70,6 @@ class Make extends Command
         );
 
         $this->runCommand(
-            'higurashi:compress',
-            [
-                'chapter' => $chapter,
-            ],
-            $output
-        );
-
-        $this->runCommand(
             'higurashi:clean',
             [
                 'chapter' => $chapter,
