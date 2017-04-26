@@ -33,7 +33,7 @@ class Onikakushi extends Command
         if (! $patch->copyGameCG()) {
             $output->writeln('Game files missing, you may get false-positive results about missing sprites.');
         }
-        $patch->copyGraphics('onikakushi_graphics');
+        $patch->copyGraphics();
 
         // 2. Copy voices.
         $output->writeln('Copying voices.');

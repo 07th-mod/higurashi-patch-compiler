@@ -17,5 +17,6 @@ $application->add(new \Higurashi\Command\Make());
 $application->add(new \Higurashi\Command\Compile\Onikakushi());
 $application->add(new \Higurashi\Command\Compile\Watanagashi());
 $application->add(new \Higurashi\Command\Compile\Tatarigoroshi());
+$application->add(new \Higurashi\Command\Compile\Himatsubushi());
 
 $application->run();

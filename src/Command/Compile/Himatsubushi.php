@@ -11,13 +11,13 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
-class Tatarigoroshi extends Command
+class Himatsubushi extends Command
 {
     protected function configure()
     {
         $this
-            ->setName('higurashi:compile:tatarigoroshi')
-            ->setDescription('Compiles patch for Tatarigoroshi.');
+            ->setName('higurashi:compile:himatsubushi')
+            ->setDescription('Compiles patch for Himatsubushi.');
     }
 
     public function execute(InputInterface $input, OutputInterface $output): int
@@ -37,22 +37,15 @@ class Tatarigoroshi extends Command
 
         // 2. Copy voices.
         $output->writeln('Copying voices.');
-        $patch->copyVoices('s03');
-        $patch->copyVoices('s19');
+        $patch->copyVoices('s05');
         $patch->copyVoices('s20');
 
         // 3. Copy voice patch.
         $output->writeln('Copying voice patch.');
         $patch->copyVoicePatch();
 
-        // 4. Copy Steam sprites patch.
-        $output->writeln('Copying Steam sprites patch.');
+        // Steam patch does not exist yet.
         $patch->renameGraphicsDirectory();
-        if (! $patch->copyGameCGAlt()) {
-            $output->writeln('Game files missing, you may get false-positive results about missing sprites.');
-        }
-        $patch->copySteamPatch('tatarigoroshi_steam');
-        $patch->useAlternativeChieSprites('Alternate Chie-sensei sprites');
 
         return 0;
     }
