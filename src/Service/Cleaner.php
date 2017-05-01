@@ -151,7 +151,7 @@ class Cleaner
         if (strpos($asset, '/') !== false) {
             $asset = substr($asset, strrpos($asset, '/') + 1);
         }
-        if (strtolower($asset) === 'si_' . str_replace('shi', 'si', $this->chapter)) {
+        if (strtolower($asset) === 'si_' . str_replace('shi', 'si', str_replace('himatsu', 'himatu', $this->chapter))) {
             return false;
         }
 

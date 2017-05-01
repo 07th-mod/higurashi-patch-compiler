@@ -44,8 +44,14 @@ class Himatsubushi extends Command
         $output->writeln('Copying voice patch.');
         $patch->copyVoicePatch();
 
-        // Steam patch does not exist yet.
+        // 4. Copy Steam sprites patch.
+        $output->writeln('Copying Steam sprites patch.');
         $patch->renameGraphicsDirectory();
+        if (! $patch->copyGameCGAlt()) {
+            $output->writeln('Game files missing, you may get false-positive results about missing sprites.');
+        }
+        $patch->copySteamPatch('himatsubushi_steam');
+        $patch->useAlternativeChieSprites('Alternate Chie-sensei Sprites');
 
         return 0;
     }
