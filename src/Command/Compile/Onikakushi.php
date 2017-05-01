@@ -51,7 +51,7 @@ class Onikakushi extends Command
         if (! $patch->copyGameCGAlt()) {
             $output->writeln('Game files missing, you may get false-positive results about missing sprites.');
         }
-        $patch->copySteamPatch('onikakushi_steam');
+        $patch->copySteamPatch($chapter . '_steam');
         $patch->useAlternativeChieSprites('Alternate Chie-Sensei Sprites');
 
         return 0;
