@@ -11,6 +11,7 @@ class Constants
         'watanagashi' => 'C:\Program Files (x86)\Steam\steamapps\common\Higurashi 02 - Watanagashi\HigurashiEp02_Data\StreamingAssets',
         'tatarigoroshi' => 'C:\Program Files (x86)\Steam\steamapps\common\Higurashi 03 - Tatarigoroshi\HigurashiEp03_Data\StreamingAssets',
         'himatsubushi' => 'C:\Program Files (x86)\Steam\steamapps\common\Higurashi 04 - Himatsubushi\HigurashiEp04_Data\StreamingAssets',
+        'meakashi' => 'C:\Program Files (x86)\Steam\steamapps\common\Higurashi When They Cry Hou - Ch. 5 Meakashi\HigurashiEp05_Data\StreamingAssets',
     ];
 
     public const VOICES = [
@@ -39,6 +40,9 @@ class Constants
             'himatsubushi_graphics' => 'https://gitlab.com/07th-mod/himatsubushi-graphics/repository/archive.zip?ref=master',
             'himatsubushi_patch' => 'https://github.com/07th-mod/himatsubushi/archive/master.zip',
             'himatsubushi_steam' => 'https://github.com/jwgrlrrajn/higurashi-steam-sprite-mods/releases/download/1.1.1/himatsubushi-steam-sprites.zip',
+        ],
+        'meakashi' => [
+            'meakashi_patch' => 'https://github.com/07th-mod/meakashi/archive/master.zip',
         ],
     ];
 
