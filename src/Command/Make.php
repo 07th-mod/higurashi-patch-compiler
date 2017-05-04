@@ -41,6 +41,12 @@ class Make extends Command
 
         $this->runCommand(
             'higurashi:download',
+            [],
+            $output
+        );
+
+        $this->runCommand(
+            'higurashi:download',
             [
                 'chapter' => $chapter,
                 '--force' => $force,

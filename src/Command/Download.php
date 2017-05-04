@@ -21,7 +21,7 @@ class Download extends Command
         $this
             ->setName('higurashi:download')
             ->setDescription('Download resources needed to compile higurashi patches.')
-            ->addArgument('chapter', InputArgument::REQUIRED, 'Chapter to download.')
+            ->addArgument('chapter', InputArgument::OPTIONAL, 'Chapter to download. If unspecified the voices will be downloaded.')
             ->addOption('force', null, InputOption::VALUE_NONE, 'Redownload all resources.');
     }
 
@@ -30,7 +30,7 @@ class Download extends Command
         /** @var string $chapter */
         $chapter = $input->getArgument('chapter');
 
-        if (! isset(Constants::PATCHES[$chapter])) {
+        if ($chapter && ! isset(Constants::PATCHES[$chapter])) {
             $output->writeln(sprintf('Chapter "%s" not found.', $chapter));
 
             return 1;
@@ -47,18 +47,20 @@ class Download extends Command
             })()
         );
 
-        foreach (Constants::VOICES as $path => $url) {
-            $downloader->startDownloadIfNeeded(
-                $url,
-                sprintf('%s/%s', TEMP_DIR, $path)
-            );
-        }
-
-        foreach (Constants::PATCHES[$chapter] as $name => $url) {
-            $downloader->startDownloadIfNeeded(
-                $url,
-                sprintf('%s/download/%s.zip', TEMP_DIR, $name)
-            );
+        if ($chapter) {
+            foreach (Constants::PATCHES[$chapter] as $name => $url) {
+                $downloader->startDownloadIfNeeded(
+                    $url,
+                    sprintf('%s/download/%s.zip', TEMP_DIR, $name)
+                );
+            }
+        } else {
+            foreach (Constants::VOICES as $path => $url) {
+                $downloader->startDownloadIfNeeded(
+                    $url,
+                    sprintf('%s/%s', TEMP_DIR, $path)
+                );
+            }
         }
 
         $downloader->save();
