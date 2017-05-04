@@ -29,11 +29,11 @@ class Meakashi extends Command
         $patch->initialize();
 
         // 1. Copy graphics patch.
-//        $output->writeln('Copying graphics patch.');
-//        if (! $patch->copyGameCG()) {
-//            $output->writeln('Game files missing, you may get false-positive results about missing sprites.');
-//        }
-//        $patch->copyGraphics();
+        $output->writeln('Copying graphics patch.');
+        if (! $patch->copyGameCG()) {
+            $output->writeln('Game files missing, you may get false-positive results about missing sprites.');
+        }
+        $patch->copyGraphics();
 
         // 2. Copy voices.
         $output->writeln('Copying voices.');
@@ -46,7 +46,7 @@ class Meakashi extends Command
 
         // 4. Copy Steam sprites patch.
 //        $output->writeln('Copying Steam sprites patch.');
-//        $patch->renameGraphicsDirectory();
+        $patch->renameGraphicsDirectory();
 //        if (! $patch->copyGameCGAlt()) {
 //            $output->writeln('Game files missing, you may get false-positive results about missing sprites.');
 //        }

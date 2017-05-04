@@ -42,6 +42,7 @@ class Constants
             'himatsubushi_steam' => 'https://github.com/jwgrlrrajn/higurashi-steam-sprite-mods/releases/download/1.1.1/himatsubushi-steam-sprites.zip',
         ],
         'meakashi' => [
+            'meakashi_graphics' => 'https://gitlab.com/07th-mod/meakashi-graphics/repository/archive.zip?ref=master',
             'meakashi_patch' => 'https://github.com/07th-mod/meakashi/archive/master.zip',
         ],
     ];
