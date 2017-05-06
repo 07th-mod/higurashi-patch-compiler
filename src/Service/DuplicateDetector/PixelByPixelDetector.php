@@ -30,7 +30,7 @@ class PixelByPixelDetector implements SimilarPictureDetector
                 $difference += abs($colors1['blue'] - $colors2['blue']);
                 $difference += abs($colors1['alpha'] - $colors2['alpha']);
 
-                if ($difference > 1000) {
+                if ($difference > 3500) {
                     return false;
                 }
             }
