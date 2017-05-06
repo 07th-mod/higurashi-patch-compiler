@@ -13,6 +13,7 @@ $application->add(new \Higurashi\Command\Unpack());
 $application->add(new \Higurashi\Command\Clean());
 $application->add(new \Higurashi\Command\Compress());
 $application->add(new \Higurashi\Command\Make());
+$application->add(new \Higurashi\Command\Compare());
 
 $application->add(new \Higurashi\Command\Compile\Onikakushi());
 $application->add(new \Higurashi\Command\Compile\Watanagashi());
