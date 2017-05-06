@@ -20,6 +20,11 @@ class Cleaner
     private $directory;
 
     /**
+     * @var string
+     */
+    private $fredericaPrefix;
+
+    /**
      * @var string[]
      */
     private $usedFiles = [];
@@ -33,6 +38,7 @@ class Cleaner
     {
         $this->chapter = $chapter;
         $this->directory = $directory;
+        $this->fredericaPrefix = 'si_' . str_replace('shi', 'si', str_replace('himatsu', 'himatu', $chapter));
     }
 
     public function clean(): \Generator
@@ -51,6 +57,10 @@ class Cleaner
 
         $filter = function ($filename) use ($prefixes) {
             $filename = strtolower($filename);
+
+            if ($this->isFredericaImage($filename) || Strings::endsWith($filename, '_j.png')) {
+                return false;
+            }
 
             foreach ($prefixes as $prefix) {
                 if (Strings::startsWith($filename, $prefix)) {
@@ -177,7 +187,7 @@ class Cleaner
 
         $asset = strtolower($asset);
 
-        if ($asset === 'si_' . str_replace('shi', 'si', str_replace('himatsu', 'himatu', $this->chapter))) {
+        if ($this->isFredericaImage($asset)) {
             return false;
         }
 
@@ -188,5 +198,10 @@ class Cleaner
         }
 
         return false;
+    }
+
+    private function isFredericaImage(string $asset): bool
+    {
+        return Strings::startsWith(strtolower($asset), $this->fredericaPrefix);
     }
 }
