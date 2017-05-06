@@ -6,6 +6,7 @@ namespace Higurashi\Command;
 
 use Higurashi\Constants;
 use Higurashi\Service\Cleaner;
+use Nette\Utils\Strings;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -39,7 +40,9 @@ class Clean extends Command
         $deletedFiles = 0;
         // Do NOT use iterator_to_array on generators.
         foreach ($cleaner->clean() as $file) {
-            //$output->writeln($file);
+            if (! Strings::startsWith($file, 'SE/')) {
+                $output->writeln(sprintf('Deleted file "%s".', $file));
+            }
             ++$deletedFiles;
         }
 

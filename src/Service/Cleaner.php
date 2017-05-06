@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Higurashi\Service;
 
 use Higurashi\Constants;
+use Nette\Utils\Strings;
 
 class Cleaner
 {
@@ -52,7 +53,7 @@ class Cleaner
             $filename = strtolower($filename);
 
             foreach ($prefixes as $prefix) {
-                if (substr($filename, 0, strlen($prefix)) === $prefix) {
+                if (Strings::startsWith($filename, $prefix)) {
                     return true;
                 }
             }
@@ -87,9 +88,11 @@ class Cleaner
                 continue;
             }
 
-            if (! in_array(str_replace('\\', '/', substr($file->getPathname(), $prefixLength)), $this->usedFiles, true)) {
+            $path = str_replace('\\', '/', substr($file->getPathname(), $prefixLength));
+
+            if (! in_array($path, $this->usedFiles, true)) {
                 unlink($file->getPathname());
-                yield $file->getPathname();
+                yield $path;
             }
         }
     }
@@ -179,7 +182,7 @@ class Cleaner
         }
 
         foreach (Constants::MG_SPRITE_PREFIXES as $prefix) {
-            if (substr($asset, 0, strlen($prefix)) === $prefix) {
+            if (Strings::startsWith($asset, $prefix)) {
                 return true;
             }
         }
