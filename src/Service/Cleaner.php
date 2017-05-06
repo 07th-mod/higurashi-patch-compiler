@@ -49,6 +49,8 @@ class Cleaner
         $prefixes = array_merge(Constants::MG_SPRITE_PREFIXES, Constants::PS_ONLY_SPRITE_PREFIXES, ['bg_']);
 
         $filter = function ($filename) use ($prefixes) {
+            $filename = strtolower($filename);
+
             foreach ($prefixes as $prefix) {
                 if (substr($filename, 0, strlen($prefix)) === $prefix) {
                     return true;
@@ -169,7 +171,10 @@ class Cleaner
         if (strpos($asset, '/') !== false) {
             $asset = substr($asset, strrpos($asset, '/') + 1);
         }
-        if (strtolower($asset) === 'si_' . str_replace('shi', 'si', str_replace('himatsu', 'himatu', $this->chapter))) {
+
+        $asset = strtolower($asset);
+
+        if ($asset === 'si_' . str_replace('shi', 'si', str_replace('himatsu', 'himatu', $this->chapter))) {
             return false;
         }
 
