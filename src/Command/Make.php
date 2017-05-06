@@ -91,6 +91,14 @@ class Make extends Command
             $output
         );
 
+        $this->runCommand(
+            'higurashi:compare',
+            [
+                'chapter' => $chapter,
+            ],
+            $output
+        );
+
         $time = microtime(true) - $start;
 
         $output->writeln(sprintf("%d hours, %d minutes and %d seconds", floor($time / 3600), ($time / 60) % 60, $time % 60));
