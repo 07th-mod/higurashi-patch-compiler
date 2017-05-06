@@ -47,21 +47,15 @@ class Constants
         ],
     ];
 
-    public const SPRITE_PREFIXES = [
+    public const MG_SPRITE_PREFIXES = [
         'chibimion_',
         'ir_',
         'iri2_',
-        //'kameda2a_',
         'me_',
-        //'kasa_',
-        //'ki_',
-        //'kuma_',
+        'kasa_',
         'oi_',
         'oisi1_',
         'oisi2_',
-        //'oka1_',
-        //'oka2_',
-        //'oryou_',
         're_',
         're2b_',
         'ri_',
@@ -74,7 +68,16 @@ class Constants
         'ti_',
         'tie_',
         'tm_',
-        //'tomita1_',
-        //'tomita2_',
+    ];
+
+    public const PS_ONLY_SPRITE_PREFIXES = [
+        'kameda2a_',
+        'ki_',
+        'kuma_',
+        'oka1_',
+        'oka2_',
+        'oryou_',
+        'tomita1_',
+        'tomita2_',
     ];
 }

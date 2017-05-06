@@ -46,7 +46,21 @@ class Cleaner
 
         $this->usedFiles = array_unique($this->usedFiles);
 
+        $prefixes = array_merge(Constants::MG_SPRITE_PREFIXES, Constants::PS_ONLY_SPRITE_PREFIXES, ['bg_']);
+
+        $filter = function ($filename) use ($prefixes) {
+            foreach ($prefixes as $prefix) {
+                if (substr($filename, 0, strlen($prefix)) === $prefix) {
+                    return true;
+                }
+            }
+
+            return false;
+        };
+
         yield from $this->deleteUnusedFiles(sprintf('%s/SE', $this->directory));
+        yield from $this->deleteUnusedFiles(sprintf('%s/CG', $this->directory), $filter);
+        yield from $this->deleteUnusedFiles(sprintf('%s/CGAlt', $this->directory), $filter);
     }
 
     public function getMissingFiles(): array
@@ -56,14 +70,18 @@ class Cleaner
         return $files;
     }
 
-    private function deleteUnusedFiles(string $directory): \Generator
+    private function deleteUnusedFiles(string $directory, ?callable $filter = null): \Generator
     {
         $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($directory), \RecursiveIteratorIterator::CHILD_FIRST);
         $prefixLength = strlen($this->directory) + 1;
 
         foreach ($iterator as $file) {
-            if ($file->isDir()){
+            if ($file->isDir()) {
                 @rmdir($file->getPathname());
+                continue;
+            }
+
+            if ($filter && !$filter($file->getFilename())) {
                 continue;
             }
 
@@ -155,7 +173,7 @@ class Cleaner
             return false;
         }
 
-        foreach (Constants::SPRITE_PREFIXES as $prefix) {
+        foreach (Constants::MG_SPRITE_PREFIXES as $prefix) {
             if (substr($asset, 0, strlen($prefix)) === $prefix) {
                 return true;
             }

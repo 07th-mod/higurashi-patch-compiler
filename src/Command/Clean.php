@@ -35,9 +35,15 @@ class Clean extends Command
         $directory = sprintf('%s/patch/%s', TEMP_DIR, $chapter);
 
         $cleaner = new Cleaner($chapter, $directory);
-        $deletedFiles = iterator_to_array($cleaner->clean());
 
-        $output->writeln(sprintf('Deleted %d unused voice files.', count($deletedFiles)));
+        $deletedFiles = 0;
+        // Do NOT use iterator_to_array on generators.
+        foreach ($cleaner->clean() as $file) {
+            //$output->writeln($file);
+            ++$deletedFiles;
+        }
+
+        $output->writeln(sprintf('Deleted %d unused files.', $deletedFiles));
 
         $output->writeln(sprintf('Missing files (%d):', count($cleaner->getMissingFiles())));
 
