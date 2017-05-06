@@ -40,6 +40,8 @@ class DuplicateDetector
         }
 
         foreach ($pictures as $picture1) {
+            set_time_limit(300);
+
             foreach ($pictures as $picture2) {
                 if ($picture1->getPath() === $picture2->getPath()) {
                     continue;
@@ -52,6 +54,7 @@ class DuplicateDetector
                     ];
                 }
             }
+
             array_shift($pictures);
         }
     }
