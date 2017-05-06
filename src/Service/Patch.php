@@ -59,7 +59,7 @@ class Patch
         $this->delete('Screenshots');
         $this->delete('dev');
         $this->filesystem->remove(sprintf('%s/Update/init.txt', $this->directory));
-        $this->filesystem->copy(__DIR__ . '/../../data/init.txt', sprintf('%s/Update/init.txt', $this->directory));
+        //$this->filesystem->copy(__DIR__ . '/../../data/init.txt', sprintf('%s/Update/init.txt', $this->directory));
     }
 
     public function copyVoices(string $voices): void
