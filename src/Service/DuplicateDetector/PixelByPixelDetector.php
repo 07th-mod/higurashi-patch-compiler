@@ -21,7 +21,7 @@ class PixelByPixelDetector implements SimilarPictureDetector
         $difference = 0;
 
         for ($x = 0; $x < $picture1->getWidth(); ++$x) {
-            for ($y = 0; $y < $picture2->getHeight(); ++$y) {
+            for ($y = 0; $y < $picture1->getHeight(); ++$y) {
                 $colors1 = $image1->colorsforindex($image1->colorat($x, $y));
                 $colors2 = $image2->colorsforindex($image2->colorat($x, $y));
 

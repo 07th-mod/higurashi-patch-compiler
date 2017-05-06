@@ -13,6 +13,6 @@ class SizeDifferenceDetector implements SimilarPictureDetector
 
     public function arePicturesSimilar(Picture $picture1, Picture $picture2): bool
     {
-        return $picture1->getWidth() === $picture2->getWidth() && $picture2->getWidth() === $picture2->getWidth();
+        return $picture1->getWidth() === $picture2->getWidth() && $picture1->getHeight() === $picture2->getHeight();
     }
 }
