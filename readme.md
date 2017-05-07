@@ -4,9 +4,9 @@ At the moment higurashi patches are difficult to install or update. You need to 
 
 ## Prerequisites
 
-- Windows (because of case-insensitivity for filenames)
 - [PHP 7.1+](http://php.net/)
 - [Composer](https://getcomposer.org/)
+- Windows (unless the chapter is free of case sensitivity issues)
 
 ## Installation
 
@@ -20,7 +20,7 @@ The compiler needs the game files as well. Please check that the paths in `Const
 
 ## Compiling a patch
 
-Compiling a patch is as easy as running a single command. It will download, unpack and put together all the resources. **Beware that the compilation can easily take about an hour.**
+Compiling a patch is as easy as running a single command. It will download, unpack and put together all the resources. **Beware that the compilation can easily take about half an hour.**
 
 ```
 $ php console.php higurashi:make <chapter>
