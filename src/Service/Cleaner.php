@@ -53,7 +53,7 @@ class Cleaner
 
         $this->usedFiles = array_unique($this->usedFiles);
 
-        $prefixes = array_merge(Constants::MG_SPRITE_PREFIXES, Constants::PS_ONLY_SPRITE_PREFIXES, ['bg_', '634a47b7-', 'ryuuketu']);
+        $prefixes = array_merge(Constants::MG_SPRITE_PREFIXES, Constants::PS_ONLY_SPRITE_PREFIXES, ['bg_', '634a47b7-', 'ryuuketu', 'oni_']);
 
         $filter = function ($filename) use ($prefixes) {
             $filename = strtolower($filename);
