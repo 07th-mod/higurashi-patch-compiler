@@ -1,3 +1,4 @@
+config/local.yml
 temp/*
 vendor/*
 !.gitkeep

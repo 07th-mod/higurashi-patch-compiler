@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Higurashi\Command\Compile;
 
-use Higurashi\Constants;
 use Higurashi\Service\Patch;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Yaml\Yaml;
 
 class Onikakushi extends Command
 {
@@ -25,7 +25,8 @@ class Onikakushi extends Command
         $chapter = strtolower((new \ReflectionClass($this))->getShortName());
         $directory = sprintf('%s/patch/%s', TEMP_DIR, $chapter);
 
-        $patch = new Patch(new Filesystem(), $chapter, $directory, Constants::GAMES[$chapter]);
+        $config = Yaml::parse(file_get_contents(__DIR__ . '/../../../config/local.yml'));
+        $patch = new Patch(new Filesystem(), $chapter, $directory, $config['games'][$chapter]);
         $patch->initialize();
 
         // 1. Copy graphics patch.

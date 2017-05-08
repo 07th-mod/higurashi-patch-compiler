@@ -6,14 +6,6 @@ namespace Higurashi;
 
 class Constants
 {
-    public const GAMES = [
-        'onikakushi' => 'C:\Program Files (x86)\Steam\steamapps\common\Higurashi When They Cry\HigurashiEp01_Data\StreamingAssets',
-        'watanagashi' => 'C:\Program Files (x86)\Steam\steamapps\common\Higurashi 02 - Watanagashi\HigurashiEp02_Data\StreamingAssets',
-        'tatarigoroshi' => 'C:\Program Files (x86)\Steam\steamapps\common\Higurashi 03 - Tatarigoroshi\HigurashiEp03_Data\StreamingAssets',
-        'himatsubushi' => 'C:\Program Files (x86)\Steam\steamapps\common\Higurashi 04 - Himatsubushi\HigurashiEp04_Data\StreamingAssets',
-        'meakashi' => 'C:\Program Files (x86)\Steam\steamapps\common\Higurashi When They Cry Hou - Ch. 5 Meakashi\HigurashiEp05_Data\StreamingAssets',
-    ];
-
     public const VOICES = [
         'download/voices_1.zip' => 'https://github.com/07th-mod/resources/releases/download/Nipah/HigurashiPS3-Voices01.zip',
         'download/voices_2.zip' => 'https://github.com/07th-mod/resources/releases/download/Nipah/HigurashiPS3-Voices02.zip',
@@ -103,5 +95,12 @@ class Constants
         'tetu_',
         'tomita1_',
         'tomita2_',
+    ];
+
+    public const OTHER_DELETABLE_PREFIXES = [
+        'bg_',
+        'oni_',
+        '634a47b7-',
+        'ryuuketu',
     ];
 }

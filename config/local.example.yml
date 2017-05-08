@@ -1,0 +1,13 @@
+# All commands will work without game files but may report false-positive results about missing files.
+games:
+  onikakushi: 'C:\Program Files (x86)\Steam\steamapps\common\Higurashi When They Cry\HigurashiEp01_Data\StreamingAssets'
+  watanagashi: 'C:\Program Files (x86)\Steam\steamapps\common\Higurashi 02 - Watanagashi\HigurashiEp02_Data\StreamingAssets'
+  tatarigoroshi: 'C:\Program Files (x86)\Steam\steamapps\common\Higurashi 03 - Tatarigoroshi\HigurashiEp03_Data\StreamingAssets'
+  himatsubushi: 'C:\Program Files (x86)\Steam\steamapps\common\Higurashi 04 - Himatsubushi\HigurashiEp04_Data\StreamingAssets'
+  meakashi: 'C:\Program Files (x86)\Steam\steamapps\common\Higurashi When They Cry Hou - Ch. 5 Meakashi\HigurashiEp05_Data\StreamingAssets'
+
+# Database is only needed for parsing the PS3 script.
+database:
+  dsn: mysql:host=localhost;dbname=higurashi
+  username: root
+  password: root

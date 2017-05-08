@@ -16,7 +16,7 @@ After you have PHP and Composer up and running you just need to install the depe
 $ composer install
 ```
 
-The compiler needs the game files as well. Please check that the paths in `Constants.php` are correct. (TODO: Add a local YAML file instead.)
+The compiler needs the game files as well and a mysql database. Copy `config/local.example.yml` to `config/local.yml` and edit the paths and database connection settings.
 
 ## Compiling a patch
 
