@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Higurashi\Command;
 
+use Dibi\Connection;
 use Higurashi\Service\ScriptParser;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Yaml\Yaml;
 
 class ParseScript extends Command
 {
@@ -22,9 +24,33 @@ class ParseScript extends Command
     {
         $parser = new ScriptParser(__DIR__ . '/../../data/HigurashiPS3-Script.txt');
 
-        foreach ($parser->parse() as [$name, $voice, $text, $line]) {
+        $config = Yaml::parse(file_get_contents(__DIR__ . '/../../config/local.yml'));
 
+        $options = $config['database'];
+        $options['driver'] = 'pdo';
+        $options['charset'] = 'utf8';
+        $connection = new Connection($options);
+
+        $connection->query('TRUNCATE [voices]');
+
+        $count = 0;
+        foreach ($parser->parse() as [$name, $voice, $text, $line]) {
+            ++$count;
+            $connection
+                ->insert(
+                    'voices',
+                    [
+                        'name' => $name,
+                        'voice' => $voice,
+                        'text' => $text,
+                        'file' => substr($voice, 0, 3),
+                        'line' => $line,
+                    ]
+                )
+                ->execute();
         }
+
+        $output->writeln(sprintf('Inserted %d voices.', $count));
 
         return 0;
     }
