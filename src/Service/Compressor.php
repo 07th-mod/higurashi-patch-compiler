@@ -21,7 +21,12 @@ class Compressor
 
     public function compressImages(string $directory): \Generator
     {
-        $files = Finder::findFiles('*.png')->from(sprintf('%s/%s', $this->directory, $directory));
+        $directory = sprintf('%s/%s', $this->directory, $directory);
+        if (! file_exists($directory)) {
+            return;
+        }
+
+        $files = Finder::findFiles('*.png')->from($directory);
         $count = count($files);
 
         $i = 0;
