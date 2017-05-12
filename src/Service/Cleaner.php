@@ -80,11 +80,16 @@ class Cleaner
     {
         $files = array_unique($this->missingFiles);
         sort($files);
+
         return $files;
     }
 
     private function deleteUnusedFiles(string $directory, ?callable $filter = null): \Generator
     {
+        if (! file_exists($directory)) {
+            return;
+        }
+
         $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($directory), \RecursiveIteratorIterator::CHILD_FIRST);
         $prefixLength = strlen($this->directory) + 1;
 
@@ -128,8 +133,8 @@ class Cleaner
 
     private function processLine(string $line): string
     {
-        if (preg_match('~^\\s++PlaySE\\([^,]++,\\s*+"([sS][^"]++)"~', $line, $match)) {
-            $fixed = $this->processFile($match[1], 'SE/', '.ogg');
+        if (preg_match('~^\\s++PlaySE\\([^,]++,\\s*+"([sS][^_][^"]++)"~', $line, $match)) {
+            $fixed = $this->processFile($match[1], 'SE/', '.ogg') ?? $match[1];
             $line = str_replace(sprintf('"%s"', $match[1]), sprintf('"%s"', $fixed), $line);
         } elseif (preg_match('~^\\s++DrawBG\\(\\s*+"([^"]++)"~', $line, $match)) {
             $line = $this->processCGFile($line, $match[1]);
@@ -151,11 +156,11 @@ class Cleaner
         $file = sprintf('%s/%s%s%s', $this->directory, $prefix, $argument, $suffix);
 
         if (! file_exists($file)) {
-            if ($ignoreMissing) {
-                return null;
+            if (! $ignoreMissing) {
+                $this->missingFiles[] = $prefix . substr($file, strlen($this->directory) + 1 + strlen($prefix), - strlen($suffix));
             }
-            $this->missingFiles[] = $prefix . substr($file, strlen($this->directory) + 1 + strlen($prefix), - strlen($suffix));
-            return $argument;
+
+            return null;
         }
 
         $path = str_replace('\\', '/', realpath($file));
@@ -171,11 +176,12 @@ class Cleaner
 
     private function processCGFile(string $line, string $asset)
     {
-        $fixed = $this->processFile($asset, 'CG/', '.png');
+        $fixed = $this->processFile($asset, 'CG/', '.png') ?? $asset;
         $fixedAlt = $this->processFile($asset, 'CGAlt/', '.png', ! $this->shouldHaveSteamSprite($asset));
         if ($fixedAlt !== null && $fixedAlt !== $fixed) {
             throw new \Exception(sprintf('Filename mismatch "CG/%s" and "CGAlt/%s".', $fixed, $fixedAlt));
         }
+
         return str_replace(sprintf('"%s"', $asset), sprintf('"%s"', $fixed), $line);
     }
 
