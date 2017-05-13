@@ -68,7 +68,7 @@ class AdventureModeUpdater
     private function updateLines($file, string $filename): \Generator
     {
         $name = null;
-        $previousLine = fgets($file);
+        $previousLine = str_replace("\xEF\xBB\xBF", '', fgets($file));
 
         while (!feof($file) && ($line = fgets($file)) !== false) {
             if ($match = Strings::match($line, '~^\\s++PlaySE\\([^,]++,\\s*+"([sS][^_][^"]++)"~')) {
