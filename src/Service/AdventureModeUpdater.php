@@ -82,11 +82,13 @@ class AdventureModeUpdater
             } elseif (Strings::match($previousLine, '~^\\s++OutputLine\\(NULL,~') && Strings::match($line, '~^\\s++NULL,~')) {
                 if ($name && $clear) {
                     $previousLine = sprintf(
-                        "\t" . 'if (AdvMode) { ClearMessage(); OutputLine(%s, "", %s, "", Line_ContinueAfterTyping); }' . "\n" . $previousLine,
+                        "\t" . 'if (AdvMode) { OutputLine(%s, NULL, %s, NULL, Line_ContinueAfterTyping); }' . "\n" . $previousLine,
                         $this->formatName($name, 'japanese'),
                         $this->formatName($name, 'english')
                     );
                     $name = null;
+                } elseif ($clear) {
+                    $previousLine = "\t" . 'if (AdvMode) { OutputLineAll("", NULL, Line_ContinueAfterTyping);' . "\n" . $previousLine;
                 }
                 $clear = false;
             } elseif (Strings::match($line, '~^\\s++OutputLineAll\\(NULL,\\s*+"\\\\n",\\s*+Line_ContinueAfterTyping\\);$~')) {
@@ -94,7 +96,7 @@ class AdventureModeUpdater
                     $line = "\t" . 'if (AdvMode == 0) { OutputLineAll(NULL, "\\n", Line_ContinueAfterTyping); }' . "\n";
                 } else {
                     $previousLine = str_replace('Line_WaitForInput', 'Line_ModeSpecific', $previousLine);
-                    $line = "\t" . 'if (AdvMode) { ClearMessage(); } OutputLineAll(NULL, "\\n", Line_ContinueAfterTyping);' . "\n";
+                    $line = "\t" . 'if (AdvMode) { ClearMessage(); } else { OutputLineAll(NULL, "\\n", Line_ContinueAfterTyping); }' . "\n";
                     $clear = true;
                     $name = null;
                 }
@@ -103,7 +105,7 @@ class AdventureModeUpdater
                     $line = "\t" . 'if (AdvMode == 0) { OutputLineAll(NULL, "\\n\\n", Line_ContinueAfterTyping); }' . "\n";
                 } else {
                     $previousLine = str_replace('Line_WaitForInput', 'Line_ModeSpecific', $previousLine);
-                    $line = "\t" . 'if (AdvMode) { ClearMessage(); OutputLineAll(NULL, "", Line_ContinueAfterTyping); } else { OutputLineAll(NULL, "\\n\\n", Line_ContinueAfterTyping); }' . "\n";
+                    $line = "\t" . 'if (AdvMode) { ClearMessage(); } else { OutputLineAll(NULL, "\\n\\n", Line_ContinueAfterTyping); }' . "\n";
                     $clear = true;
                     $name = null;
                 }
@@ -112,7 +114,6 @@ class AdventureModeUpdater
                     $line = "\t" . 'if (AdvMode == 0) { ClearMessage(); }' . "\n";
                 } else {
                     $previousLine = str_replace('Line_WaitForInput', 'Line_ModeSpecific', $previousLine);
-                    $line = "\t" . 'ClearMessage(); if (AdvMode) { OutputLineAll(NULL, "", Line_ContinueAfterTyping); }' . "\n";
                     $clear = true;
                     $name = null;
                 }
