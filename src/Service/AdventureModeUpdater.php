@@ -68,6 +68,7 @@ class AdventureModeUpdater
     private function updateLines($file, string $filename): \Generator
     {
         $name = null;
+        $clear = false;
         $previousLine = str_replace("\xEF\xBB\xBF", '', fgets($file));
 
         while (!feof($file) && ($line = fgets($file)) !== false) {
@@ -76,18 +77,27 @@ class AdventureModeUpdater
                 if ($japanese) {
                     $name = $this->connection->query('SELECT * FROM [names] WHERE [japanese] = %s', $japanese)->fetch()->toArray();
                 }
-            } elseif ($name && Strings::match($previousLine, '~^\\s++OutputLine\\(NULL,~') && Strings::match($line, '~^\\s++NULL,~')) {
-                $previousLine = str_replace('NULL', $this->formatName($name, 'japanese'), $previousLine);
-                $line = str_replace('NULL', $this->formatName($name, 'english'), $line);
-                $name = null;
+            } elseif (Strings::match($previousLine, '~^\\s++OutputLine\\(NULL,~') && Strings::match($line, '~^\\s++NULL,~')) {
+                if ($name && $clear) {
+                    $previousLine = sprintf(
+                        "\t" . 'if (AdvMode) { ClearMessage(); OutputLine(%s, "", %s, "", Line_ContinueAfterTyping); }' . "\n" . $previousLine,
+                        $this->formatName($name, 'japanese'),
+                        $this->formatName($name, 'english')
+                    );
+                    $name = null;
+                }
+                $clear = false;
             } elseif (Strings::match($line, '~^\\s++OutputLineAll\\(NULL,\\s*+"\\\\n",\\s*+Line_ContinueAfterTyping\\);$~')) {
                 $previousLine = str_replace('Line_WaitForInput', 'Line_ModeSpecific', $previousLine);
                 $line = "\t" . 'if (AdvMode) { ClearMessage(); } OutputLineAll(NULL, "\\n", Line_ContinueAfterTyping);' . "\n";
+                $clear = true;
             } elseif (Strings::match($line, '~^\\s++OutputLineAll\\(NULL,\\s*+"\\\\n\\\\n",\\s*+Line_ContinueAfterTyping\\);$~')) {
                 $previousLine = str_replace('Line_WaitForInput', 'Line_ModeSpecific', $previousLine);
                 $line = "\t" . 'if (AdvMode) { ClearMessage(); OutputLineAll(NULL, "", Line_ContinueAfterTyping); } else { OutputLineAll(NULL, "\\n\\n", Line_ContinueAfterTyping); }' . "\n";
+                $clear = true;
             } elseif (Strings::match($line, '~^\\s++ClearMessage\\(\\);\\s++$~')) {
                 $line = "\t" . 'ClearMessage(); if (AdvMode) { OutputLineAll(NULL, "", Line_ContinueAfterTyping); }' . "\n";
+                $clear = true;
             } elseif ($previousLine === 'void main()' . "\n" && $line === '{' . "\n") {
                 $line .= "\t" . 'int AdvMode;' . "\n";
                 $line .= "\t" . 'AdvMode = 1;' . "\n";
