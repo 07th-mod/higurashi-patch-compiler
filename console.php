@@ -8,7 +8,7 @@ define('TEMP_DIR', __DIR__ . '/temp');
 
 $application = new Application();
 
-// Package compilation
+// Chapter compilation
 $application->add(new \Higurashi\Command\Download());
 $application->add(new \Higurashi\Command\Unpack());
 $application->add(new \Higurashi\Command\Clean());
@@ -23,7 +23,9 @@ $application->add(new \Higurashi\Command\Compile\Tatarigoroshi());
 $application->add(new \Higurashi\Command\Compile\Himatsubushi());
 $application->add(new \Higurashi\Command\Compile\Meakashi());
 
-// PS3 scripts helpers
+// Adventure Mode
 $application->add(new \Higurashi\Command\ParseScript());
+$application->add(new \Higurashi\Command\Names());
+$application->add(new \Higurashi\Command\Adventure());
 
 $application->run();
