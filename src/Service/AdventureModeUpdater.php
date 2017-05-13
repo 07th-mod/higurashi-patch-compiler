@@ -116,7 +116,7 @@ class AdventureModeUpdater
         return sprintf(
             '"%s%s%s"',
             $name['color'] ? '<color=' . $name['color'] . '>' : '',
-            $name['japanese'],
+            $name[$language],
             $name['color'] ? '</color>' : ''
         );
     }
