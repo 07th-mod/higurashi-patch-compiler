@@ -11,8 +11,8 @@ void main()
 	SetFontSize(32);
 
 	if (InitAdvMode) {
-		SetNameFormat("<line-h=6><size=+6>{0}\n</size></line-h>");
-		SetWindowPos(0, -195);
+		SetNameFormat("<line-h=1><size=+6>{0}\n</size></line-h>");
+		SetWindowPos(0, -235);
 		SetWindowSize(1240, 300);
 		SetWindowMargins(60, 30, 50, 30);
 	} else {
