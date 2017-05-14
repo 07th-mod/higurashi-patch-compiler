@@ -91,7 +91,7 @@ class AdventureModeUpdater
                     );
                     $name = null;
                 } elseif ($clear) {
-                    $previousLine = "\t" . 'if (AdvMode) { OutputLineAll("", NULL, Line_ContinueAfterTyping);' . "\n" . $previousLine;
+                    $previousLine = "\t" . 'if (AdvMode) { OutputLineAll("", NULL, Line_ContinueAfterTyping); }' . "\n" . $previousLine;
                 }
                 $clear = false;
             } elseif (Strings::match($line, '~^\\s++OutputLineAll\\(NULL,\\s*+"\\\\n",\\s*+Line_ContinueAfterTyping\\);$~')) {
