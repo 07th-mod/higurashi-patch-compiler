@@ -34,8 +34,6 @@ class Names extends Command
         $options['charset'] = 'utf8';
         $connection = new Connection($options);
 
-        $connection->query('TRUNCATE [names]');
-
         $file = fopen($script, 'r');
         while (!feof($file) && ($line = fgets($file)) !== false) {
             if (strpos($line, ' ') === false) {
@@ -49,7 +47,7 @@ class Names extends Command
                     ->update(
                         'names',
                         [
-                            'ensglish' => $english,
+                            'english' => $english,
                         ]
                     )
                     ->where('id = %i', $id)
