@@ -112,7 +112,7 @@ class AdventureModeUpdater
                     $clear = true;
                     $name = null;
                 }
-            } elseif (Strings::match($line, '~^\\s++ClearMessage\\(\\);\\s++$~')) {
+            } elseif (Strings::match($line, '~^\\s++ClearMessage\\(\\);$~')) {
                 if ($clear) {
                     $line = "\t" . 'if (AdvMode == 0) { ClearMessage(); }' . "\n";
                 } else {
@@ -120,6 +120,8 @@ class AdventureModeUpdater
                     $clear = true;
                     $name = null;
                 }
+            } elseif ($match = Strings::match($line, '~^\\s++(SetDrawingPointOfMessage\\([0-9, ]++\\);)$~')) {
+                $line = "\t" . 'if (AdvMode == 0) { ' . $match[1] . ' }' . "\n";
             } elseif ($previousLine === 'void main()' . "\n" && $line === '{' . "\n") {
                 $line .= "\t" . 'int AdvMode;' . "\n";
                 $line .= "\t" . 'AdvMode = 1;' . "\n";
