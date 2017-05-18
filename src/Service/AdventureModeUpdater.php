@@ -49,6 +49,7 @@ class AdventureModeUpdater
         }
 
         FileSystem::delete(sprintf('%s/SE', $this->directory));
+        FileSystem::delete(sprintf('%s/dev', $this->directory));
         FileSystem::delete(sprintf('%s/README.md', $this->directory));
         FileSystem::copy(__DIR__ . '/../../data/init.txt', sprintf('%s/Update/init.txt', $this->directory));
         FileSystem::copy(__DIR__ . '/../../data/windo_filter.png', sprintf('%s/CG/windo_filter.png', $this->directory));
