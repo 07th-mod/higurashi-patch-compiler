@@ -72,7 +72,7 @@ class AdventureModeUpdater
     private function updateLines($file, string $filename): \Generator
     {
         $name = null;
-        $clear = false;
+        $clear = true;
         $previousLine = str_replace("\xEF\xBB\xBF", '', fgets($file));
 
         while (!feof($file) && ($line = fgets($file)) !== false) {
@@ -129,7 +129,6 @@ class AdventureModeUpdater
                 $line .= "\t" . 'int Line_ModeSpecific;' . "\n";
                 $line .= "\t" . 'if (AdvMode) {' . "\n";
                 $line .= "\t\t" . 'Line_ModeSpecific = Line_Normal;' . "\n";
-                $line .= "\t\t" . 'OutputLineAll(NULL, "", Line_ContinueAfterTyping);' . "\n";
                 $line .= "\t" . '} else {' . "\n";
                 $line .= "\t\t" . 'Line_ModeSpecific = Line_WaitForInput;' . "\n";
                 $line .= "\t" . '}' . "\n";
