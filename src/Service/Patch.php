@@ -26,17 +26,11 @@ class Patch
      */
     private $directory;
 
-    /**
-     * @var string
-     */
-    private $gameDirectory;
-
-    public function __construct(Filesystem $filesystem, string $chapter, string $directory, string $gameDirectory)
+    public function __construct(Filesystem $filesystem, string $chapter, string $directory)
     {
         $this->filesystem = $filesystem;
         $this->chapter = $chapter;
         $this->directory = $directory;
-        $this->gameDirectory = $gameDirectory;
     }
 
     public function initialize(): void
@@ -75,26 +69,6 @@ class Patch
     public function renameGraphicsDirectory(): void
     {
         $this->filesystem->rename(sprintf('%s/CGAlt', $this->directory), sprintf('%s/CG', $this->directory));
-    }
-
-    public function copyGameCG(): bool
-    {
-        $directory = sprintf('%s/%s', $this->gameDirectory, 'CG');
-        if (! file_exists($directory)) {
-            return false;
-        }
-        $this->mergeDirectory($directory, sprintf('%s/CGAlt', $this->directory));
-        return true;
-    }
-
-    public function copyGameCGAlt(): bool
-    {
-        $directory = sprintf('%s/%s', $this->gameDirectory, 'CGAlt');
-        if (! file_exists($directory)) {
-            return false;
-        }
-        $this->mergeDirectory($directory, sprintf('%s/CGAlt', $this->directory));
-        return true;
     }
 
     public function copySteamPatch(string $name): void

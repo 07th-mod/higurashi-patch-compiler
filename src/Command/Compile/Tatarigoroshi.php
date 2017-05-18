@@ -25,15 +25,11 @@ class Tatarigoroshi extends Command
         $chapter = strtolower((new \ReflectionClass($this))->getShortName());
         $directory = sprintf('%s/patch/%s', TEMP_DIR, $chapter);
 
-        $config = Yaml::parse(file_get_contents(__DIR__ . '/../../../config/local.yml'));
-        $patch = new Patch(new Filesystem(), $chapter, $directory, $config['games'][$chapter]);
+        $patch = new Patch(new Filesystem(), $chapter, $directory);
         $patch->initialize();
 
         // 1. Copy graphics patch.
         $output->writeln('Copying graphics patch.');
-        if (! $patch->copyGameCG()) {
-            $output->writeln('Game files missing, you may get false-positive results about missing sprites.');
-        }
         $patch->copyGraphics();
 
         // 2. Copy voices.
@@ -49,9 +45,6 @@ class Tatarigoroshi extends Command
         // 4. Copy Steam sprites patch.
         $output->writeln('Copying Steam sprites patch.');
         $patch->renameGraphicsDirectory();
-        if (! $patch->copyGameCGAlt()) {
-            $output->writeln('Game files missing, you may get false-positive results about missing sprites.');
-        }
         $patch->copySteamPatch($chapter . '_steam');
         $patch->useAlternativeChieSprites('Alternate Chie-sensei sprites');
 
