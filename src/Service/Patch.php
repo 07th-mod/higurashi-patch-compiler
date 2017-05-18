@@ -71,17 +71,9 @@ class Patch
         $this->filesystem->rename(sprintf('%s/CGAlt', $this->directory), sprintf('%s/CG', $this->directory));
     }
 
-    public function copySteamPatch(string $name): void
+    public function copySteamPatch(): void
     {
-        $this->mergeDirectory(sprintf('%s/unpack/%s', TEMP_DIR, $name), $this->directory);
-        $this->delete('README.txt');
-    }
-
-    public function useAlternativeChieSprites(string $directory): void
-    {
-        // The directory name is slightly different for different chapters.
-        $this->mergeDirectory(sprintf('%s/CGAlt/%s', $this->directory, $directory), sprintf('%s/CGAlt', $this->directory));
-        $this->delete(sprintf('CGAlt/%s', $directory));
+        $this->mergeDirectory(sprintf('%s/unpack/%s_%s', TEMP_DIR, $this->chapter, 'steam'), $this->directory);
     }
 
     public function compressImages(string $directory): \Generator

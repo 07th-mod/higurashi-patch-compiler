@@ -45,8 +45,7 @@ class Onikakushi extends Command
         // 4. Copy Steam sprites patch.
         $output->writeln('Copying Steam sprites patch.');
         $patch->renameGraphicsDirectory();
-        $patch->copySteamPatch($chapter . '_steam');
-        $patch->useAlternativeChieSprites('Alternate Chie-Sensei Sprites');
+        $patch->copySteamPatch();
 
         return 0;
     }
