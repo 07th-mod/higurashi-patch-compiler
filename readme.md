@@ -6,7 +6,7 @@ At the moment higurashi patches are difficult to install or update. You need to 
 
 - [PHP 7.1+](http://php.net/)
 - [Composer](https://getcomposer.org/)
-- Windows (unless the chapter is free of case sensitivity issues)
+- Windows (only if the chapter has case sensitivity issues)
 
 ## Installation
 
