@@ -43,7 +43,6 @@ class Himatsubushi extends Command
 
         // 4. Copy Steam sprites patch.
         $output->writeln('Copying Steam sprites patch.');
-        $patch->renameGraphicsDirectory();
         $patch->copySteamPatch();
 
         return 0;

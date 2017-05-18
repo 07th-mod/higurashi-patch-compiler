@@ -41,7 +41,7 @@ class Patch
 
     public function copyGraphics(): void
     {
-        $this->mergeDirectory(sprintf('%s/unpack/%s_%s', TEMP_DIR, $this->chapter, 'graphics'), $this->directory);
+        $this->mergeDirectory(sprintf('%s/unpack/%s_%s', TEMP_DIR, $this->chapter, 'graphics'), $this->directory . '/CG');
     }
 
     public function copyVoicePatch(): void
@@ -64,11 +64,6 @@ class Patch
     public function delete(string $file): void
     {
         $this->filesystem->remove(sprintf('%s/%s', $this->directory, $file));
-    }
-
-    public function renameGraphicsDirectory(): void
-    {
-        $this->filesystem->rename(sprintf('%s/CGAlt', $this->directory), sprintf('%s/CG', $this->directory));
     }
 
     public function copySteamPatch(): void
