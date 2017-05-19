@@ -79,6 +79,7 @@ class AdventureModeUpdater
         $lines = [];
         $i = 0;
         $lastOutputLineIndex = null;
+        $longLines = [];
         $previousLine = str_replace("\xEF\xBB\xBF", '', fgets($file));
 
         while (!feof($file) && ($line = fgets($file)) !== false) {
@@ -91,9 +92,15 @@ class AdventureModeUpdater
                 }
             } elseif (Strings::match($previousLine, '~^\\s++OutputLine\\(NULL,~') && $match = Strings::match($line, '~^\\s++NULL,\\s++"((?:\\\\"|[^"])*+)"~')) {
                 $englishText = $match[1];
+                $length = Strings::length($englishText);
+
+                if ($length > self::SCREEN_LIMIT) {
+                    $longLines[] = $i;
+                }
+
                 if (
                     $characters > 0
-                    && ($characters + Strings::length($englishText)) > self::SCREEN_LIMIT
+                    && ($characters + $length) > self::SCREEN_LIMIT
                     && $match = Strings::match($lines[$lastOutputLineIndex + 1], '~("\\s*+,\\s++Line_WaitForInput)~')
                 ) {
                     $lines[$lastOutputLineIndex + 1] = str_replace($match[1], ' ", Line_ModeSpecific', $lines[$lastOutputLineIndex + 1]);
@@ -101,7 +108,7 @@ class AdventureModeUpdater
                     $characters = 0;
                     $clear = true;
                 }
-                $characters += Strings::length($englishText);
+                $characters += $length;
 
                 if ($name && $clear) {
                     $previousLine = sprintf(
@@ -154,6 +161,17 @@ class AdventureModeUpdater
             $lines[] = $previousLine;
             ++$i;
             $previousLine = $line;
+        }
+
+        foreach ($longLines as $index) {
+            list($prefixLine, $japaneseLine) = explode("\n", $lines[$index]);
+            $prefixLine = substr($prefixLine, 16, -2);
+            $englishLine = $lines[$index + 1];
+            $nvlLine = "\t" . $japaneseLine . "\n\t" . $englishLine;
+            $lines[$index] = "\t" . 'if (AdvMode) {' . "\n\t\t" . $prefixLine . "\n\t" . $japaneseLine . "\n";
+            $match = Strings::match($englishLine, '~^\\s++NULL,\\s++"((?:\\\\"|[^"])*+)"~');
+            $englishLine = "\t" . str_replace($match[1], '<size=-2>' . $match[1] . '</size>', $englishLine);
+            $lines[$index + 1] = $englishLine . "\t" . '} else {' . "\n" . $nvlLine . "\t" . '}' . "\n";
         }
 
         $lines[] = $previousLine;
