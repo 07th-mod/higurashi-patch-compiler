@@ -10,7 +10,7 @@ use Nette\Utils\Strings;
 
 class AdventureModeUpdater
 {
-    public const SCREEN_LIMIT = 225;
+    public const SCREEN_LIMIT = 200;
 
     /**
      * @var string
