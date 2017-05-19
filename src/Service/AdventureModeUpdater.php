@@ -119,7 +119,11 @@ class AdventureModeUpdater
                 if ($clear) {
                     $line = "\t" . 'if (AdvMode == 0) { OutputLineAll(NULL, "' . $match[1] . '", Line_ContinueAfterTyping); }' . "\n";
                 } else {
-                    $previousLine = str_replace('Line_WaitForInput', 'Line_ModeSpecific', $previousLine);
+                    if (strpos($previousLine, 'Line_') !== false) {
+                        $previousLine = str_replace('Line_WaitForInput', 'Line_ModeSpecific', $previousLine);
+                    } else {
+                        $lines[$lastOutputLineIndex + 1] = str_replace('Line_WaitForInput', 'Line_ModeSpecific', $lines[$lastOutputLineIndex + 1]);
+                    }
                     $line = "\t" . 'if (AdvMode) { ClearMessage(); } else { OutputLineAll(NULL, "' . $match[1] . '", Line_ContinueAfterTyping); }' . "\n";
                     $clear = true;
                     $characters = 0;
