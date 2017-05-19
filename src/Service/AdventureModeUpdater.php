@@ -10,6 +10,8 @@ use Nette\Utils\Strings;
 
 class AdventureModeUpdater
 {
+    public const SCREEN_LIMIT = 225;
+
     /**
      * @var string
      */
@@ -69,10 +71,14 @@ class AdventureModeUpdater
         rename($filename . '.new', $filename);
     }
 
-    private function updateLines($file, string $filename): \Generator
+    private function updateLines($file, string $filename): iterable
     {
         $name = null;
         $clear = true;
+        $characters = 0;
+        $lines = [];
+        $i = 0;
+        $lastOutputLineIndex = null;
         $previousLine = str_replace("\xEF\xBB\xBF", '', fgets($file));
 
         while (!feof($file) && ($line = fgets($file)) !== false) {
@@ -83,7 +89,20 @@ class AdventureModeUpdater
                 if ($japanese) {
                     $name = $this->connection->query('SELECT * FROM [names] WHERE [japanese] = %s', $japanese)->fetch()->toArray();
                 }
-            } elseif (Strings::match($previousLine, '~^\\s++OutputLine\\(NULL,~') && Strings::match($line, '~^\\s++NULL,~')) {
+            } elseif (Strings::match($previousLine, '~^\\s++OutputLine\\(NULL,~') && $match = Strings::match($line, '~^\\s++NULL,\\s++"((?:\\\\"|[^"])*+)"~')) {
+                $englishText = $match[1];
+                if (
+                    $characters > 0
+                    && ($characters + Strings::length($englishText)) > self::SCREEN_LIMIT
+                    && $match = Strings::match($lines[$lastOutputLineIndex + 1], '~("\\s*+,\\s++Line_WaitForInput)~')
+                ) {
+                    $lines[$lastOutputLineIndex + 1] = str_replace($match[1], ' ", Line_ModeSpecific', $lines[$lastOutputLineIndex + 1]);
+                    $line = str_replace($englishText, ltrim($englishText), $line);
+                    $characters = 0;
+                    $clear = true;
+                }
+                $characters += Strings::length($englishText);
+
                 if ($name && $clear) {
                     $previousLine = sprintf(
                         "\t" . 'if (AdvMode) { OutputLine(%s, NULL, %s, NULL, Line_ContinueAfterTyping); }' . "\n" . $previousLine,
@@ -94,23 +113,16 @@ class AdventureModeUpdater
                 } elseif ($clear) {
                     $previousLine = "\t" . 'if (AdvMode) { OutputLineAll("", NULL, Line_ContinueAfterTyping); }' . "\n" . $previousLine;
                 }
+                $lastOutputLineIndex = $i;
                 $clear = false;
-            } elseif (Strings::match($line, '~^\\s++OutputLineAll\\(NULL,\\s*+"\\\\n",\\s*+Line_ContinueAfterTyping\\);$~')) {
+            } elseif ($match = Strings::match($line, '~^\\s++OutputLineAll\\(NULL,\\s*+"\\s*+((?:\\\\n)++)",\\s*+Line_ContinueAfterTyping\\);$~')) {
                 if ($clear) {
-                    $line = "\t" . 'if (AdvMode == 0) { OutputLineAll(NULL, "\\n", Line_ContinueAfterTyping); }' . "\n";
+                    $line = "\t" . 'if (AdvMode == 0) { OutputLineAll(NULL, "' . $match[1] . '", Line_ContinueAfterTyping); }' . "\n";
                 } else {
                     $previousLine = str_replace('Line_WaitForInput', 'Line_ModeSpecific', $previousLine);
-                    $line = "\t" . 'if (AdvMode) { ClearMessage(); } else { OutputLineAll(NULL, "\\n", Line_ContinueAfterTyping); }' . "\n";
+                    $line = "\t" . 'if (AdvMode) { ClearMessage(); } else { OutputLineAll(NULL, "' . $match[1] . '", Line_ContinueAfterTyping); }' . "\n";
                     $clear = true;
-                    $name = null;
-                }
-            } elseif (Strings::match($line, '~^\\s++OutputLineAll\\(NULL,\\s*+"\\\\n\\\\n",\\s*+Line_ContinueAfterTyping\\);$~')) {
-                if ($clear) {
-                    $line = "\t" . 'if (AdvMode == 0) { OutputLineAll(NULL, "\\n\\n", Line_ContinueAfterTyping); }' . "\n";
-                } else {
-                    $previousLine = str_replace('Line_WaitForInput', 'Line_ModeSpecific', $previousLine);
-                    $line = "\t" . 'if (AdvMode) { ClearMessage(); } else { OutputLineAll(NULL, "\\n\\n", Line_ContinueAfterTyping); }' . "\n";
-                    $clear = true;
+                    $characters = 0;
                     $name = null;
                 }
             } elseif (Strings::match($line, '~^\\s++ClearMessage\\(\\);$~')) {
@@ -119,11 +131,12 @@ class AdventureModeUpdater
                 } else {
                     $previousLine = str_replace('Line_WaitForInput', 'Line_ModeSpecific', $previousLine);
                     $clear = true;
+                    $characters = 0;
                     $name = null;
                 }
             } elseif ($match = Strings::match($line, '~^\\s++(SetDrawingPointOfMessage\\([0-9, ]++\\);)$~')) {
                 $line = "\t" . 'if (AdvMode == 0) { ' . $match[1] . ' }' . "\n";
-            } elseif ($previousLine === 'void main()' . "\n" && $line === '{' . "\n") {
+            } elseif ($previousLine === 'void main()' . "\n" && $line === '{' . "\n" && pathinfo($filename, PATHINFO_BASENAME) !== 'flow.txt') {
                 $line .= "\t" . 'int AdvMode;' . "\n";
                 $line .= "\t" . 'AdvMode = 1;' . "\n";
                 $line .= "\t" . 'int Line_ModeSpecific;' . "\n";
@@ -134,11 +147,14 @@ class AdventureModeUpdater
                 $line .= "\t" . '}' . "\n";
             }
 
-            yield $previousLine;
+            $lines[] = $previousLine;
+            ++$i;
             $previousLine = $line;
         }
 
-        yield $previousLine;
+        $lines[] = $previousLine;
+
+        return $lines;
     }
 
     private function formatName(array $name, string $language): string
