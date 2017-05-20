@@ -80,7 +80,7 @@ class AdventureModeUpdater
         $i = 0;
         $lastOutputLineIndex = null;
         $longLines = [];
-        $previousLine = str_replace("\xEF\xBB\xBF", '', fgets($file));
+        $previousLine = str_replace("\xEF\xBB\xBF", '', rtrim(fgets($file))) . "\n";
 
         while (!feof($file) && ($line = fgets($file)) !== false) {
             $line = rtrim($line) . "\n";
