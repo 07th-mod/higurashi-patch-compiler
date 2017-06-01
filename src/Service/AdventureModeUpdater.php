@@ -89,6 +89,15 @@ class AdventureModeUpdater
                 $japanese = $this->connection->query('SELECT [name] FROM [voices] WHERE [voice] = %s', $match[1])->fetchSingle();
                 if ($japanese) {
                     $name = $this->connection->query('SELECT * FROM [names] WHERE [japanese] = %s', $japanese)->fetch()->toArray();
+                } else {
+                    $japanese = $this->connection->query('SELECT [name] FROM [voices] WHERE [voice] LIKE %s', '%' . $match[1] . '%')->fetchSingle();
+                    if ($japanese) {
+                        $japanese = explode("\u{FF06}", $japanese);
+                        $name = [];
+                        foreach ($japanese as $search) {
+                            $name[] = $this->connection->query('SELECT * FROM [names] WHERE [japanese] = %s', $search)->fetch()->toArray();
+                        }
+                    }
                 }
             } elseif (Strings::match($previousLine, '~^\\s++OutputLine\\(NULL,~') && $match = Strings::match($line, '~^\\s++NULL,\\s++"((?:\\\\"|[^"])*+)"~')) {
                 $englishText = $match[1];
@@ -113,8 +122,8 @@ class AdventureModeUpdater
                 if ($name && $clear) {
                     $previousLine = sprintf(
                         "\t" . 'if (AdvMode) { OutputLine(%s, NULL, %s, NULL, Line_ContinueAfterTyping); }' . "\n" . $previousLine,
-                        $this->formatName($name, 'japanese'),
-                        $this->formatName($name, 'english')
+                        '"' . $this->formatName($name, 'japanese') . '"',
+                        '"' . $this->formatName($name, 'english') . '"'
                     );
                     $name = null;
                 } elseif ($clear) {
@@ -181,12 +190,20 @@ class AdventureModeUpdater
 
     private function formatName(array $name, string $language): string
     {
+        if (! isset($name['color'])) {
+            $names = [];
+            foreach ($name as $value) {
+                $names[] = $this->formatName($value, $language);
+            }
+            return implode($language === 'japanese' ? "\u{FF06}" : ' & ', $names);
+        }
+
         if (! $name['color']) {
-            return '"' . $name[$language] . '"';
+            return $name[$language];
         }
 
         return sprintf(
-            '"%s%s%s"',
+            '%s%s%s',
             $name['color'] ? '<color=' . $name['color'] . '>' : '',
             $name[$language],
             $name['color'] ? '</color>' : ''
