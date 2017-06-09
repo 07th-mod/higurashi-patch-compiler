@@ -81,6 +81,7 @@ class AdventureModeUpdater
         $lastOutputLineIndex = null;
         $longLines = [];
         $previousLine = str_replace("\xEF\xBB\xBF", '', rtrim(fgets($file))) . "\n";
+        $firstOutput = true;
 
         while (!feof($file) && ($line = fgets($file)) !== false) {
             $line = rtrim($line) . "\n";
@@ -129,6 +130,12 @@ class AdventureModeUpdater
                 } elseif ($clear) {
                     $previousLine = "\t" . 'if (AdvMode) { OutputLineAll("", NULL, Line_ContinueAfterTyping); }' . "\n" . $previousLine;
                 }
+
+                if ($firstOutput) {
+                    $previousLine = "\t" . 'ClearMessage();' . "\n" . $previousLine;
+                    $firstOutput = false;
+                }
+
                 $lastOutputLineIndex = $i;
                 $clear = false;
             } elseif ($match = Strings::match($line, '~^\\s++OutputLineAll\\(NULL,\\s*+"\\s*+((?:\\\\n)++)",\\s*+Line_ContinueAfterTyping\\);$~')) {
