@@ -47,6 +47,10 @@ class AdventureModeUpdater
         $files = glob(sprintf('%s/*.txt', $scriptsDirectory));
 
         foreach ($files as $file) {
+            if (in_array(pathinfo($file, PATHINFO_BASENAME), ['chapterselect.txt', 'dummy.txt', 'flow.txt', 'init.txt'], true)) {
+                continue;
+            }
+
             $this->processScript($file);
         }
 
@@ -93,10 +97,15 @@ class AdventureModeUpdater
                 } else {
                     $japanese = $this->connection->query('SELECT [name] FROM [voices] WHERE [voice] LIKE %s', '%' . $match[1] . '%')->fetchSingle();
                     if ($japanese) {
-                        $japanese = explode("\u{FF06}", $japanese);
+                        $japaneseNames = explode("\u{FF06}", $japanese);
                         $name = [];
-                        foreach ($japanese as $search) {
-                            $name[] = $this->connection->query('SELECT * FROM [names] WHERE [japanese] = %s', $search)->fetch()->toArray();
+                        foreach ($japaneseNames as $search) {
+                            $row = $this->connection->query('SELECT * FROM [names] WHERE [japanese] = %s', $search)->fetch();
+                            if (! $row) {
+                                $name = [$this->connection->query('SELECT * FROM [names] WHERE [japanese] = %s', $japanese)->fetch()->toArray()];
+                                break;
+                            }
+                            $name[] = $row->toArray();
                         }
                     }
                 }
