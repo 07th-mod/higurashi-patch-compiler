@@ -12,6 +12,9 @@ class Constants
     ];
 
     public const PATCHES = [
+        'console' => [
+            'console_patch' => 'https://github.com/07th-mod/higurashi-console-arcs/archive/master.zip',
+        ],
         'onikakushi' => [
             'onikakushi_patch' => 'https://github.com/07th-mod/onikakushi/archive/master.zip',
             'onikakushi_graphics' => 'https://github.com/07th-mod/resources/releases/download/Nipah/Onikakushi-CG.zip',

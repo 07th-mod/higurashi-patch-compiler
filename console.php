@@ -28,4 +28,7 @@ $application->add(new \Higurashi\Command\ParseScript());
 $application->add(new \Higurashi\Command\Names());
 $application->add(new \Higurashi\Command\Adventure());
 
+// Console arcs
+$application->add(new \Higurashi\Command\Normalize());
+
 $application->run();
