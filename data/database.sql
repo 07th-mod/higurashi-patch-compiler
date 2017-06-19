@@ -13,7 +13,8 @@ CREATE TABLE `names` (
   `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `japanese` varchar(255) NOT NULL,
   `english` varchar(255) NOT NULL,
-  `color` varchar(10) NOT NULL
+  `color` varchar(10) NOT NULL,
+  `color_mg` varchar(10)
 );
 
 ALTER TABLE `names` ADD INDEX `japanese` (`japanese`);
