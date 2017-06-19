@@ -86,12 +86,12 @@ class ColorsUpdater
 
                 foreach ($japaneseNames as $nameMatch) {
                     $name = $this->connection->query('SELECT * FROM [names] WHERE [japanese] = %s', $nameMatch[1])->fetch()->toArray();
-                    $line = str_replace($nameMatch[0], $this->formatName($name, 'japanese'), $line);
+                    $line = str_replace($nameMatch[0], self::formatName($name, 'japanese'), $line);
                 }
 
                 foreach ($englishNames as $nameMatch) {
                     $name = $this->connection->query('SELECT * FROM [names] WHERE [english] = %s', $nameMatch[1])->fetch()->toArray();
-                    $line = str_replace($nameMatch[0], $this->formatName($name, 'english'), $line);
+                    $line = str_replace($nameMatch[0], self::formatName($name, 'english'), $line);
                 }
             }
 
@@ -105,12 +105,12 @@ class ColorsUpdater
         return $lines;
     }
 
-    private function formatName(array $name, string $language): string
+    public static function formatName(array $name, string $language): string
     {
         if (! isset($name['color'])) {
             $names = [];
             foreach ($name as $value) {
-                $names[] = $this->formatName($value, $language);
+                $names[] = self::formatName($value, $language);
             }
             return implode($language === 'japanese' ? "\u{FF06}" : ' & ', $names);
         }

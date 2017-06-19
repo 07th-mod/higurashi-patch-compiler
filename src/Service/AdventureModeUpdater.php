@@ -123,8 +123,8 @@ class AdventureModeUpdater
                 if ($name && $clear) {
                     $previousLine = sprintf(
                         "\t" . 'if (AdvMode) { OutputLine(%s, NULL, %s, NULL, Line_ContinueAfterTyping); }' . "\n" . $previousLine,
-                        '"' . $this->formatName($name, 'japanese') . '"',
-                        '"' . $this->formatName($name, 'english') . '"'
+                        '"' . ColorsUpdater::formatName($name, 'japanese') . '"',
+                        '"' . ColorsUpdater::formatName($name, 'english') . '"'
                     );
                     $name = null;
                 } elseif ($clear) {
@@ -193,27 +193,5 @@ class AdventureModeUpdater
         $lines[] = $previousLine;
 
         return $lines;
-    }
-
-    private function formatName(array $name, string $language): string
-    {
-        if (! isset($name['color'])) {
-            $names = [];
-            foreach ($name as $value) {
-                $names[] = $this->formatName($value, $language);
-            }
-            return implode($language === 'japanese' ? "\u{FF06}" : ' & ', $names);
-        }
-
-        if (! $name['color']) {
-            return $name[$language];
-        }
-
-        return sprintf(
-            '%s%s%s',
-            $name['color'] ? '<color=' . $name['color'] . '>' : '',
-            $name[$language],
-            $name['color'] ? '</color>' : ''
-        );
     }
 }
