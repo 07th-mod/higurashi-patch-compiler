@@ -27,6 +27,7 @@ $application->add(new \Higurashi\Command\Compile\Meakashi());
 $application->add(new \Higurashi\Command\ParseScript());
 $application->add(new \Higurashi\Command\Names());
 $application->add(new \Higurashi\Command\Adventure());
+$application->add(new \Higurashi\Command\Colors());
 
 // Console arcs
 $application->add(new \Higurashi\Command\Normalize());
