@@ -17,28 +17,28 @@ class Constants
         ],
         'onikakushi' => [
             'onikakushi_patch' => 'https://github.com/07th-mod/onikakushi/archive/master.zip',
-            'onikakushi_graphics' => 'https://github.com/07th-mod/resources/releases/download/Nipah/Onikakushi-CG.zip',
-            'onikakushi_steam' => 'https://github.com/07th-mod/resources/releases/download/Nipah/Onikakushi-CGAlt.zip',
+            //'onikakushi_graphics' => 'https://github.com/07th-mod/resources/releases/download/Nipah/Onikakushi-CG.zip',
+            //'onikakushi_steam' => 'https://github.com/07th-mod/resources/releases/download/Nipah/Onikakushi-CGAlt.zip',
         ],
         'watanagashi' => [
             'watanagashi_patch' => 'https://github.com/07th-mod/watanagashi/archive/master.zip',
-            'watanagashi_graphics' => 'https://github.com/07th-mod/resources/releases/download/Nipah/Watanagashi-CG.zip',
-            'watanagashi_steam' => 'https://github.com/07th-mod/resources/releases/download/Nipah/Watanagashi-CGAlt.zip',
+            //'watanagashi_graphics' => 'https://github.com/07th-mod/resources/releases/download/Nipah/Watanagashi-CG.zip',
+            //'watanagashi_steam' => 'https://github.com/07th-mod/resources/releases/download/Nipah/Watanagashi-CGAlt.zip',
         ],
         'tatarigoroshi' => [
             'tatarigoroshi_patch' => 'https://github.com/07th-mod/tatarigoroshi/archive/master.zip',
-            'tatarigoroshi_graphics' => 'https://github.com/07th-mod/resources/releases/download/Nipah/Tatarigoroshi-CG.zip',
-            'tatarigoroshi_steam' => 'https://github.com/07th-mod/resources/releases/download/Nipah/Tatarigoroshi-CGAlt.zip',
+            //'tatarigoroshi_graphics' => 'https://github.com/07th-mod/resources/releases/download/Nipah/Tatarigoroshi-CG.zip',
+            //'tatarigoroshi_steam' => 'https://github.com/07th-mod/resources/releases/download/Nipah/Tatarigoroshi-CGAlt.zip',
         ],
         'himatsubushi' => [
             'himatsubushi_patch' => 'https://github.com/07th-mod/himatsubushi/archive/master.zip',
-            'himatsubushi_graphics' => 'https://github.com/07th-mod/resources/releases/download/Nipah/Himatsubushi-CG.zip',
-            'himatsubushi_steam' => 'https://github.com/07th-mod/resources/releases/download/Nipah/Himatsubushi-CGAlt.zip',
+            //'himatsubushi_graphics' => 'https://github.com/07th-mod/resources/releases/download/Nipah/Himatsubushi-CG.zip',
+            //'himatsubushi_steam' => 'https://github.com/07th-mod/resources/releases/download/Nipah/Himatsubushi-CGAlt.zip',
         ],
         'meakashi' => [
             'meakashi_patch' => 'https://github.com/07th-mod/meakashi/archive/master.zip',
-            'meakashi_graphics' => 'https://github.com/07th-mod/resources/releases/download/Nipah/Meakashi-CG.zip',
-            'meakashi_steam' => 'https://github.com/07th-mod/resources/releases/download/Nipah/Meakashi-CGAlt.zip',
+            //'meakashi_graphics' => 'https://github.com/07th-mod/resources/releases/download/Nipah/Meakashi-CG.zip',
+            //'meakashi_steam' => 'https://github.com/07th-mod/resources/releases/download/Nipah/Meakashi-CGAlt.zip',
         ],
     ];
 
