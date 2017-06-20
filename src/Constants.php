@@ -21,9 +21,9 @@ class Constants
             'onikakushi_steam' => 'https://github.com/07th-mod/resources/releases/download/Nipah/Onikakushi-CGAlt.zip',
         ],
         'watanagashi' => [
-            'watanagashi_patch' => 'https://github.com/07th-mod/resources/releases/download/Nipah/Watanagashi-CG.zip',
-            'watanagashi_graphics' => 'https://github.com/07th-mod/resources/releases/download/Nipah/Watanagashi-CGAlt.zip',
-            'watanagashi_steam' => 'https://github.com/jwgrlrrajn/higurashi-steam-sprite-mods/releases/download/1.1.1/watanagashi-steam-sprites.zip',
+            'watanagashi_patch' => 'https://github.com/07th-mod/watanagashi/archive/master.zip',
+            'watanagashi_graphics' => 'https://github.com/07th-mod/resources/releases/download/Nipah/Watanagashi-CG.zip',
+            'watanagashi_steam' => 'https://github.com/07th-mod/resources/releases/download/Nipah/Watanagashi-CGAlt.zip',
         ],
         'tatarigoroshi' => [
             'tatarigoroshi_patch' => 'https://github.com/07th-mod/tatarigoroshi/archive/master.zip',
