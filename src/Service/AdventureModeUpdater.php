@@ -167,7 +167,9 @@ class AdventureModeUpdater
                     $name = null;
                 }
             } elseif (Strings::match($line, '~^\\s++ClearMessage\\(\\);$~')) {
-                if ($clear) {
+                if ($firstOutput) {
+                    $firstOutput = false;
+                } elseif ($clear) {
                     $line = "\t" . 'if (AdvMode == 0) { ClearMessage(); }' . "\n";
                 } else {
                     $previousLine = str_replace('Line_WaitForInput', 'Line_ModeSpecific', $previousLine);
