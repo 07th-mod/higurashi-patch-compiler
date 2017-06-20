@@ -60,8 +60,6 @@ class LineNormalizer
     {
         $name = null;
         $lines = [];
-        $i = 0;
-        $lastOutputLineIndex = null;
         $previousLine = str_replace("\xEF\xBB\xBF", '', rtrim(fgets($file))) . "\n";
 
         while (!feof($file) && ($line = fgets($file)) !== false) {
@@ -72,7 +70,6 @@ class LineNormalizer
             }
 
             $lines[] = $previousLine;
-            ++$i;
             $previousLine = $line;
         }
 
