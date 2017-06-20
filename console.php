@@ -32,4 +32,7 @@ $application->add(new \Higurashi\Command\Colors());
 // Console arcs
 $application->add(new \Higurashi\Command\Normalize());
 
+// Utilities
+$application->add(new \Higurashi\Command\Combine());
+
 $application->run();
