@@ -47,7 +47,12 @@ class AdventureModeUpdater
         $files = glob(sprintf('%s/*.txt', $scriptsDirectory));
 
         foreach ($files as $file) {
-            if (in_array(pathinfo($file, PATHINFO_BASENAME), ['chapterselect.txt', 'dummy.txt', 'flow.txt', 'init.txt'], true)) {
+            $filename = pathinfo($file, PATHINFO_BASENAME);
+
+            if (
+                in_array($filename, ['chapterselect.txt', 'dummy.txt', 'flow.txt', 'init.txt'], true)
+                || substr($filename, 0, 1) === '&'
+            ) {
                 continue;
             }
 
