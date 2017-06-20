@@ -152,6 +152,8 @@ class AdventureModeUpdater
 
                 $lastOutputLineIndex = $i;
                 $clear = false;
+            } elseif ($match = Strings::match($line, '~^\\s++OutputLineAll\\(NULL,\\s*+"",\\s*+Line_WaitForInput\\);$~')) {
+                $lastOutputLineIndex = $i;
             } elseif ($match = Strings::match($line, '~^\\s++OutputLineAll\\(NULL,\\s*+"\\s*+((?:\\\\n)++)",\\s*+Line_ContinueAfterTyping\\);$~')) {
                 if ($clear) {
                     $line = "\t" . 'if (AdvMode == 0) { OutputLineAll(NULL, "' . $match[1] . '", Line_ContinueAfterTyping); }' . "\n";
