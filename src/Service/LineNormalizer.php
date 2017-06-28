@@ -66,7 +66,13 @@ class LineNormalizer
             $line = rtrim($line) . "\n";
 
             if (Strings::match($line, '~^\\s++ClearMessage\\(\\);$~')) {
-                $previousLine = str_replace('Line_WaitForInput', 'Line_Normal', $previousLine);
+                if ($previousLine === "\n") {
+                    end($lines);
+                    $last = key($lines);
+                    $lines[$last] = str_replace('Line_WaitForInput', 'Line_Normal', $lines[$last]);
+                } else {
+                    $previousLine = str_replace('Line_WaitForInput', 'Line_Normal', $previousLine);
+                }
             }
 
             $lines[] = $previousLine;
