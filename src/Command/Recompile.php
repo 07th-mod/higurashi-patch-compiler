@@ -74,12 +74,16 @@ class Recompile extends Command
         $filesystem->remove($repository . '/Update');
         $filesystem->mirror(sprintf('%s/adv/%s/Update', TEMP_DIR, $chapter), $repository . '/Update');
 
+        $process = new Process('git add --all');
+        $process->setWorkingDirectory($repository);
+        $process->mustRun();
+
         $process = new Process('git status --porcelain');
         $process->setWorkingDirectory($repository);
         $process->mustRun();
 
         if ($process->getOutput()) {
-            $process = new Process('git commit --all --message "Merge master"');
+            $process = new Process('git commit --message "Merge master"');
             $process->setWorkingDirectory($repository);
             $process->mustRun();
 
