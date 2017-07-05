@@ -62,12 +62,21 @@ class Recompile extends Command
             $output
         );
 
+        $process = new Process('git checkout master');
+        $process->setWorkingDirectory($repository);
+        $process->mustRun();
+
+        $process = new Process('git push');
+        $process->setWorkingDirectory($repository);
+        $process->mustRun();
+
         $process = new Process('git checkout adv-mode-auto');
         $process->setWorkingDirectory($repository);
         $process->mustRun();
 
         $process = new Process('git merge master');
         $process->setWorkingDirectory($repository);
+        // This command is expected to fail because of conflicts. Conflicts are resolved below using the recompiled version of ADV-mode.
         $process->run();
 
         $filesystem = new Filesystem();
