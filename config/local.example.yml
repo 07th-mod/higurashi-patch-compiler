@@ -3,3 +3,10 @@ database:
   dsn: mysql:host=localhost;dbname=higurashi
   username: root
   password: root
+
+# Chapters configuration is only needed for the recompile command.
+chapters:
+  onikakushi:
+    repository: # path to onikakushi repository
+    local: C:\Program Files (x86)\Steam\steamapps\common\Higurashi When They Cry\HigurashiEp01_Data
+  # similar configuration for other chapters
