@@ -53,6 +53,11 @@ class Recompile extends Command
             return 3;
         }
 
+        $process = new Process('git symbolic-ref --short HEAD');
+        $process->setWorkingDirectory($repository);
+        $process->mustRun();
+        $branch = trim($process->getOutput());
+
         $this->runCommand(
             'higurashi:adventure',
             [
@@ -117,6 +122,10 @@ class Recompile extends Command
         $filesystem->mirror($repository . '/Update', $local . '/StreamingAssets/Update');
         $filesystem->remove($local . '/StreamingAssets/CompiledUpdateScripts');
         $filesystem->mkdir($local . '/StreamingAssets/CompiledUpdateScripts');
+
+        $process = new Process('git checkout ' . $branch);
+        $process->setWorkingDirectory($repository);
+        $process->mustRun();
 
         return 0;
     }
