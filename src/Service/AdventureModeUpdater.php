@@ -181,7 +181,11 @@ class AdventureModeUpdater
                 }
             } elseif ($match = Strings::match($line, '~^\\s++(SetDrawingPointOfMessage\\([0-9, ]++\\);)$~')) {
                 $line = "\t" . 'if (AdvMode == 0) { ' . $match[1] . ' }' . "\n";
-            } elseif ($previousLine === 'void main()' . "\n" && $line === '{' . "\n" && pathinfo($filename, PATHINFO_BASENAME) !== 'flow.txt') {
+            } elseif (
+                $previousLine === 'void main()' . "\n" && $line === '{' . "\n"
+                && pathinfo($filename, PATHINFO_BASENAME) !== 'flow.txt'
+                && ! Strings::startsWith(pathinfo($filename, PATHINFO_BASENAME), 'tips_')
+            ) {
                 $line .= "\t" . 'int AdvMode;' . "\n";
                 $line .= "\t" . 'AdvMode = 1;' . "\n";
                 $line .= "\t" . 'int Line_ModeSpecific;' . "\n";
