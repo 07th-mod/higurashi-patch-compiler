@@ -185,6 +185,7 @@ class AdventureModeUpdater
                 $previousLine === 'void main()' . "\n" && $line === '{' . "\n"
                 && pathinfo($filename, PATHINFO_BASENAME) !== 'flow.txt'
                 && ! Strings::startsWith(pathinfo($filename, PATHINFO_BASENAME), 'tips_')
+                && ! Strings::endsWith(pathinfo($filename, PATHINFO_BASENAME), '_omake.txt')
             ) {
                 $line .= "\t" . 'int AdvMode;' . "\n";
                 $line .= "\t" . 'AdvMode = 1;' . "\n";
