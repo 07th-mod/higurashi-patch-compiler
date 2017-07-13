@@ -35,5 +35,6 @@ $application->add(new \Higurashi\Command\Normalize());
 // Utilities
 $application->add(new \Higurashi\Command\Combine());
 $application->add(new \Higurashi\Command\Recompile());
+$application->add(new \Higurashi\Command\CutVoices());
 
 $application->run();
