@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Higurashi\Command;
 
 use Higurashi\Constants;
+use Higurashi\Helpers;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
@@ -28,6 +29,7 @@ class Recompile extends Command
     {
         /** @var string $chapter */
         $chapter = $input->getArgument('chapter');
+        $chapter = Helpers::guessChapter($chapter);
 
         $config = Yaml::parse(file_get_contents(__DIR__ . '/../../config/local.yml'));
 

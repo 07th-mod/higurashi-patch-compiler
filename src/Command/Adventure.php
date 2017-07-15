@@ -6,6 +6,7 @@ namespace Higurashi\Command;
 
 use Dibi\Connection;
 use Higurashi\Constants;
+use Higurashi\Helpers;
 use Higurashi\Service\AdventureModeUpdater;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -30,6 +31,7 @@ class Adventure extends Command
     {
         /** @var string $chapter */
         $chapter = $input->getArgument('chapter');
+        $chapter = Helpers::guessChapter($chapter);
 
         /** @var bool $force */
         $force = $input->getOption('force');

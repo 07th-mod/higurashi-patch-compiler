@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Higurashi\Command;
 
 use Higurashi\Constants;
+use Higurashi\Helpers;
 use Higurashi\Service\CutVoiceDetector;
 use Higurashi\Service\LineNormalizer;
 use Symfony\Component\Console\Command\Command;
@@ -29,6 +30,7 @@ class CutVoices extends Command
     {
         /** @var string $chapter */
         $chapter = $input->getArgument('chapter');
+        $chapter = Helpers::guessChapter($chapter);
 
         /** @var bool $force */
         $force = $input->getOption('force');

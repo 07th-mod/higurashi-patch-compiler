@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Higurashi\Command;
 
 use Higurashi\Constants;
+use Higurashi\Helpers;
 use Higurashi\Service\Cleaner;
 use Nette\Utils\Strings;
 use Symfony\Component\Console\Command\Command;
@@ -26,6 +27,7 @@ class Clean extends Command
     {
         /** @var string $chapter */
         $chapter = $input->getArgument('chapter');
+        $chapter = Helpers::guessChapter($chapter);
 
         if ($chapter && ! isset(Constants::PATCHES[$chapter])) {
             $output->writeln(sprintf('Chapter "%s" not found.', $chapter));
