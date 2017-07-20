@@ -85,6 +85,7 @@ class PlaceholderAdder
                             && Strings::match($lines[$i - 1], '~ClearMessage~')
                         )
                         && ! $ignoreNext
+                        && Strings::startsWith($text, '「') // Limit to only first line of paragraph.
                     ) {
                         $line = "\tPlaySE(4, \"\", 128, 64);\n" . $line;
                     }
