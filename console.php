@@ -37,5 +37,6 @@ $application->add(new \Higurashi\Command\Combine());
 $application->add(new \Higurashi\Command\Recompile());
 $application->add(new \Higurashi\Command\CutVoices());
 $application->add(new \Higurashi\Command\Placeholders());
+$application->add(new \Higurashi\Command\InsertNames());
 
 $application->run();
