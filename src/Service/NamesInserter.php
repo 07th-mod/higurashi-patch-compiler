@@ -78,6 +78,27 @@ class NamesInserter
         rename($filename . '.new', $filename);
     }
 
+    private const DIRECTORIES = [
+        'Keiichi' => [
+            's03/01',
+        ],
+        'Rena' => [
+            's03/02',
+        ],
+        'Mion' => [
+            's03/03',
+        ],
+        'Satoko' => [
+            's03/04',
+        ],
+        'Rika' => [
+            's03/06',
+        ],
+        'Irie' => [
+            's03/10',
+        ],
+    ];
+
     private function updateLines($file, string $filename): iterable
     {
         $name = null;
@@ -106,11 +127,19 @@ class NamesInserter
                             }
                             $name[] = $row->toArray();
                         }
+                    } else {
+                        $directory = substr($match[1], 0, 6);
+                        $english = null;
+                        foreach (self::DIRECTORIES as $english => $directories) {
+                            if (in_array($directory, $directories, true)) {
+                                $name = $this->connection->query('SELECT * FROM [names] WHERE [english] = %s', $english)->fetch()->toArray();
+                                break;
+                            }
+                        }
                     }
                 }
 
                 if ($name && $previousLine === "\t" . 'if (AdvMode) { OutputLineAll("", NULL, Line_ContinueAfterTyping); }' . "\n") {
-                    throw new \Exception();
                     $previousLine = sprintf(
                         "\t" . 'if (AdvMode) { OutputLine(%s, NULL, %s, NULL, Line_ContinueAfterTyping); }' . "\n",
                         '"' . ColorsUpdater::formatName($name, 'japanese') . '"',
