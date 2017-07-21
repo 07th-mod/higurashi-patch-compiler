@@ -38,5 +38,6 @@ $application->add(new \Higurashi\Command\Recompile());
 $application->add(new \Higurashi\Command\CutVoices());
 $application->add(new \Higurashi\Command\Placeholders());
 $application->add(new \Higurashi\Command\InsertNames());
+$application->add(new \Higurashi\Command\Volume());
 
 $application->run();
