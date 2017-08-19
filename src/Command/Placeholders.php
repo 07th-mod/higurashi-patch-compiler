@@ -6,8 +6,6 @@ namespace Higurashi\Command;
 
 use Higurashi\Constants;
 use Higurashi\Helpers;
-use Higurashi\Service\CutVoiceDetector;
-use Higurashi\Service\LineNormalizer;
 use Higurashi\Service\PlaceholderAdder;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;

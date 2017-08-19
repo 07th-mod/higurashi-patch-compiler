@@ -6,13 +6,10 @@ namespace Higurashi\Command;
 
 use Higurashi\Constants;
 use Higurashi\Helpers;
-use Higurashi\Service\LineNormalizer;
 use Higurashi\Utils\LineProcessorTrait;
 use Higurashi\Utils\LineStorage;
-use Nette\Utils\FileSystem;
 use Nette\Utils\Strings;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
