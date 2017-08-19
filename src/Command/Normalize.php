@@ -7,6 +7,10 @@ namespace Higurashi\Command;
 use Higurashi\Constants;
 use Higurashi\Helpers;
 use Higurashi\Service\LineNormalizer;
+use Higurashi\Utils\LineProcessorTrait;
+use Higurashi\Utils\LineStorage;
+use Nette\Utils\FileSystem;
+use Nette\Utils\Strings;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
@@ -16,6 +20,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class Normalize extends Command
 {
+    use LineProcessorTrait;
+
     protected function configure(): void
     {
         $this
@@ -58,25 +64,21 @@ class Normalize extends Command
             $output
         );
 
-        $directory = sprintf('%s/normalize/%s', TEMP_DIR, $chapter);
+        $directory = sprintf('%s/%s/%s', TEMP_DIR, strtolower((new \ReflectionClass($this))->getShortName()), $chapter);
 
-        $updater = new LineNormalizer($chapter, $directory);
-
-        $updater->copyFiles();
-        $updater->update();
+        $this->update($chapter, $directory);
 
         return 0;
     }
 
-    private function runCommand(string $name, array $arguments, OutputInterface $output): void
+    protected function processLine(string $line, LineStorage $lines): string
     {
-        $code = $this
-            ->getApplication()
-            ->find($name)
-            ->run(new ArrayInput($arguments), $output);
+        if (Strings::match($line, '~^\\s++ClearMessage\\(\\);$~')) {
+            $index = $lines->get(-1) === "\n" ? -2 : -1;
 
-        if ($code !== 0) {
-            throw new \Exception(sprintf('Command "%s" exited with error code "%d".', $name, $code));
+            $lines->set($index, str_replace('Line_WaitForInput', 'Line_Normal', $lines->get($index)));
         }
+
+        return $line;
     }
 }
