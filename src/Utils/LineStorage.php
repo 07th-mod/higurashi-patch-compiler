@@ -4,9 +4,14 @@ declare(strict_types=1);
 
 namespace Higurashi\Utils;
 
-class LineStorage implements \IteratorAggregate
+class LineStorage implements \IteratorAggregate, \Countable
 {
     private $lines = [];
+
+    public function count(): int
+    {
+        return count($this->lines);
+    }
 
     public function add(string $line): void
     {
