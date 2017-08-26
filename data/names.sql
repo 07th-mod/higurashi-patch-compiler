@@ -14,7 +14,7 @@ CREATE TABLE `names` (
   `color_mg` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `japanese` (`japanese`)
-) ENGINE=InnoDB AUTO_INCREMENT=466 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO `names` (`id`, `japanese`, `english`, `color`, `color_mg`) VALUES
 (1,	'圭一',	'Keiichi',	'#895e5d',	'#a17f7f'),
@@ -33,7 +33,7 @@ INSERT INTO `names` (`id`, `japanese`, `english`, `color`, `color_mg`) VALUES
 (14,	'千紗登',	'Chisato',	'#fda762',	NULL),
 (15,	'荒川',	'Arakawa',	'#f5e6d3',	NULL),
 (16,	'富竹',	'Tomitake',	'#977568',	'#914220'),
-(17,	'美雪',	'Miyuki',	'#f5e6d3',	NULL),
+(17,	'美雪',	'Miyuki',	'#aa886c',	NULL),
 (18,	'乙部',	'Otobe',	'#f5e6d3',	NULL),
 (19,	'まどか',	'Madoka',	'#f5e6d3',	NULL),
 (20,	'山沖',	'Yamaoki',	'#f5e6d3',	NULL),
@@ -483,4 +483,4 @@ INSERT INTO `names` (`id`, `japanese`, `english`, `color`, `color_mg`) VALUES
 (464,	'奥野',	'Okuno',	'#f5e6d3',	NULL),
 (465,	'圭一＆魅音＆梨花＆詩音',	'Keiichi, Mion, Rika and Shion',	'#f5e6d3',	NULL);
 
--- 2017-07-05 16:20:45
+-- 2017-08-26 12:16:35
