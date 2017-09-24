@@ -40,5 +40,6 @@ $application->add(new \Higurashi\Command\Placeholders());
 $application->add(new \Higurashi\Command\InsertNames());
 $application->add(new \Higurashi\Command\Volume());
 $application->add(new \Higurashi\Command\DLLUpdate());
+$application->add(new \Higurashi\Command\ListNames());
 
 $application->run();
