@@ -81,7 +81,7 @@ class DLLUpdate extends Command
             $line = '';
         }
 
-        if ($match = Strings::match($line, '~^\\s++PlaySE\\(\\s*+([0-9]++)\\s*+,\\s*+"((?:ps2\\/)?[sS][^_][^"]++)",\\s*+([0-9]++),\\s*+[^)]+\\);$~')) {
+        if ($match = Strings::match($line, '~^\\s++PlaySE\\(\\s*+([0-9]++)\\s*+,\\s*+"((?:ps2\\/)?[sS][^_][^"]++)?",\\s*+([0-9]++),\\s*+[^)]+\\);$~')) {
             $line = "\t" . sprintf('PlayVoice(%d, "%s", %d);', $match[1], $match[2], $match[3]) . "\n";
         }
 
@@ -100,6 +100,16 @@ class DLLUpdate extends Command
             $previous = $lines->get(-1);
             $lines->set(-1, $line);
             $line = $previous;
+
+            for (
+                $i = -1;
+                Strings::match($lines->get($i), '~\\<\\/color\\>~') && Strings::match($lines->get($i - 1), '~^\\s++PlayVoice\\(~');
+                --$i
+            ) {
+                $previous = $lines->get($i - 1);
+                $lines->set($i - 1, $lines->get($i));
+                $lines->set($i, $previous);
+            }
         }
 
         return $line;
