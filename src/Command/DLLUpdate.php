@@ -76,7 +76,7 @@ class DLLUpdate extends Command
         $this->playingVoice = false;
     }
 
-    protected function processLine(string $line, LineStorage $lines): string
+    protected function processLine(string $line, LineStorage $lines, int $lineNumber, string $filename): string
     {
         if (Strings::match($line, '~^\\s++int AdvMode;$~')) {
             $this->deleteLines = 8;
@@ -119,6 +119,10 @@ class DLLUpdate extends Command
         }
 
         if (Strings::match($line, '~^\\s++PlayVoice\\(~')) {
+            if ($this->playingVoice && ! Strings::match($lines->get(-1), '~^\\s++PlayVoice\\(~')) {
+                echo sprintf('Found voice wait error in %s:%d.', $filename, $lineNumber) . PHP_EOL;
+            }
+
             $this->playingVoice = true;
         }
 

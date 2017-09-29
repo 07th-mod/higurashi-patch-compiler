@@ -56,12 +56,12 @@ trait LineProcessorTrait
         $name = null;
         $lines = new LineStorage();
 
+        $i = 1;
         while (!feof($file) && ($line = fgets($file)) !== false) {
             $line = str_replace("\xEF\xBB\xBF", '', rtrim($line)) . "\n";
-
-            $line = $this->processLine($line, $lines);
-
+            $line = $this->processLine($line, $lines, $i, $filename);
             $lines->add($line);
+            ++$i;
         }
 
         return $lines;
