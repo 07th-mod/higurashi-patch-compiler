@@ -41,6 +41,7 @@ trait LineProcessorTrait
         $file = fopen($filename, 'r');
         @unlink($filename . '.new');
         $output = fopen($filename . '.new', 'w');
+        $this->initFile();
         foreach ($this->updateLines($file, $filename) as $line) {
             fwrite($output, $line);
         }
@@ -64,5 +65,9 @@ trait LineProcessorTrait
         }
 
         return $lines;
+    }
+
+    private function initFile(): void
+    {
     }
 }

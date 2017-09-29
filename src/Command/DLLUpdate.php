@@ -69,6 +69,12 @@ class DLLUpdate extends Command
     }
 
     private $deleteLines = 0;
+    private $playingVoice = false;
+
+    private function initFile(): void
+    {
+        $this->playingVoice = false;
+    }
 
     protected function processLine(string $line, LineStorage $lines): string
     {
@@ -110,6 +116,23 @@ class DLLUpdate extends Command
                 $lines->set($i - 1, $lines->get($i));
                 $lines->set($i, $previous);
             }
+        }
+
+        if (Strings::match($line, '~^\\s++PlayVoice\\(~')) {
+            $this->playingVoice = true;
+        }
+
+        if (
+            Strings::contains($line, 'GetGlobalFlag(GLinemodeSp)')
+            || Strings::contains($line, 'Line_Normal')
+            || Strings::contains($line, 'Line_WaitForInput')
+        ) {
+            $this->playingVoice = false;
+        }
+
+        if ($this->playingVoice) {
+            $line = str_replace('Line_ContinueAfterTyping', 'Line_Continue', $line);
+            $line = str_replace('SetValidityOfInput', '// (backup) SetValidityOfInput', $line);
         }
 
         return $line;
