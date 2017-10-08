@@ -136,7 +136,7 @@ class DLLUpdate extends Command
 
         if ($this->playingVoice) {
             $line = str_replace('Line_ContinueAfterTyping', 'Line_Continue', $line);
-            $line = str_replace('SetValidityOfInput', '// (backup) SetValidityOfInput', $line);
+            $line = str_replace("\tSetValidityOfInput", "\t// (backup) SetValidityOfInput", $line);
         }
 
         return $line;
