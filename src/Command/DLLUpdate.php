@@ -126,6 +126,13 @@ class DLLUpdate extends Command
             $this->playingVoice = true;
         }
 
+        // The <size=-2> tag is used for long unbreakable lines that don't fit on 3 lines.
+        // However using </size> causes the last line to jump a little because the line-break icon would have a different line-height.
+        // Therefore </size> should be omitted. The next line will have the default font size regardless.
+        if (Strings::contains($line, '"<size=-2>')) {
+            $line = str_replace('</size>"', '"', $line);
+        }
+
         if (
             Strings::contains($line, 'GetGlobalFlag(GLinemodeSp)')
             || Strings::contains($line, 'Line_Normal')
