@@ -59,6 +59,8 @@ class VolumeUpdater
     private const VOLUMES = [
         // Rena is lauder than other characters on PS2.
         'ps2/s03/02' => 220,
+        // But strangely enough she has correct volume in PS2 omake.
+        'ps2/s20/02' => 128,
         // PS2 voices are much quiter than PS3 so we need to boost the volume.
         'ps2/s' => 240,
         's0' => 128,
