@@ -71,6 +71,7 @@ class LipSync extends Command
 
     private $numbers = [
         'black' => 0,
+        'white' => 0,
         'cinema' => 0,
         'Title' => 0,
         '0' => 0,
@@ -78,6 +79,9 @@ class LipSync extends Command
         'logo' => 0,
         'cg_' => 0,
         'e1' => 0,
+        'toketu' => 0,
+        'no_data' => 0,
+        'nort' => 0,
 
         'kei' => 1,
         're' => 2,
@@ -98,6 +102,7 @@ class LipSync extends Command
         '?oko' => 14, // Okonogi
 
         'kasa' => 15,
+        'Kasa' => 15,
         'aka' => 16,
         'oryou' => 17,
         'ki' => 18,
