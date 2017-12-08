@@ -70,6 +70,15 @@ class LipSync extends Command
     }
 
     private $numbers = [
+        'black' => 0,
+        'cinema' => 0,
+        'Title' => 0,
+        '0' => 0,
+        'furiker' => 0,
+        'logo' => 0,
+        'cg_' => 0,
+        'e1' => 0,
+
         'kei' => 1,
         're' => 2,
         'Re' => 2,
@@ -93,6 +102,7 @@ class LipSync extends Command
         'oryou' => 17,
         'ki' => 18,
         'kuma' => 19,
+        'Kuma' => 19,
 
         '?rin' => 20, // Ritsuko
 
@@ -118,34 +128,57 @@ class LipSync extends Command
         }
 
         if ($match = Strings::match($line, '~^(\s++)PlayVoice\(\s*+([0-9]++)\s*+,\s*+"([^"]++)?",\s*+([0-9]++)\);$~')) {
-            $line = sprintf('%sModPlayVoiceLS(%d, "%s", %d);', $match[1], $match[2], $match[3], $match[4]) . "\n";
+            $line = sprintf('%sModPlayVoiceLS(%d, %d, "%s", %d);', $match[1], $match[2], $this->getCharacterNumberForVoice($match[3]), $match[3], $match[4]) . "\n";
         }
 
         if ($match = Strings::match($line, '~^(\s++)DrawBustshot\(\s*+([0-9]++)\s*+,\s*+"([^"]++)",(.*)$~')) {
-            $line = sprintf('%sModDrawCharacter(%d, %d, "%s",%s', $match[1], $match[2], $this->getCharacterNumber($match[3]), $match[3], $match[4]) . "\n";
+            $line = sprintf('%sModDrawCharacter(%d, %d, "%s",%s', $match[1], $match[2], $this->getCharacterNumberForSprite($match[3]), $match[3], $match[4]) . "\n";
         }
 
         if ($match = Strings::match($line, '~^(\s++)DrawBustshotWithFiltering\(\s*+([0-9]++)\s*+,\s*+"([^"]++)",(.*)$~')) {
-            $line = sprintf('%sModDrawCharacterWithFiltering(%d, %d, "%s",%s', $match[1], $match[2], $this->getCharacterNumber($match[3]), $match[3], $match[4]) . "\n";
+            $line = sprintf('%sModDrawCharacterWithFiltering(%d, %d, "%s",%s', $match[1], $match[2], $this->getCharacterNumberForSprite($match[3]), $match[3], $match[4]) . "\n";
         }
 
         if (Strings::contains($line, 'PlayVoice(') || Strings::contains($line, 'DrawBustshot')) {
-            throw new \Exception('Cannot parse line ' . $filename . ':' . $lineNumber);
+            throw new \Exception(sprintf('Cannot parse line "%s:%d".', $filename, $lineNumber));
         }
 
         return $line;
     }
 
-    private function getCharacterNumber(string $sprite): int
+    private function getCharacterNumberForVoice(string $voice): int
     {
+        if ($voice === '') {
+            return 0;
+        }
+
+        $match = Strings::match($voice, '~^(?:ps2/)?[sS][0-9]++/0?([0-9]++)/~');
+
+        if (! $match) {
+            throw new \Exception(sprintf('Cannot parse voice "%s".', $voice));
+        }
+
+        return (int) $match[1];
+    }
+
+    private function getCharacterNumberForSprite(string $sprite): int
+    {
+        if (Strings::contains($sprite, '/')) {
+            $sprite = Strings::after($sprite, '/', -1);
+        }
+
         $prefixLength = 0;
-        $character = 0;
+        $character = null;
 
         foreach ($this->numbers as $prefix => $number) {
             if (Strings::startsWith($sprite, $prefix) && Strings::length($prefix) > $prefixLength) {
                 $prefixLength = Strings::length($prefix);
                 $character = $number;
             }
+        }
+
+        if ($character === null) {
+            throw new \Exception(sprintf('Cannot get number for sprite "%s".', $sprite));
         }
 
         return $character;
