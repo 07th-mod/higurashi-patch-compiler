@@ -18,7 +18,7 @@ class Compare extends Command
     {
         $this
             ->setName('higurashi:compare')
-            ->setDescription('Compresses the compiled patch.')
+            ->setDescription('Compares images in the given patch to detect duplicates.')
             ->addArgument('chapter', InputArgument::REQUIRED, 'Chapter to clean.');
     }
 
