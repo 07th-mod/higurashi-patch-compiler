@@ -143,6 +143,7 @@ class LipSync extends Command
         'cg_001c',
         'cg_001d',
         'e1',
+        '203a',
     ];
 
     private $rules = [];
