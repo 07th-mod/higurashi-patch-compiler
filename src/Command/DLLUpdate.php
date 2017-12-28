@@ -116,6 +116,8 @@ class DLLUpdate extends Command
                 $lines->set($i - 1, $lines->get($i));
                 $lines->set($i, $previous);
             }
+
+            $this->playingVoice = false;
         }
 
         if (Strings::match($line, '~^\\s++PlayVoice\\(~')) {
