@@ -10,6 +10,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 trait LineProcessorTrait
 {
+    private $chapter;
+
     private function runCommand(string $name, array $arguments, OutputInterface $output): void
     {
         $code = $this
@@ -24,6 +26,8 @@ trait LineProcessorTrait
 
     private function update(string $chapter, string $directory): void
     {
+        $this->chapter = $chapter;
+
         FileSystem::delete($directory);
         FileSystem::copy(sprintf('%s/unpack/%s_%s', TEMP_DIR, $chapter, 'patch'), $directory);
 

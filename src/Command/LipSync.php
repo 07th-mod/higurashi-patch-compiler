@@ -243,6 +243,31 @@ class LipSync extends Command
             $sprite = Strings::before($sprite, '_zoom', -1);
         }
 
+        if ($this->chapter === 'tatarigoroshi') {
+            if ($sprite === 'iri2_Majime_0') {
+                $directory = 'character_zoomed/';
+                $prefix = 'sunset/';
+            }
+
+            if (Strings::startsWith($sprite, 'sa1a_') || Strings::startsWith($sprite, 'sa5_')) {
+                $directory = 'character_zoomed/';
+            }
+        }
+
+        if ($this->chapter === 'himatsubushi') {
+            if ($sprite === 'oisi1_2_0' || $sprite === 'oisi2_8_0') {
+                $directory = 'character_zoomed/';
+            }
+
+            if (Strings::startsWith($sprite, 'rim_') || Strings::startsWith($sprite, 'iri2_') || Strings::startsWith($sprite, 'chibimion_')) {
+                $directory = 'character_zoomed/';
+            }
+
+            if ($sprite === 'oryou_Warai_0' && $prefix === 'sunset/') {
+                $directory = 'character_zoomed/';
+            }
+        }
+
         if (! isset($this->rules[$sprite])) {
             printf('No rule found for sprite "%s".' . PHP_EOL, $sprite);
 
