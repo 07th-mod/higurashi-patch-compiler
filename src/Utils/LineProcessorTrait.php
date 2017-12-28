@@ -27,6 +27,8 @@ trait LineProcessorTrait
         FileSystem::delete($directory);
         FileSystem::copy(sprintf('%s/unpack/%s_%s', TEMP_DIR, $chapter, 'patch'), $directory);
 
+        $this->init();
+
         $scriptsDirectory = sprintf('%s/Update', $directory);
 
         $files = glob(sprintf('%s/*.txt', $scriptsDirectory));
@@ -65,6 +67,10 @@ trait LineProcessorTrait
         }
 
         return $lines;
+    }
+
+    private function init(): void
+    {
     }
 
     private function initFile(): void

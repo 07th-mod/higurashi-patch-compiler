@@ -126,8 +126,31 @@ class LipSync extends Command
         '?chta' => 48, // Child Takano
     ];
 
+    private $ignoredFiles = [
+        'black',
+        'cinema',
+        'Title02',
+        'logo',
+        'furiker_a',
+        'furiker_b',
+        '01_a',
+        '01_b',
+        '01_b1',
+        '01_b2',
+        '01_b3',
+        '01_b4',
+        '01_b5',
+        'cg_001c',
+        'cg_001d',
+        'e1',
+    ];
+
+    private $rules = [];
+
     protected function processLine(string $line, LineStorage $lines, int $lineNumber, string $filename): string
     {
+        $ignored = false;
+
         if (Strings::startsWith($line, '//')) {
             return $line;
         }
@@ -137,18 +160,78 @@ class LipSync extends Command
         }
 
         if ($match = Strings::match($line, '~^(\s++)DrawBustshot\(\s*+([0-9]++)\s*+,\s*+"([^"]++)",(.*)$~')) {
-            $line = sprintf('%sModDrawCharacter(%d, %d, "%s",%s', $match[1], $match[2], $this->getCharacterNumberForSprite($match[3]), $match[3], $match[4]) . "\n";
+            if (in_array($match[3], $this->ignoredFiles, true)) {
+                $ignored = true;
+            } else {
+                [$sprite, $expression] = $this->getNewSpriteName($match[3]);
+                $line = sprintf('%sModDrawCharacter(%d, %d, "%s", "%s",%s', $match[1], $match[2], $this->getCharacterNumberForSprite($match[3]), $sprite, $expression, $match[4]) . "\n";
+            }
         }
 
         if ($match = Strings::match($line, '~^(\s++)DrawBustshotWithFiltering\(\s*+([0-9]++)\s*+,\s*+"([^"]++)",(.*)$~')) {
-            $line = sprintf('%sModDrawCharacterWithFiltering(%d, %d, "%s",%s', $match[1], $match[2], $this->getCharacterNumberForSprite($match[3]), $match[3], $match[4]) . "\n";
+            if (in_array($match[3], $this->ignoredFiles, true)) {
+                $ignored = true;
+            } else {
+                [$sprite, $expression] = $this->getNewSpriteName($match[3]);
+                $line = sprintf('%sModDrawCharacterWithFiltering(%d, %d, "%s", "%s",%s', $match[1], $match[2], $this->getCharacterNumberForSprite($match[3]), $sprite, $expression, $match[4]) . "\n";
+            }
         }
 
-        if (Strings::contains($line, 'PlayVoice(') || Strings::contains($line, 'DrawBustshot')) {
+        if (Strings::contains($line, 'PlayVoice(') || (Strings::contains($line, 'DrawBustshot') && ! $ignored)) {
             throw new \Exception(sprintf('Cannot parse line "%s:%d".', $filename, $lineNumber));
         }
 
         return $line;
+    }
+
+    private function init(): void
+    {
+        $handle = fopen(__DIR__ . '/../../data/rulefile.csv', 'r');
+
+        if (! $handle) {
+            throw new \Exception('Can\'t load rule file.');
+        }
+
+        while (($data = fgetcsv($handle, 1000, ",")) !== false) {
+            if (isset($this->rules[$data[0]])) {
+                throw new \Exception(sprintf('Duplicate rule found for sprite "%s".', $data[0]));
+            }
+
+            $this->rules[$data[0]] = [$data[1], $data[2]];
+        }
+
+        fclose($handle);
+    }
+
+    private function getNewSpriteName(string $sprite): array
+    {
+        $prefix = '';
+        $directory = 'character/';
+
+        if (Strings::startsWith($sprite, 'night/')) {
+            $prefix = 'night/';
+            $sprite = Strings::after($sprite, 'night/');
+        }
+
+        if (Strings::startsWith($sprite, 'sunset/')) {
+            $prefix = 'sunset/';
+            $sprite = Strings::after($sprite, 'sunset/');
+        }
+
+        if (Strings::endsWith($sprite, '_zoom')) {
+            $directory = 'character_zoomed/';
+            $sprite = Strings::before($sprite, '_zoom', -1);
+        }
+
+        if (! isset($this->rules[$sprite])) {
+            printf('No rule found for sprite "%s".' . PHP_EOL, $sprite);
+
+            return [$sprite, 0];
+        }
+
+        [$sprite, $expression] = $this->rules[$sprite];
+
+        return [$directory . $prefix . $sprite, $expression];
     }
 
     private function getCharacterNumberForVoice(string $voice): int
