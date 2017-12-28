@@ -213,9 +213,29 @@ class LipSync extends Command
             $sprite = Strings::after($sprite, 'night/');
         }
 
+        if (Strings::startsWith($sprite, 'Night/')) {
+            $prefix = 'night/';
+            $sprite = Strings::after($sprite, 'Night/');
+        }
+
+        if (Strings::endsWith($sprite, '_a')) {
+            $prefix = 'night/';
+            $sprite = Strings::before($sprite, '_a', -1);
+        }
+
         if (Strings::startsWith($sprite, 'sunset/')) {
             $prefix = 'sunset/';
             $sprite = Strings::after($sprite, 'sunset/');
+        }
+
+        if (Strings::startsWith($sprite, 'Sunset/')) {
+            $prefix = 'sunset/';
+            $sprite = Strings::after($sprite, 'Sunset/');
+        }
+
+        if (Strings::endsWith($sprite, '_b')) {
+            $prefix = 'Strings/';
+            $sprite = Strings::before($sprite, '_b', -1);
         }
 
         if (Strings::endsWith($sprite, '_zoom')) {
