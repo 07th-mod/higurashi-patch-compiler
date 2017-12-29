@@ -119,6 +119,7 @@ class LipSync extends Command
         'oka' => 25,
 
         '?chme' => 26, // Child Mion
+        'chibimion_' => 26,
         '?chri' => 27, // Child Rika
 
         'miyuki' => 34,
@@ -144,6 +145,7 @@ class LipSync extends Command
         'cg_001d',
         'e1',
         '203a',
+        '203b',
     ];
 
     private $rules = [];
@@ -187,14 +189,24 @@ class LipSync extends Command
 
     private function init(): void
     {
-        $handle = fopen(__DIR__ . '/../../data/rulefile.csv', 'r');
+        $this->loadCsvFile(__DIR__ . '/../../data/rulefile.csv', false);
+
+        if ($this->chapter === 'himatsubushi') {
+            $this->loadCsvFile(__DIR__ . '/../../data/child.csv', true);
+            $this->loadCsvFile(__DIR__ . '/../../data/childzoom.csv', true);
+        }
+    }
+
+    private function loadCsvFile(string $file, bool $override): void
+    {
+        $handle = fopen($file, 'r');
 
         if (! $handle) {
             throw new \Exception('Can\'t load rule file.');
         }
 
         while (($data = fgetcsv($handle, 1000, ",")) !== false) {
-            if (isset($this->rules[$data[0]])) {
+            if (!$override && isset($this->rules[$data[0]])) {
                 throw new \Exception(sprintf('Duplicate rule found for sprite "%s".', $data[0]));
             }
 

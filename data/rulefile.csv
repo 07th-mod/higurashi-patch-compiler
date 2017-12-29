@@ -234,6 +234,13 @@ me_ta_to_a2,me3_TokuiA1_,2
 me_ta_wa_a2,me3_WaraiA1_,2
 me_ta_wi_a1,me3_WinkA1_,1
 me_ta_wi_a2,me3_WinkA1_,2
+me_ta_fu_a1,me3_HutekiA1_,1
+me_ta_fu_a2,me3_HutekiA1_,2
+me_mi_aw_a1,me4_AkuwaraiA1_,1
+me_mi_aw_a2,me4_AkuwaraiA1_,2
+me_mi_fu_a2,me4_HutekiA1_,2
+me_mi_wi_a1,me4_WinkA1_,1
+me_mi_wi_a2,me4_WinkA1_,2
 kameda2a_Def_0,kameda2a_Def_,0
 kameda2a_Niyari_0,kameda2a_Niyari_,0
 kameda2a_Shinken_0,kameda2a_Shinken_,0
@@ -331,8 +338,3 @@ ta_si_wa_a1,ta1_warai_,1
 tm_si_de_a1,tomi1_def_,0
 tm_si_ko_a1,tomi1_komaru_,1
 tm_si_wa_a1,tomi1_warai_,1
-me_mi_aw_a1,me4_AkuwaraiA1_,1
-me_mi_aw_a2,me4_AkuwaraiA1_,2
-me_mi_fu_a2,me4_HutekiA1_,2
-me_mi_wi_a1,me4_WinkA1_,1
-me_mi_wi_a2,me4_WinkA1_,2
