@@ -118,8 +118,9 @@ class LipSync extends Command
         'tomita' => 24,
         'oka' => 25,
 
-        '?chme' => 26, // Child Mion
         'chibimion_' => 26,
+        // Correct prefixes for child Mion and Rika are added in init method only for himatsubushi.
+        '?chme' => 26, // Child Mion
         '?chri' => 27, // Child Rika
 
         'miyuki' => 34,
@@ -194,6 +195,10 @@ class LipSync extends Command
         if ($this->chapter === 'himatsubushi') {
             $this->loadCsvFile(__DIR__ . '/../../data/child.csv', true);
             $this->loadCsvFile(__DIR__ . '/../../data/childzoom.csv', true);
+
+            $this->numbers['me_si_'] = 26;
+            $this->numbers['ri_si_'] = 27;
+            $this->numbers['rim_'] = 27;
         }
     }
 
