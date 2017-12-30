@@ -235,6 +235,7 @@ class LipSync extends Command
 
     private function getNewSpriteName(string $sprite): array
     {
+        $original = $sprite;
         $prefix = '';
         $directory = 'character/';
 
@@ -306,7 +307,7 @@ class LipSync extends Command
 
         [$sprite, $expression] = $this->rules[$sprite];
 
-        $this->addBashCopy($directory, $prefix, $sprite);
+        $this->addBashCopy($directory, $prefix, $sprite, $original, $expression);
 
         return [$directory . $prefix . $sprite, $expression];
     }
@@ -349,11 +350,11 @@ class LipSync extends Command
         return $character;
     }
 
-    private function addBashCopy($directory, $prefix, $sprite): void
+    private function addBashCopy(string $directory, string $prefix, string $sprite, string $original, string $expression): void
     {
-        $destination = $this->chapter . '/' . $directory . $prefix . $sprite . '%d.png';
+        $destination = $directory . $prefix . $sprite . '%s.png';
 
-        $command = 'mkdir -p ' . dirname($destination) . ' && cp sprites/';
+        $command = 'mkdir -p ' . dirname($this->chapter . '/CG/' . $destination) . ' && cp sprites/';
 
         switch ($prefix) {
             case 'night/':
@@ -374,10 +375,12 @@ class LipSync extends Command
                 $command .= 'm/';
         }
 
-        $command .= $sprite . '%d.png ' . $destination;
+        $command .= $sprite . '%s.png ' . $this->chapter . '/CG/' . $destination;
 
-        $this->bashCopy[] = sprintf($command, 0, 0, 0);
-        $this->bashCopy[] = sprintf($command, 1, 1, 1);
-        $this->bashCopy[] = sprintf($command, 2, 2, 2);
+        $this->bashCopy[] = sprintf($command, 0, 0);
+        $this->bashCopy[] = sprintf($command, 1, 1);
+        $this->bashCopy[] = sprintf($command, 2, 2);
+
+        $this->bashCopy[] = sprintf('mkdir -p ' . dirname($this->chapter . '/CGAlt/' . $destination) . ' && cp ' . $this->chapter . '-old/CGAlt/' . $original . '.png ' .  $this->chapter . '/CGAlt/' . $destination, $expression);
     }
 }
