@@ -190,11 +190,12 @@ class LipSync extends Command
 
     private function init(): void
     {
-        $this->loadCsvFile(__DIR__ . '/../../data/rulefile.csv', false);
+        $this->loadCsvFile(__DIR__ . '/../../data/sprites/rulefile.csv', false);
+        $this->loadCsvFile(__DIR__ . '/../../data/sprites/tatahimazoom.csv', false);
 
         if ($this->chapter === 'himatsubushi') {
-            $this->loadCsvFile(__DIR__ . '/../../data/child.csv', true);
-            $this->loadCsvFile(__DIR__ . '/../../data/childzoom.csv', true);
+            $this->loadCsvFile(__DIR__ . '/../../data/sprites/child.csv', true);
+            $this->loadCsvFile(__DIR__ . '/../../data/sprites/childzoom.csv', true);
 
             $this->numbers['me_si_'] = 26;
             $this->numbers['ri_si_'] = 27;
