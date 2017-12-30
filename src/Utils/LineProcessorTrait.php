@@ -40,6 +40,8 @@ trait LineProcessorTrait
         foreach ($files as $file) {
             $this->processScript($file);
         }
+
+        $this->finish();
     }
 
     private function processScript(string $filename): void
@@ -78,6 +80,10 @@ trait LineProcessorTrait
     }
 
     private function initFile(): void
+    {
+    }
+
+    private function finish(): void
     {
     }
 }

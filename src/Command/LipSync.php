@@ -151,6 +151,8 @@ class LipSync extends Command
 
     private $rules = [];
 
+    private $bashCopy = [];
+
     protected function processLine(string $line, LineStorage $lines, int $lineNumber, string $filename): string
     {
         $ignored = false;
@@ -201,6 +203,15 @@ class LipSync extends Command
             $this->numbers['ri_si_'] = 27;
             $this->numbers['rim_'] = 27;
         }
+    }
+
+    private function finish(): void
+    {
+        $bashCopy = array_unique($this->bashCopy);
+
+        $file = sprintf('%s/%s/%s.sh', TEMP_DIR, strtolower((new \ReflectionClass($this))->getShortName()), $this->chapter);
+
+        file_put_contents($file, implode("\n", $bashCopy));
     }
 
     private function loadCsvFile(string $file, bool $override): void
@@ -295,6 +306,8 @@ class LipSync extends Command
 
         [$sprite, $expression] = $this->rules[$sprite];
 
+        $this->addBashCopy($directory, $prefix, $sprite);
+
         return [$directory . $prefix . $sprite, $expression];
     }
 
@@ -334,5 +347,37 @@ class LipSync extends Command
         }
 
         return $character;
+    }
+
+    private function addBashCopy($directory, $prefix, $sprite): void
+    {
+        $destination = $this->chapter . '/' . $directory . $prefix . $sprite . '%d.png';
+
+        $command = 'mkdir -p ' . dirname($destination) . ' && cp sprites/';
+
+        switch ($prefix) {
+            case 'night/':
+                $command .= 'Night/';
+                break;
+            case 'sunset/':
+                $command .= 'Sunset/';
+                break;
+            default:
+                $command .= 'Normal/';
+        }
+
+        switch ($directory) {
+            case 'character_zoomed/':
+                $command .= 'l/';
+                break;
+            default:
+                $command .= 'm/';
+        }
+
+        $command .= $sprite . '%d.png ' . $destination;
+
+        $this->bashCopy[] = sprintf($command, 0, 0, 0);
+        $this->bashCopy[] = sprintf($command, 1, 1, 1);
+        $this->bashCopy[] = sprintf($command, 2, 2, 2);
     }
 }
