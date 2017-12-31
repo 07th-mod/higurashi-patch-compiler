@@ -162,7 +162,7 @@ class LipSync extends Command
         }
 
         if ($match = Strings::match($line, '~^(\s++)PlayVoice\(\s*+([0-9]++)\s*+,\s*+"([^"]++)?",\s*+([0-9]++)\);$~')) {
-            $line = sprintf('%sModPlayVoiceLS(%d, %d, "%s", %d);', $match[1], $match[2], $this->getCharacterNumberForVoice($match[3]), $match[3], $match[4]) . "\n";
+            $line = sprintf('%sModPlayVoiceLS(%d, %d, "%s", %d, TRUE);', $match[1], $match[2], $this->getCharacterNumberForVoice($match[3]), $match[3], $match[4]) . "\n";
         }
 
         if ($match = Strings::match($line, '~^(\s++)DrawBustshot\(\s*+([0-9]++)\s*+,\s*+"([^"]++)",(.*)$~')) {
@@ -236,7 +236,7 @@ class LipSync extends Command
     private function getNewSpriteName(string $sprite): array
     {
         $original = $sprite;
-        $prefix = '';
+        $prefix = 'normal/';
         $directory = 'character/';
 
         if (Strings::startsWith($sprite, 'night/')) {
