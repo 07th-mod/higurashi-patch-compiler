@@ -309,7 +309,7 @@ class LipSync extends Command
 
         $this->addBashCopy($directory, $prefix, $sprite, $original, $expression);
 
-        return [$directory . $prefix . $sprite, $expression];
+        return [$directory . $prefix . Strings::lower($sprite), $expression];
     }
 
     private function getCharacterNumberForVoice(string $voice): int
@@ -375,12 +375,12 @@ class LipSync extends Command
                 $command .= 'm/';
         }
 
-        $command .= $sprite . '%s.png ' . $this->chapter . '/CG/' . $destination;
+        $command .= $sprite . '%s.png ' . $this->chapter . '/CG/' . Strings::lower($destination);
 
         $this->bashCopy[] = sprintf($command, 0, 0);
         $this->bashCopy[] = sprintf($command, 1, 1);
         $this->bashCopy[] = sprintf($command, 2, 2);
 
-        $this->bashCopy[] = sprintf('mkdir -p ' . dirname($this->chapter . '/CGAlt/' . $destination) . ' && cp ' . $this->chapter . '-old/CGAlt/' . $original . '.png ' .  $this->chapter . '/CGAlt/' . $destination, $expression);
+        $this->bashCopy[] = sprintf('mkdir -p ' . dirname($this->chapter . '/CGAlt/' . $destination) . ' && cp ' . $this->chapter . '-old/CGAlt/' . $original . '.png ' .  $this->chapter . '/CGAlt/' . Strings::lower($destination), $expression);
     }
 }
