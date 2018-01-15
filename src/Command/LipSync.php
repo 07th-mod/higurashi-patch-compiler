@@ -149,9 +149,13 @@ class LipSync extends Command
         '203b',
     ];
 
-    private $rules = [];
+    private $spriteRules = [];
+
+    private $bgRules = [];
 
     private $bashCopy = [];
+
+    private $errors = [];
 
     protected function processLine(string $line, LineStorage $lines, int $lineNumber, string $filename): string
     {
@@ -187,22 +191,64 @@ class LipSync extends Command
             throw new \Exception(sprintf('Cannot parse line "%s:%d".', $filename, $lineNumber));
         }
 
+        if ($match = Strings::match($line, '~^(\s++)(DrawBG|DrawScene|DrawSceneWithMask)\(\s*+"([^"]++)",(.*)$~')) {
+            $bg = $match[3];
+
+            if (Strings::startsWith($bg, 'cg_')) {
+                $cg =  Strings::substring($bg, 3);
+
+                $line = sprintf('%s%s("cg/%s", %s', $match[1], $match[2], $cg, $match[4]) . "\n";
+
+                $this->addBashCopyForCG($cg);
+            } elseif (array_key_exists($bg, $this->bgRules)) {
+                $line = sprintf('%s%s("bg/%s", %s', $match[1], $match[2], $this->bgRules[$bg], $match[4]) . "\n";
+
+                $this->addBashCopyForBG($this->bgRules[$bg]);
+            } else {
+                if (!array_key_exists($bg, $this->errors)) {
+                    $this->errors[$bg] = true;
+                    printf('Rule for background "%s" not found.' . PHP_EOL, $bg);
+                }
+
+                $this->addBashCopyForOriginal($bg);
+            }
+        }
+
+        if ($match = Strings::match($line, '~^(\s++)(DrawBustshot|DrawBustshotWithFiltering)\(\s*+([0-9]++)\s*+,\s*+"([^"]++)",(.*)$~')) {
+            $bg = $match[4];
+
+            if (array_key_exists($bg, $this->bgRules)) {
+                $line = sprintf('%s%s(%d, "bg/%s", %s', $match[1], $match[2], $match[3], $this->bgRules[$bg], $match[5]) . "\n";
+
+                $this->addBashCopyForBG($this->bgRules[$bg]);
+            } else {
+                if (!array_key_exists($bg, $this->errors)) {
+                    $this->errors[$bg] = true;
+                    printf('Rule for background "%s" not found.' . PHP_EOL, $bg);
+                }
+
+                $this->addBashCopyForOriginal($bg);
+            }
+        }
+
         return $line;
     }
 
     private function init(): void
     {
-        $this->loadCsvFile(__DIR__ . '/../../data/sprites/rulefile.csv', false);
-        $this->loadCsvFile(__DIR__ . '/../../data/sprites/tatahimazoom.csv', false);
+        $this->loadSpritesCsv(__DIR__ . '/../../data/sprites/rulefile.csv', false);
+        $this->loadSpritesCsv(__DIR__ . '/../../data/sprites/tatahimazoom.csv', false);
 
         if ($this->chapter === 'himatsubushi') {
-            $this->loadCsvFile(__DIR__ . '/../../data/sprites/child.csv', true);
-            $this->loadCsvFile(__DIR__ . '/../../data/sprites/childzoom.csv', true);
+            $this->loadSpritesCsv(__DIR__ . '/../../data/sprites/child.csv', true);
+            $this->loadSpritesCsv(__DIR__ . '/../../data/sprites/childzoom.csv', true);
 
             $this->numbers['me_si_'] = 26;
             $this->numbers['ri_si_'] = 27;
             $this->numbers['rim_'] = 27;
         }
+
+        $this->loadBGsCsv(__DIR__ . '/../../data/bgs/' . $this->chapter . '.csv');
     }
 
     private function finish(): void
@@ -214,20 +260,38 @@ class LipSync extends Command
         file_put_contents($file, implode("\n", $bashCopy));
     }
 
-    private function loadCsvFile(string $file, bool $override): void
+    private function loadSpritesCsv(string $file, bool $override): void
+    {
+        foreach ($this->loadCsv($file) as $data) {
+            if (!$override && isset($this->spriteRules[$data[0]])) {
+                throw new \Exception(sprintf('Duplicate rule found for sprite "%s".', $data[0]));
+            }
+
+            $this->spriteRules[$data[0]] = [$data[1], $data[2]];
+        }
+    }
+
+    private function loadBGsCsv(string $file): void
+    {
+        foreach ($this->loadCsv($file) as $data) {
+            if (isset($this->bgRules[$data[0]])) {
+                throw new \Exception(sprintf('Duplicate rule found for BG "%s".', $data[0]));
+            }
+
+            $this->bgRules[$data[0]] = $data[1] ?? $data[0];
+        }
+    }
+
+    private function loadCsv(string $file): \Generator
     {
         $handle = fopen($file, 'r');
 
         if (! $handle) {
-            throw new \Exception('Can\'t load rule file.');
+            throw new \Exception(sprintf('Can\'t load rule file "%s".', $file));
         }
 
-        while (($data = fgetcsv($handle, 1000, ",")) !== false) {
-            if (!$override && isset($this->rules[$data[0]])) {
-                throw new \Exception(sprintf('Duplicate rule found for sprite "%s".', $data[0]));
-            }
-
-            $this->rules[$data[0]] = [$data[1], $data[2]];
+        while (($data = fgetcsv($handle, 1000, ',')) !== false) {
+            yield $data;
         }
 
         fclose($handle);
@@ -299,15 +363,15 @@ class LipSync extends Command
             }
         }
 
-        if (! isset($this->rules[$sprite])) {
+        if (! isset($this->spriteRules[$sprite])) {
             printf('No rule found for sprite "%s".' . PHP_EOL, $sprite);
 
             return [$sprite, 0];
         }
 
-        [$sprite, $expression] = $this->rules[$sprite];
+        [$sprite, $expression] = $this->spriteRules[$sprite];
 
-        $this->addBashCopy($directory, $prefix, $sprite, $original, $expression);
+        $this->addBashCopyForSprite($directory, $prefix, $sprite, $original, $expression);
 
         return [$directory . $prefix . Strings::lower($sprite), $expression];
     }
@@ -350,37 +414,50 @@ class LipSync extends Command
         return $character;
     }
 
-    private function addBashCopy(string $directory, string $prefix, string $sprite, string $original, string $expression): void
+    private function addBashCopyForSprite(string $directory, string $prefix, string $sprite, string $original, string $expression): void
     {
-        $destination = $directory . $prefix . $sprite . '%s.png';
-
-        $command = 'mkdir -p ' . dirname($this->chapter . '/CG/' . $destination) . ' && cp sprites/';
-
         switch ($prefix) {
             case 'night/':
-                $command .= 'Night/';
+                $weather = 'Night/';
                 break;
             case 'sunset/':
-                $command .= 'Sunset/';
+                $weather = 'Sunset/';
                 break;
             default:
-                $command .= 'Normal/';
+                $weather = 'Normal/';
         }
 
-        switch ($directory) {
-            case 'character_zoomed/':
-                $command .= 'l/';
-                break;
-            default:
-                $command .= 'm/';
-        }
+        $size = $directory === 'character_zoomed/' ? 'l/' : 'm/';
 
-        $command .= $sprite . '%s.png ' . $this->chapter . '/CG/' . Strings::lower($destination);
+        $destination = $directory . $prefix . $sprite . '%s.png';
+
+        $command = 'mkdir -p ' . dirname($this->chapter . '/CG/' . $destination) . ' && cp sprites/' . $weather . $size . $sprite . '%s.png ' . $this->chapter . '/CG/' . Strings::lower($destination);
 
         $this->bashCopy[] = sprintf($command, 0, 0);
         $this->bashCopy[] = sprintf($command, 1, 1);
         $this->bashCopy[] = sprintf($command, 2, 2);
 
         $this->bashCopy[] = sprintf('mkdir -p ' . dirname($this->chapter . '/CGAlt/' . $destination) . ' && cp ' . $this->chapter . '-old/CGAlt/' . $original . '.png ' .  $this->chapter . '/CGAlt/' . Strings::lower($destination), $expression);
+    }
+
+    private function addBashCopyForCG(string $cg): void
+    {
+        $destination = 'cg/' . $cg . '.png';
+
+        $this->bashCopy[] = 'mkdir -p ' . dirname($this->chapter . '/CG/' . $destination) . ' && cp ps3/e/' . $cg . '.png ' . $this->chapter . '/CG/' . $destination;
+    }
+
+    private function addBashCopyForBG(string $bg): void
+    {
+        $destination = 'bg/' . $bg . '.png';
+
+        $this->bashCopy[] = 'mkdir -p ' . dirname($this->chapter . '/CG/' . $destination) . ' && cp ps3/' . $bg . '.png ' . $this->chapter . '/CG/' . $destination;
+    }
+
+    private function addBashCopyForOriginal(string $image): void
+    {
+        $destination = $image . '.png';
+
+        $this->bashCopy[] = 'mkdir -p ' . dirname($this->chapter . '/CG/' . $destination) . ' && cp ' . $this->chapter . '-old/CG/' . $image . '.png ' . $this->chapter . '/CG/' . $destination;
     }
 }
