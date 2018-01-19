@@ -301,7 +301,7 @@ class LipSync extends Command
     {
         $original = $sprite;
         $prefix = 'normal/';
-        $directory = 'character/';
+        $directory = 'sprite/';
 
         if (Strings::startsWith($sprite, 'night/')) {
             $prefix = 'night/';
@@ -334,32 +334,32 @@ class LipSync extends Command
         }
 
         if (Strings::endsWith($sprite, '_zoom')) {
-            $directory = 'character_zoomed/';
+            $directory = 'portrait/';
             $sprite = Strings::before($sprite, '_zoom', -1);
         }
 
         if ($this->chapter === 'tatarigoroshi') {
             if ($sprite === 'iri2_Majime_0') {
-                $directory = 'character_zoomed/';
+                $directory = 'portrait/';
                 $prefix = 'sunset/';
             }
 
             if (Strings::startsWith($sprite, 'sa1a_') || Strings::startsWith($sprite, 'sa5_')) {
-                $directory = 'character_zoomed/';
+                $directory = 'portrait/';
             }
         }
 
         if ($this->chapter === 'himatsubushi') {
             if ($sprite === 'oisi1_2_0' || $sprite === 'oisi2_8_0') {
-                $directory = 'character_zoomed/';
+                $directory = 'portrait/';
             }
 
             if (Strings::startsWith($sprite, 'rim_') || Strings::startsWith($sprite, 'iri2_') || Strings::startsWith($sprite, 'chibimion_')) {
-                $directory = 'character_zoomed/';
+                $directory = 'portrait/';
             }
 
             if ($sprite === 'oryou_Warai_0' && $prefix === 'sunset/') {
-                $directory = 'character_zoomed/';
+                $directory = 'portrait/';
             }
         }
 
@@ -427,7 +427,7 @@ class LipSync extends Command
                 $weather = 'Normal/';
         }
 
-        $size = $directory === 'character_zoomed/' ? 'l/' : 'm/';
+        $size = $directory === 'portrait/' ? 'l/' : 'm/';
 
         $destination = $directory . $prefix . $sprite . '%s.png';
 
@@ -442,14 +442,14 @@ class LipSync extends Command
 
     private function addBashCopyForCG(string $cg): void
     {
-        $destination = 'cg/' . $cg . '.png';
+        $destination = 'scene/' . $cg . '.png';
 
         $this->bashCopy[] = 'mkdir -p ' . dirname($this->chapter . '/CG/' . $destination) . ' && cp ps3/e/' . $cg . '.png ' . $this->chapter . '/CG/' . $destination;
     }
 
     private function addBashCopyForBG(string $bg): void
     {
-        $destination = 'bg/' . $bg . '.png';
+        $destination = 'background/' . $bg . '.png';
 
         $this->bashCopy[] = 'mkdir -p ' . dirname($this->chapter . '/CG/' . $destination) . ' && cp ps3/' . $bg . '.png ' . $this->chapter . '/CG/' . $destination;
     }
