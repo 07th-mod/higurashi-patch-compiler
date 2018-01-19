@@ -382,7 +382,7 @@ class LipSync extends Command
 
     private function getCharacterNumberForVoice(string $voice): int
     {
-        if ($voice === '') {
+        if ($voice === '' || Strings::startsWith($voice, 's00/n/')) {
             return 0;
         }
 
