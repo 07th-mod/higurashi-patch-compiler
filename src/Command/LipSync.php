@@ -153,6 +153,8 @@ class LipSync extends Command
 
     private $bgRules = [];
 
+    private $cgRules = [];
+
     private $bashCopy = [];
 
     private $errors = [];
@@ -195,13 +197,19 @@ class LipSync extends Command
             $bg = $match[3];
 
             if (Strings::startsWith($bg, 'cg_')) {
-                $cg =  Strings::substring($bg, 3);
+                $cg = Strings::substring($bg, 3);
 
-                $line = sprintf('%s%s("cg/%s", %s', $match[1], $match[2], $cg, $match[4]) . "\n";
+                $line = sprintf('%s%s("scene/%s", %s', $match[1], $match[2], $cg, $match[4]) . "\n";
+
+                $this->addBashCopyForCG($cg);
+            } elseif (array_key_exists($bg, $this->cgRules)) {
+                $cg =  $this->cgRules[$bg];
+
+                $line = sprintf('%s%s("scene/%s", %s', $match[1], $match[2], $cg, $match[4]) . "\n";
 
                 $this->addBashCopyForCG($cg);
             } elseif (array_key_exists($bg, $this->bgRules)) {
-                $line = sprintf('%s%s("bg/%s", %s', $match[1], $match[2], $this->bgRules[$bg], $match[4]) . "\n";
+                $line = sprintf('%s%s("background/%s", %s', $match[1], $match[2], $this->bgRules[$bg], $match[4]) . "\n";
 
                 $this->addBashCopyForBG($this->bgRules[$bg]);
             } else {
@@ -210,7 +218,7 @@ class LipSync extends Command
                     printf('Rule for background "%s" not found.' . PHP_EOL, $bg);
                 }
 
-                $line = sprintf('%s%s("bg/%s", %s', $match[1], $match[2], Strings::lower($bg), $match[4]) . "\n";
+                $line = sprintf('%s%s("background/%s", %s', $match[1], $match[2], Strings::lower($bg), $match[4]) . "\n";
 
                 $this->addBashCopyForOriginal($bg);
             }
@@ -219,8 +227,14 @@ class LipSync extends Command
         if ($match = Strings::match($line, '~^(\s++)(DrawBustshot|DrawBustshotWithFiltering)\(\s*+([0-9]++)\s*+,\s*+"([^"]++)",(.*)$~')) {
             $bg = $match[4];
 
-            if (array_key_exists($bg, $this->bgRules)) {
-                $line = sprintf('%s%s(%d, "bg/%s", %s', $match[1], $match[2], $match[3], $this->bgRules[$bg], $match[5]) . "\n";
+            if (array_key_exists($bg, $this->cgRules)) {
+                $cg =  $this->cgRules[$bg];
+
+                $line = sprintf('%s%s("scene/%s", %s', $match[1], $match[2], $cg, $match[4]) . "\n";
+
+                $this->addBashCopyForCG($cg);
+            } elseif (array_key_exists($bg, $this->bgRules)) {
+                $line = sprintf('%s%s(%d, "background/%s", %s', $match[1], $match[2], $match[3], $this->bgRules[$bg], $match[5]) . "\n";
 
                 $this->addBashCopyForBG($this->bgRules[$bg]);
             } else {
@@ -229,7 +243,7 @@ class LipSync extends Command
                     printf('Rule for background "%s" not found.' . PHP_EOL, $bg);
                 }
 
-                $line = sprintf('%s%s(%d, "bg/%s", %s', $match[1], $match[2], $match[3], Strings::lower($bg), $match[5]) . "\n";
+                $line = sprintf('%s%s(%d, "background/%s", %s', $match[1], $match[2], $match[3], Strings::lower($bg), $match[5]) . "\n";
 
                 $this->addBashCopyForOriginal($bg);
             }
@@ -253,6 +267,10 @@ class LipSync extends Command
         }
 
         $this->loadBGsCsv(__DIR__ . '/../../data/bgs/' . $this->chapter . '.csv');
+
+        if ($this->chapter === 'onikakushi') {
+            $this->loadBGsCsv(__DIR__ . '/../../data/cgs/' . $this->chapter . '.csv');
+        }
     }
 
     private function finish(): void
@@ -283,6 +301,17 @@ class LipSync extends Command
             }
 
             $this->bgRules[$data[0]] = $data[1] ?? $data[0];
+        }
+    }
+
+    private function loadCGsCsv(string $file): void
+    {
+        foreach ($this->loadCsv($file) as $data) {
+            if (isset($this->cgRules[$data[0]])) {
+                throw new \Exception(sprintf('Duplicate rule found for CG "%s".', $data[0]));
+            }
+
+            $this->cgRules[$data[0]] = $data[1] ?? $data[0];
         }
     }
 
