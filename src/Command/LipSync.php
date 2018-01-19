@@ -210,6 +210,8 @@ class LipSync extends Command
                     printf('Rule for background "%s" not found.' . PHP_EOL, $bg);
                 }
 
+                $line = sprintf('%s%s("bg/%s", %s', $match[1], $match[2], Strings::lower($bg), $match[4]) . "\n";
+
                 $this->addBashCopyForOriginal($bg);
             }
         }
@@ -226,6 +228,8 @@ class LipSync extends Command
                     $this->errors[$bg] = true;
                     printf('Rule for background "%s" not found.' . PHP_EOL, $bg);
                 }
+
+                $line = sprintf('%s%s(%d, "bg/%s", %s', $match[1], $match[2], $match[3], Strings::lower($bg), $match[5]) . "\n";
 
                 $this->addBashCopyForOriginal($bg);
             }
@@ -373,7 +377,7 @@ class LipSync extends Command
 
         $this->addBashCopyForSprite($directory, $prefix, $sprite, $original, $expression);
 
-        return [$directory . $prefix . Strings::lower($sprite), $expression];
+        return [$directory . $prefix . $this->formatSpriteName($sprite), $expression];
     }
 
     private function getCharacterNumberForVoice(string $voice): int
@@ -414,6 +418,19 @@ class LipSync extends Command
         return $character;
     }
 
+    private function formatSpriteName(string $name): string
+    {
+        $name = Strings::replace(
+            $name,
+            '~([^_])([A-Z])~',
+            function (array $matches): string {
+                return $matches[1] . '_' . $matches[2];
+            }
+        );
+
+        return Strings::lower($name);
+    }
+
     private function addBashCopyForSprite(string $directory, string $prefix, string $sprite, string $original, string $expression): void
     {
         switch ($prefix) {
@@ -429,15 +446,15 @@ class LipSync extends Command
 
         $size = $directory === 'portrait/' ? 'l/' : 'm/';
 
-        $destination = $directory . $prefix . $sprite . '%s.png';
+        $destination = $directory . $prefix . $this->formatSpriteName($sprite) . '%s.png';
 
-        $command = 'mkdir -p ' . dirname($this->chapter . '/CG/' . $destination) . ' && cp sprites/' . $weather . $size . $sprite . '%s.png ' . $this->chapter . '/CG/' . Strings::lower($destination);
+        $command = 'mkdir -p ' . dirname($this->chapter . '/CG/' . $destination) . ' && cp sprites/' . $weather . $size . $sprite . '%s.png ' . $this->chapter . '/CG/' . $destination;
 
         $this->bashCopy[] = sprintf($command, 0, 0);
         $this->bashCopy[] = sprintf($command, 1, 1);
         $this->bashCopy[] = sprintf($command, 2, 2);
 
-        $this->bashCopy[] = sprintf('mkdir -p ' . dirname($this->chapter . '/CGAlt/' . $destination) . ' && cp ' . $this->chapter . '-old/CGAlt/' . $original . '.png ' .  $this->chapter . '/CGAlt/' . Strings::lower($destination), $expression);
+        $this->bashCopy[] = sprintf('mkdir -p ' . dirname($this->chapter . '/CGAlt/' . $destination) . ' && cp ' . $this->chapter . '-old/CGAlt/' . $original . '.png ' .  $this->chapter . '/CGAlt/' . $destination, $expression);
     }
 
     private function addBashCopyForCG(string $cg): void
@@ -456,7 +473,7 @@ class LipSync extends Command
 
     private function addBashCopyForOriginal(string $image): void
     {
-        $destination = $image . '.png';
+        $destination = Strings::lower($image) . '.png';
 
         $this->bashCopy[] = 'mkdir -p ' . dirname($this->chapter . '/CG/' . $destination) . ' && cp ' . $this->chapter . '-old/CG/' . $image . '.png ' . $this->chapter . '/CG/' . $destination;
     }
