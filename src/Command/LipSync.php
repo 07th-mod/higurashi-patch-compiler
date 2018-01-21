@@ -218,7 +218,7 @@ class LipSync extends Command
                     printf('Rule for background "%s" not found.' . PHP_EOL, $bg);
                 }
 
-                $line = sprintf('%s%s("background/%s", %s', $match[1], $match[2], Strings::lower($bg), $match[4]) . "\n";
+                $line = sprintf('%s%s("%s", %s', $match[1], $match[2], Strings::lower($bg), $match[4]) . "\n";
 
                 $this->addBashCopyForOriginal($bg);
             }
@@ -243,7 +243,7 @@ class LipSync extends Command
                     printf('Rule for background "%s" not found.' . PHP_EOL, $bg);
                 }
 
-                $line = sprintf('%s%s(%d, "background/%s", %s', $match[1], $match[2], $match[3], Strings::lower($bg), $match[5]) . "\n";
+                $line = sprintf('%s%s(%d, "%s", %s', $match[1], $match[2], $match[3], Strings::lower($bg), $match[5]) . "\n";
 
                 $this->addBashCopyForOriginal($bg);
             }
