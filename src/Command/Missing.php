@@ -86,11 +86,11 @@ class Missing extends Command
             $this->requireFile('CG', $match[1] . '.png');
         }
 
-        if ($match = Strings::match($line, '~^(?:\s++)(?:ModDrawCharacter|ModDrawCharacterWithFiltering)\(\s*+(?:[0-9]++)\s*+,\s*+(?:[0-9]++)\s*+,\s*+"([^"]++)\s*+,\s*+([0-9]++)"~')) {
+        if ($match = Strings::match($line, '~^(?:\s++)(?:ModDrawCharacter|ModDrawCharacterWithFiltering)\(\s*+(?:[0-9]++)\s*+,\s*+(?:[0-9]++)\s*+,\s*+"([^"]++)"\s*+,\s*+"([0-9]++)"~')) {
             $this->requireFile('CG', $match[1] . 0 . '.png');
             $this->requireFile('CG', $match[1] . 1 . '.png');
             $this->requireFile('CG', $match[1] . 2 . '.png');
-            if (Strings::startsWith('sprite', $match[1]) || Strings::startsWith('portrait', $match[1])) {
+            if (Strings::startsWith($match[1], 'sprite') || Strings::startsWith($match[1], 'portrait')) {
                 $this->requireFile('CGAlt', $match[1] . $match[2] . '.png');
             }
         }
