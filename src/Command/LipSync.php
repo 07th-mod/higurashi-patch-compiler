@@ -82,6 +82,8 @@ class LipSync extends Command
         'toketu' => 0,
         'no_data' => 0,
         'nort' => 0,
+        'oni_' => 0,
+        'waku_' => 0,
 
         'kei' => 1,
         're' => 2,
@@ -129,6 +131,8 @@ class LipSync extends Command
     ];
 
     private $ignoredFiles = [
+        '',
+        'alphaimage',
         'black',
         'cinema',
         'Title02',
@@ -147,6 +151,10 @@ class LipSync extends Command
         'e1',
         '203a',
         '203b',
+        'hina1_1',
+        'hina1_2',
+        'hina1_3',
+        'hina1_4',
     ];
 
     private $spriteRules = [];
@@ -171,7 +179,7 @@ class LipSync extends Command
             $line = sprintf('%sModPlayVoiceLS(%d, %d, "%s", %d, TRUE);', $match[1], $match[2], $this->getCharacterNumberForVoice($match[3]), $match[3], $match[4]) . "\n";
         }
 
-        if ($match = Strings::match($line, '~^(\s++)DrawBustshot\(\s*+([0-9]++)\s*+,\s*+"([^"]++)",(.*)$~')) {
+        if ($match = Strings::match($line, '~^(\s++)DrawBustshot\(\s*+([0-9]++)\s*+,\s*+"([^"]*+)",(.*)$~')) {
             if (in_array($match[3], $this->ignoredFiles, true)) {
                 $ignored = true;
             } else {
@@ -180,7 +188,7 @@ class LipSync extends Command
             }
         }
 
-        if ($match = Strings::match($line, '~^(\s++)DrawBustshotWithFiltering\(\s*+([0-9]++)\s*+,\s*+"([^"]++)",(.*)$~')) {
+        if ($match = Strings::match($line, '~^(\s++)DrawBustshotWithFiltering\(\s*+([0-9]++)\s*+,\s*+"([^"]*+)",(.*)$~')) {
             if (in_array($match[3], $this->ignoredFiles, true)) {
                 $ignored = true;
             } else {
@@ -189,11 +197,11 @@ class LipSync extends Command
             }
         }
 
-        if (Strings::contains($line, 'PlayVoice(') || (Strings::contains($line, 'DrawBustshot') && ! $ignored)) {
+        if ((Strings::contains($line, 'PlayVoice(') || (Strings::contains($line, 'DrawBustshot') && ! $ignored)) && ! Strings::match($line, '~\s*+//~')) {
             throw new \Exception(sprintf('Cannot parse line "%s:%d".', $filename, $lineNumber));
         }
 
-        if ($match = Strings::match($line, '~^(\s++)(DrawBG|DrawScene|DrawSceneWithMask)\(\s*+"([^"]++)",(.*)$~')) {
+        if ($match = Strings::match($line, '~^(\s++)(DrawBG|DrawScene|DrawSceneWithMask)\(\s*+"([^"]*+)",(.*)$~')) {
             $bg = $match[3];
             $rest = Strings::trim($match[4]);
 
