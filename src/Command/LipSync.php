@@ -157,6 +157,16 @@ class LipSync extends Command
         'hina1_4',
     ];
 
+    private $textFilePrefixes = [
+        'onik0',
+        'tyuui',
+        'si_onikakusi',
+        't_ep',
+        'tata0',
+        'tatari_list',
+        'si_tatarigorosi',
+    ];
+
     private $spriteRules = [];
 
     private $bgRules = [];
@@ -227,9 +237,11 @@ class LipSync extends Command
                     printf('Rule for background "%s" not found.' . PHP_EOL, $bg);
                 }
 
-                $line = sprintf('%s%s("%s", %s', $match[1], $match[2], Strings::lower($bg), $rest) . "\n";
+                $bgDestination = $this->isTextFile($bg) ? 'text/' . Strings::lower($bg) : Strings::lower($bg);
 
-                $this->addBashCopyForOriginal($bg);
+                $line = sprintf('%s%s("%s", %s', $match[1], $match[2], $bgDestination, $rest) . "\n";
+
+                $this->addBashCopyForOriginal($bg, $this->isTextFile($bg) ? 'text' : '');
             }
         }
 
@@ -253,9 +265,11 @@ class LipSync extends Command
                     printf('Rule for background "%s" not found.' . PHP_EOL, $bg);
                 }
 
-                $line = sprintf('%s%s(%d, "%s", %s', $match[1], $match[2], $match[3], Strings::lower($bg), $rest) . "\n";
+                $bgDestination = $this->isTextFile($bg) ? 'text/' . Strings::lower($bg) : Strings::lower($bg);
 
-                $this->addBashCopyForOriginal($bg);
+                $line = sprintf('%s%s(%d, "%s", %s', $match[1], $match[2], $match[3], $bgDestination, $rest) . "\n";
+
+                $this->addBashCopyForOriginal($bg, $this->isTextFile($bg) ? 'text' : '');
             }
         }
 
@@ -510,14 +524,25 @@ class LipSync extends Command
         $this->bashCopy[] = 'mkdir -p ' . dirname($this->chapter . '/CG/' . $destination) . ' && cp ps3/' . $bg . '.png ' . $this->chapter . '/CG/' . $destination;
     }
 
-    private function addBashCopyForOriginal(string $image): void
+    private function addBashCopyForOriginal(string $image, string $targeDirectory = ''): void
     {
-        $destination = Strings::lower($image) . '.png';
+        $destination = ($targeDirectory ? $targeDirectory . '/' : '') . Strings::lower($image) . '.png';
 
         $this->bashCopy[] = 'mkdir -p ' . dirname($this->chapter . '/CG/' . $destination) . ' && cp ' . $this->chapter . '-old/CG/' . $image . '.png ' . $this->chapter . '/CG/' . $destination;
 
-        $destination = Strings::lower($image) . '_j.png';
+        $destination = ($targeDirectory ? $targeDirectory . '/' : '') . Strings::lower($image) . '_j.png';
 
         $this->bashCopy[] = 'mkdir -p ' . dirname($this->chapter . '/CG/' . $destination) . ' && cp ' . $this->chapter . '-old/CG/' . $image . '_j.png ' . $this->chapter . '/CG/' . $destination;
+    }
+
+    private function isTextFile(string $bg): bool
+    {
+        foreach ($this->textFilePrefixes as $prefix) {
+            if (Strings::startsWith($bg, $prefix)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
