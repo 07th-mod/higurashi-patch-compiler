@@ -252,7 +252,7 @@ class LipSync extends Command
             if (array_key_exists($bg, $this->cgRules)) {
                 $cg = $this->cgRules[$bg];
 
-                $line = sprintf('%s%s("scene/%s", %s', $match[1], $match[2], $cg, $rest) . "\n";
+                $line = sprintf('%s%s(%d, "scene/%s", %s', $match[1], $match[2], $match[3], $cg, $rest) . "\n";
 
                 $this->addBashCopyForCG($cg);
             } elseif (array_key_exists($bg, $this->bgRules)) {
