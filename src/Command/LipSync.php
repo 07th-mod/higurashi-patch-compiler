@@ -190,7 +190,7 @@ class LipSync extends Command
         }
 
         if ($match = Strings::match($line, '~^(\s++)DrawBustshot\(\s*+([0-9]++)\s*+,\s*+"([^"]*+)",(.*)$~')) {
-            if (in_array($match[3], $this->ignoredFiles, true)) {
+            if ($this->ignoreDrawBustshot($match[3])) {
                 $ignored = true;
             } else {
                 [$sprite, $expression] = $this->getNewSpriteName($match[3]);
@@ -199,7 +199,7 @@ class LipSync extends Command
         }
 
         if ($match = Strings::match($line, '~^(\s++)DrawBustshotWithFiltering\(\s*+([0-9]++)\s*+,\s*+"([^"]*+)",(.*)$~')) {
-            if (in_array($match[3], $this->ignoredFiles, true)) {
+            if ($this->ignoreDrawBustshot($match[3])) {
                 $ignored = true;
             } else {
                 [$sprite, $expression] = $this->getNewSpriteName($match[3]);
@@ -446,6 +446,11 @@ class LipSync extends Command
         }
 
         return (int) $match[1];
+    }
+
+    private function ignoreDrawBustshot(string $sprite): bool
+    {
+        return in_array($sprite, $this->ignoredFiles, true) || (Strings::contains($sprite, '/') && !Strings::match($sprite, '~^(?:[Nn]ight|[Ss]unset)/~'));
     }
 
     private function getCharacterNumberForSprite(string $sprite): int
