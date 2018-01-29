@@ -165,6 +165,7 @@ class LipSync extends Command
         'tata0',
         'tatari_list',
         'si_tatarigorosi',
+        'monologue_',
     ];
 
     private $spriteRules = [];
