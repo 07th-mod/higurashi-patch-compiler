@@ -168,6 +168,49 @@ class LipSync extends Command
         'monologue_',
     ];
 
+    private $forceCopy = [
+        '2',
+        '4',
+        '5',
+        'Title02',
+        'Title02_j',
+        'aa',
+        'black',
+        'c',
+        'centerblind',
+        'cinema',
+        'down',
+        'end_1',
+        'end_1_j',
+        'end_2',
+        'end_2_j',
+        'end_3',
+        'end_3_j',
+        'ex_jump',
+        'ex_otsu',
+        'ex_tips',
+        'haikei-',
+        'haikei',
+        'left',
+        'logo',
+        'logo_j',
+        'logomask',
+        'm1',
+        'mangagamer',
+        'mask1013',
+        'mask_1900',
+        'no_data',
+        'right',
+        'scenario_a',
+        'scenario_b',
+        'scenario_b_j',
+        'scenario_c',
+        'scenario_c_j',
+        'up',
+        'white',
+        'x',
+    ];
+
     private $spriteRules = [];
 
     private $bgRules = [];
@@ -344,6 +387,10 @@ class LipSync extends Command
 
     private function finish(): void
     {
+        foreach ($this->forceCopy as $file) {
+            $this->addBashCopyForOriginal($file);
+        }
+
         $bashCopy = array_unique($this->bashCopy);
 
         $file = sprintf('%s/%s/%s.sh', TEMP_DIR, strtolower((new \ReflectionClass($this))->getShortName()), $this->chapter);
