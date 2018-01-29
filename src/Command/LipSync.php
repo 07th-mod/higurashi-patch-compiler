@@ -185,11 +185,11 @@ class LipSync extends Command
             return $line;
         }
 
-        if ($match = Strings::match($line, '~^(\s++)PlayVoice\(\s*+([0-9]++)\s*+,\s*+"([^"]++)?",\s*+([0-9]++)\);$~')) {
+        if ($match = Strings::match($line, '~^(\s++)PlayVoice\(\s*+([0-9]++)\s*+,\s*+"([^"]++)?"\s*+,\s*+([0-9]++)\);$~')) {
             $line = sprintf('%sModPlayVoiceLS(%d, %d, "%s", %d, TRUE);', $match[1], $match[2], $this->getCharacterNumberForVoice($match[3]), $match[3], $match[4]) . "\n";
         }
 
-        if ($match = Strings::match($line, '~^(\s++)DrawBustshot\(\s*+([0-9]++)\s*+,\s*+"([^"]*+)",(.*)$~')) {
+        if ($match = Strings::match($line, '~^(\s++)DrawBustshot\(\s*+([0-9]++)\s*+,\s*+"([^"]*+)"\s*+,(.*)$~')) {
             if ($this->ignoreDrawBustshot($match[3])) {
                 $ignored = true;
             } else {
@@ -198,79 +198,123 @@ class LipSync extends Command
             }
         }
 
-        if ($match = Strings::match($line, '~^(\s++)DrawBustshotWithFiltering\(\s*+([0-9]++)\s*+,\s*+"([^"]*+)",(.*)$~')) {
+        if ($match = Strings::match($line, '~^(\s++)DrawBustshotWithFiltering\(\s*+([0-9]++)\s*+,\s*+"([^"]*+)"\s*+,\s*+"([^"]*+)"\s*+,(.*)$~')) {
+            $effect = $match[4];
+
             if ($this->ignoreDrawBustshot($match[3])) {
                 $ignored = true;
             } else {
                 [$sprite, $expression] = $this->getNewSpriteName($match[3]);
-                $line = sprintf('%sModDrawCharacterWithFiltering(%d, %d, "%s", "%s",%s', $match[1], $match[2], $this->getCharacterNumberForSprite($match[3]), $sprite, $expression, $match[4]) . "\n";
+                $line = sprintf('%sModDrawCharacterWithFiltering(%d, %d, "%s", "%s", "%s",%s', $match[1], $match[2], $this->getCharacterNumberForSprite($match[3]), $sprite, $expression, $effect, $match[5]) . "\n";
             }
+
+            $this->addBashCopyForOriginal($effect);
         }
 
         if ((Strings::contains($line, 'PlayVoice(') || (Strings::contains($line, 'DrawBustshot') && ! $ignored)) && ! Strings::match($line, '~\s*+//~')) {
             throw new \Exception(sprintf('Cannot parse line "%s:%d".', $filename, $lineNumber));
         }
 
-        if ($match = Strings::match($line, '~^(\s++)(DrawBG|DrawScene|DrawSceneWithMask)\(\s*+"([^"]*+)",(.*)$~')) {
-            $bg = $match[3];
-            $rest = Strings::trim($match[4]);
+        if ($match = Strings::match($line, '~^(\s++)DrawBG\(\s*+"([^"]*+)"\s*+,(.*)$~')) {
+            $rest = Strings::trim($match[3]);
 
-            if (Strings::startsWith($bg, 'cg_')) {
-                $cg = Strings::substring($bg, 3);
-
-                $line = sprintf('%s%s("scene/%s", %s', $match[1], $match[2], $cg, $rest) . "\n";
-
-                $this->addBashCopyForCG($cg);
-            } elseif (array_key_exists($bg, $this->cgRules)) {
-                $cg = $this->cgRules[$bg];
-
-                $line = sprintf('%s%s("scene/%s", %s', $match[1], $match[2], $cg, $rest) . "\n";
-
-                $this->addBashCopyForCG($cg);
-            } elseif (array_key_exists($bg, $this->bgRules)) {
-                $line = sprintf('%s%s("background/%s", %s', $match[1], $match[2], $this->bgRules[$bg], $rest) . "\n";
-
-                $this->addBashCopyForBG($this->bgRules[$bg]);
-            } else {
-                if (!array_key_exists($bg, $this->errors)) {
-                    $this->errors[$bg] = true;
-                    printf('Rule for background "%s" not found.' . PHP_EOL, $bg);
-                }
-
-                $bgDestination = $this->isTextFile($bg) ? 'text/' . Strings::lower($bg) : Strings::lower($bg);
-
-                $line = sprintf('%s%s("%s", %s', $match[1], $match[2], $bgDestination, $rest) . "\n";
-
-                $this->addBashCopyForOriginal($bg, $this->isTextFile($bg) ? 'text' : '');
-            }
+            $line = $this->processDrawScene($match, 'DrawBG', $rest);
         }
 
-        if ($match = Strings::match($line, '~^(\s++)(DrawBustshot|DrawBustshotWithFiltering)\(\s*+([0-9]++)\s*+,\s*+"([^"]++)",(.*)$~')) {
-            $bg = $match[4];
-            $rest = Strings::trim($match[5]);
+        if ($match = Strings::match($line, '~^(\s++)DrawScene\(\s*+"([^"]*+)"\s*+,(.*)$~')) {
+            $rest = Strings::trim($match[3]);
 
-            if (array_key_exists($bg, $this->cgRules)) {
-                $cg = $this->cgRules[$bg];
+            $line = $this->processDrawScene($match, 'DrawScene', $rest);
+        }
 
-                $line = sprintf('%s%s(%d, "scene/%s", %s', $match[1], $match[2], $match[3], $cg, $rest) . "\n";
+        if ($match = Strings::match($line, '~^(\s++)DrawSceneWithMask\(\s*+"([^"]*+)"\s*+,\s*+"([^"]*+)"\s*+,(.*)$~')) {
+            $effect = $match[3];
+            $rest = sprintf('"%s", ', $effect) . Strings::trim($match[4]);
 
-                $this->addBashCopyForCG($cg);
-            } elseif (array_key_exists($bg, $this->bgRules)) {
-                $line = sprintf('%s%s(%d, "background/%s", %s', $match[1], $match[2], $match[3], $this->bgRules[$bg], $rest) . "\n";
+            $line = $this->processDrawScene($match, 'DrawSceneWithMask', $rest);
 
-                $this->addBashCopyForBG($this->bgRules[$bg]);
-            } else {
-                if (!array_key_exists($bg, $this->errors)) {
-                    $this->errors[$bg] = true;
-                    printf('Rule for background "%s" not found.' . PHP_EOL, $bg);
-                }
+            $this->addBashCopyForOriginal($effect);
+        }
 
-                $bgDestination = $this->isTextFile($bg) ? 'text/' . Strings::lower($bg) : Strings::lower($bg);
+        if ($match = Strings::match($line, '~^(\s++)DrawBustshot\(\s*+([0-9]++)\s*+,\s*+"([^"]++)"\s*+,(.*)$~')) {
+            $rest = Strings::trim($match[4]);
 
-                $line = sprintf('%s%s(%d, "%s", %s', $match[1], $match[2], $match[3], $bgDestination, $rest) . "\n";
+            $line = $this->processDrawBustShot($match, 'DrawBustshot', $rest);
+        }
 
-                $this->addBashCopyForOriginal($bg, $this->isTextFile($bg) ? 'text' : '');
+        if ($match = Strings::match($line, '~^(\s++)DrawBustshotWithFiltering\(\s*+([0-9]++)\s*+,\s*+"([^"]++)"\s*+,\s*+"([^"]++)"\s*+,(.*)$~')) {
+            $effect = $match[4];
+            $rest = sprintf('"%s", ', $effect) . Strings::trim($match[5]);
+
+            $line = $this->processDrawBustShot($match, 'DrawBustshotWithFiltering', $rest);
+
+            $this->addBashCopyForOriginal($effect);
+        }
+
+        return $line;
+    }
+
+    private function processDrawScene(array $match, string $function, string $rest): string
+    {
+        $bg = $match[2];
+
+        if (Strings::startsWith($bg, 'cg_')) {
+            $cg = Strings::substring($bg, 3);
+
+            $line = sprintf('%s%s("scene/%s", %s', $match[1], $function, $cg, $rest) . "\n";
+
+            $this->addBashCopyForCG($cg);
+        } elseif (array_key_exists($bg, $this->cgRules)) {
+            $cg = $this->cgRules[$bg];
+
+            $line = sprintf('%s%s("scene/%s", %s', $match[1], $function, $cg, $rest) . "\n";
+
+            $this->addBashCopyForCG($cg);
+        } elseif (array_key_exists($bg, $this->bgRules)) {
+            $line = sprintf('%s%s("background/%s", %s', $match[1], $function, $this->bgRules[$bg], $rest) . "\n";
+
+            $this->addBashCopyForBG($this->bgRules[$bg]);
+        } else {
+            if (!array_key_exists($bg, $this->errors)) {
+                $this->errors[$bg] = true;
+                printf('Rule for background "%s" not found.' . PHP_EOL, $bg);
             }
+
+            $bgDestination = $this->isTextFile($bg) ? 'text/' . Strings::lower($bg) : Strings::lower($bg);
+
+            $line = sprintf('%s%s("%s", %s', $match[1], $function, $bgDestination, $rest) . "\n";
+
+            $this->addBashCopyForOriginal($bg, $this->isTextFile($bg) ? 'text' : '');
+        }
+
+        return $line;
+    }
+
+    private function processDrawBustShot(array $match, string $function, string $rest): string
+    {
+        $bg = $match[3];
+
+        if (array_key_exists($bg, $this->cgRules)) {
+            $cg = $this->cgRules[$bg];
+
+            $line = sprintf('%s%s(%d, "scene/%s", %s', $match[1], $function, $match[2], $cg, $rest) . "\n";
+
+            $this->addBashCopyForCG($cg);
+        } elseif (array_key_exists($bg, $this->bgRules)) {
+            $line = sprintf('%s%s(%d, "background/%s", %s', $match[1], $function, $match[2], $this->bgRules[$bg], $rest) . "\n";
+
+            $this->addBashCopyForBG($this->bgRules[$bg]);
+        } else {
+            if (!array_key_exists($bg, $this->errors)) {
+                $this->errors[$bg] = true;
+                printf('Rule for background "%s" not found.' . PHP_EOL, $bg);
+            }
+
+            $bgDestination = $this->isTextFile($bg) ? 'text/' . Strings::lower($bg) : Strings::lower($bg);
+
+            $line = sprintf('%s%s(%d, "%s", %s', $match[1], $function, $match[2], $bgDestination, $rest) . "\n";
+
+            $this->addBashCopyForOriginal($bg, $this->isTextFile($bg) ? 'text' : '');
         }
 
         return $line;
