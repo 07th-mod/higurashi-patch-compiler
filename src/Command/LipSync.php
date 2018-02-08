@@ -653,12 +653,16 @@ class LipSync extends Command
 
     private function addBashCopyForSpectrum(string $voice): void
     {
+        if (!$voice) {
+            return;
+        }
+
         $destination = $voice . '.txt';
 
         if (Strings::startsWith($voice, 'ps2/')) {
             $source = Strings::substring($voice, 8);
 
-            $this->bashCopy[] = 'mkdir -p ' . dirname($this->chapter . '/spectrum/' . $destination) . ' && cp spectrum/ps2/' . $source . '.txt ' . $this->chapter . '/spectrum/' . $destination;
+            $this->bashCopy[] = 'mkdir -p ' . dirname($this->chapter . '/spectrum/' . $destination) . ' && cp "spectrum/ps2/' . $source . '.txt" "' . $this->chapter . '/spectrum/' . $destination . '"';
         } else {
             $this->bashCopy[] = 'mkdir -p ' . dirname($this->chapter . '/spectrum/' . $destination) . ' && cp spectrum/ps3/' . $voice . '.txt ' . $this->chapter . '/spectrum/' . $destination;
         }
