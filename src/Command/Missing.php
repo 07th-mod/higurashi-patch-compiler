@@ -62,12 +62,14 @@ class Missing extends Command
 
     private function processLine(string $line): void
     {
-        if ($match = Strings::match($line, '~^(?:\s++)PlayVoice\(\s*+(?:[0-9]++)\s*+,\s*+"([^"]++)?"~')) {
+        if ($match = Strings::match($line, '~^(?:\s++)PlayVoice\(\s*+(?:[0-9]++)\s*+,\s*+"([^"]++)"~')) {
             $this->requireFile('voice', $match[1] . '.ogg');
+            $this->requireFile('spectrum', $match[1] . '.txt');
         }
 
-        if ($match = Strings::match($line, '~^(?:\s++)ModPlayVoiceLS\(\s*+(?:[0-9]++)\s*+,\s*+(?:[0-9]++)\s*+,\s*+"([^"]++)?"~')) {
+        if ($match = Strings::match($line, '~^(?:\s++)ModPlayVoiceLS\(\s*+(?:[0-9]++)\s*+,\s*+(?:[0-9]++)\s*+,\s*+"([^"]++)"~')) {
             $this->requireFile('voice', $match[1] . '.ogg');
+            $this->requireFile('spectrum', $match[1] . '.txt');
         }
 
         if ($match = Strings::match($line, '~^(?:\s++)PlaySE\(\s*+(?:[0-9]++)\s*+,\s*+"([^"]++)?"~')) {
