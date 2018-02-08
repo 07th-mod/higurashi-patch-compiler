@@ -371,6 +371,10 @@ class LipSync extends Command
             $this->numbers['rim_'] = 27;
         }
 
+        if ($this->chapter === 'watanagashi') {
+            $this->loadBGsCsv(__DIR__ . '/../../data/bgs/onikakushi.csv');
+        }
+
         $this->loadBGsCsv(__DIR__ . '/../../data/bgs/' . $this->chapter . '.csv');
 
         if ($this->chapter === 'onikakushi') {
