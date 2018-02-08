@@ -525,6 +525,18 @@ class LipSync extends Command
 
         [$sprite, $expression] = $this->spriteRules[$sprite];
 
+        if ($directory === 'portrait/') {
+            // TODO: Maybe simply replace re1b_ with re1a_.
+
+            if ($sprite === 're1b_waraiB1_') {
+                $sprite = 're1a_waraiA1_';
+            }
+
+            if ($sprite === 're1b_nandeB1_') {
+                $sprite = 're1a_nandeA1_';
+            }
+        }
+
         $this->addBashCopyForSprite($directory, $prefix, $sprite, $original, $expression);
 
         return [$directory . $prefix . $this->formatSpriteName($sprite), $expression];
