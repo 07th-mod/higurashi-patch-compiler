@@ -228,6 +228,8 @@ class LipSync extends Command
 
         if ($match = Strings::match($line, '~^(\s++)PlayVoice\(\s*+([0-9]++)\s*+,\s*+"([^"]++)?"\s*+,\s*+([0-9]++)\);$~')) {
             $line = sprintf('%sModPlayVoiceLS(%d, %d, "%s", %d, TRUE);', $match[1], $match[2], $this->getCharacterNumberForVoice($match[3]), $match[3], $match[4]) . "\n";
+
+            $this->addBashCopyForSpectrum($match[3]);
         }
 
         if ($match = Strings::match($line, '~^(\s++)DrawBustshot\(\s*+([0-9]++)\s*+,\s*+"([^"]*+)"\s*+,(.*)$~')) {
@@ -647,6 +649,19 @@ class LipSync extends Command
         $destination = ($targeDirectory ? $targeDirectory . '/' : '') . Strings::lower($image) . '_j.png';
 
         $this->bashCopy[] = 'mkdir -p ' . dirname($this->chapter . '/CG/' . $destination) . ' && cp ' . $this->chapter . '-old/CG/' . $image . '_j.png ' . $this->chapter . '/CG/' . $destination;
+    }
+
+    private function addBashCopyForSpectrum(string $voice): void
+    {
+        $destination = $voice . '.txt';
+
+        if (Strings::startsWith($voice, 'ps2/')) {
+            $source = Strings::substring($voice, 8);
+
+            $this->bashCopy[] = 'mkdir -p ' . dirname($this->chapter . '/spectrum/' . $destination) . ' && cp spectrum/ps2/' . $source . '.txt ' . $this->chapter . '/spectrum/' . $destination;
+        } else {
+            $this->bashCopy[] = 'mkdir -p ' . dirname($this->chapter . '/spectrum/' . $destination) . ' && cp spectrum/ps3/' . $voice . '.txt ' . $this->chapter . '/spectrum/' . $destination;
+        }
     }
 
     private function isTextFile(string $bg): bool
