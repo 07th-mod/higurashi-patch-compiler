@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Higurashi\Command;
 
-use Dibi\Exception;
 use Higurashi\Constants;
 use Higurashi\Helpers;
 use Higurashi\Utils\LineProcessorTrait;
