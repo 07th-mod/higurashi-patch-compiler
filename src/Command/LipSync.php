@@ -299,14 +299,14 @@ class LipSync extends Command
     {
         $bg = $match[2];
 
-        if (Strings::startsWith($bg, 'cg_')) {
-            $cg = Strings::substring($bg, 3);
+        if (array_key_exists($bg, $this->cgRules)) {
+            $cg = $this->cgRules[$bg];
 
             $line = sprintf('%s%s("scene/%s", %s', $match[1], $function, $cg, $rest) . "\n";
 
             $this->addBashCopyForCG($cg);
-        } elseif (array_key_exists($bg, $this->cgRules)) {
-            $cg = $this->cgRules[$bg];
+        } elseif (Strings::startsWith($bg, 'cg_')) {
+            $cg = Strings::substring($bg, 3);
 
             $line = sprintf('%s%s("scene/%s", %s', $match[1], $function, $cg, $rest) . "\n";
 
