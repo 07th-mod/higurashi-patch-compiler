@@ -161,6 +161,8 @@ class LipSync extends Command
         'onik0',
         'tyuui',
         'si_onikakusi',
+        'wata0',
+        'si_Watanagasi',
         't_ep',
         'tata0',
         'tatari_list',
@@ -172,6 +174,7 @@ class LipSync extends Command
         '2',
         '4',
         '5',
+        '07thlogo',
         'Title02',
         'aa',
         'black',
@@ -179,11 +182,13 @@ class LipSync extends Command
         'centerblind',
         'cinema',
         'down',
+        'e1',
         'end_1',
         'end_2',
         'end_3',
         'ex_jump',
         'ex_otsu',
+        'ex_otsu_wata',
         'ex_tips',
         'haikei-',
         'haikei',
@@ -312,16 +317,18 @@ class LipSync extends Command
 
             $this->addBashCopyForBG($this->bgRules[$bg]);
         } else {
-            if (!array_key_exists($bg, $this->errors)) {
+            $isText = $this->isTextFile($bg);
+
+            if (!$isText && !array_key_exists($bg, $this->errors)) {
                 $this->errors[$bg] = true;
                 printf('Rule for background "%s" not found.' . PHP_EOL, $bg);
             }
 
-            $bgDestination = $this->isTextFile($bg) ? 'text/' . Strings::lower($bg) : Strings::lower($bg);
+            $bgDestination = $isText ? 'text/' . Strings::lower($bg) : Strings::lower($bg);
 
             $line = sprintf('%s%s("%s", %s', $match[1], $function, $bgDestination, $rest) . "\n";
 
-            $this->addBashCopyForOriginal($bg, $this->isTextFile($bg) ? 'text' : '');
+            $this->addBashCopyForOriginal($bg, $isText ? 'text' : '');
         }
 
         return $line;
@@ -342,16 +349,18 @@ class LipSync extends Command
 
             $this->addBashCopyForBG($this->bgRules[$bg]);
         } else {
+            $isText = $this->isTextFile($bg);
+
             if (!array_key_exists($bg, $this->errors)) {
                 $this->errors[$bg] = true;
                 printf('Rule for background "%s" not found.' . PHP_EOL, $bg);
             }
 
-            $bgDestination = $this->isTextFile($bg) ? 'text/' . Strings::lower($bg) : Strings::lower($bg);
+            $bgDestination = $isText ? 'text/' . Strings::lower($bg) : Strings::lower($bg);
 
             $line = sprintf('%s%s(%d, "%s", %s', $match[1], $function, $match[2], $bgDestination, $rest) . "\n";
 
-            $this->addBashCopyForOriginal($bg, $this->isTextFile($bg) ? 'text' : '');
+            $this->addBashCopyForOriginal($bg, $isText ? 'text' : '');
         }
 
         return $line;
@@ -377,7 +386,7 @@ class LipSync extends Command
 
         $this->loadBGsCsv(__DIR__ . '/../../data/bgs/' . $this->chapter . '.csv');
 
-        if ($this->chapter === 'onikakushi') {
+        if (in_array($this->chapter, ['onikakushi', 'watanagashi'], true)) {
             $this->loadCGsCsv(__DIR__ . '/../../data/cgs/' . $this->chapter . '.csv');
         }
     }
