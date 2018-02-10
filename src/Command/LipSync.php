@@ -171,6 +171,7 @@ class LipSync extends Command
 
     private $forceCopy = [
         '2',
+        '3',
         '4',
         '5',
         '07thlogo',
@@ -182,12 +183,14 @@ class LipSync extends Command
         'cinema',
         'down',
         'e1',
+        'end',
         'end_1',
         'end_2',
         'end_3',
         'ex_jump',
         'ex_otsu',
         'ex_otsu_wata',
+        'ex_otsu_tata',
         'ex_tips',
         'haikei-',
         'haikei',
@@ -485,7 +488,7 @@ class LipSync extends Command
         }
 
         if (Strings::endsWith($sprite, '_b')) {
-            $prefix = 'Strings/';
+            $prefix = 'sunset/';
             $sprite = Strings::before($sprite, '_b', -1);
         }
 
