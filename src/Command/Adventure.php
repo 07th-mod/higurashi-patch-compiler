@@ -21,7 +21,7 @@ class Adventure extends Command
     protected function configure(): void
     {
         $this
-            ->setName('higurashi:adventure')
+            ->setName('higurashi:adv')
             ->setDescription('Updates a chapter to advanture mode.')
             ->addArgument('chapter', InputArgument::REQUIRED, 'Chapter to update.')
             ->addOption('force', null, InputOption::VALUE_NONE, 'Redownload all resources.');
