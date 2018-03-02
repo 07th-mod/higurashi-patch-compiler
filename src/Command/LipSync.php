@@ -390,7 +390,7 @@ class LipSync extends Command
 
         $this->loadBGsCsv(__DIR__ . '/../../data/bgs/' . $this->chapter . '.csv');
 
-        if (in_array($this->chapter, ['onikakushi', 'watanagashi'], true)) {
+        if (in_array($this->chapter, ['onikakushi', 'watanagashi', 'himatsubushi'], true)) {
             $this->loadCGsCsv(__DIR__ . '/../../data/cgs/' . $this->chapter . '.csv');
         }
     }
