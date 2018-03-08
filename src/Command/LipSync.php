@@ -157,16 +157,19 @@ class LipSync extends Command
     ];
 
     private $textFilePrefixes = [
-        'onik0',
         'tyuui',
         'si_onikakusi',
-        'wata0',
         'si_Watanagasi',
         't_ep',
-        'tata0',
         'tatari_list',
         'si_tatarigorosi',
         'monologue_',
+    ];
+
+    private $tipsFilePrefixes = [
+        'onik0',
+        'wata0',
+        'tata0',
     ];
 
     private $forceCopy = [
@@ -321,18 +324,18 @@ class LipSync extends Command
 
             $this->addBashCopyForBG($this->bgRules[$bg]);
         } else {
-            $isText = $this->isTextFile($bg);
+            $textImagePrefix = $this->getTextImagePrefix($bg);
 
-            if (!$isText && !array_key_exists($bg, $this->errors)) {
+            if (!$textImagePrefix && !array_key_exists($bg, $this->errors)) {
                 $this->errors[$bg] = true;
                 printf('Rule for background "%s" not found.' . PHP_EOL, $bg);
             }
 
-            $bgDestination = $isText ? 'text/' . Strings::lower($bg) : Strings::lower($bg);
+            $bgDestination = $textImagePrefix . Strings::lower($bg);
 
             $line = sprintf('%s%s("%s", %s', $match[1], $function, $bgDestination, $rest) . "\n";
 
-            $this->addBashCopyForOriginal($bg, $isText ? 'text' : '');
+            $this->addBashCopyForOriginal($bg, $textImagePrefix);
         }
 
         return $line;
@@ -353,18 +356,18 @@ class LipSync extends Command
 
             $this->addBashCopyForBG($this->bgRules[$bg]);
         } else {
-            $isText = $this->isTextFile($bg);
+            $textImagePrefix = $this->getTextImagePrefix($bg);
 
             if (!array_key_exists($bg, $this->errors)) {
                 $this->errors[$bg] = true;
                 printf('Rule for background "%s" not found.' . PHP_EOL, $bg);
             }
 
-            $bgDestination = $isText ? 'text/' . Strings::lower($bg) : Strings::lower($bg);
+            $bgDestination = $textImagePrefix . Strings::lower($bg);
 
             $line = sprintf('%s%s(%d, "%s", %s', $match[1], $function, $match[2], $bgDestination, $rest) . "\n";
 
-            $this->addBashCopyForOriginal($bg, $isText ? 'text' : '');
+            $this->addBashCopyForOriginal($bg, $textImagePrefix);
         }
 
         return $line;
@@ -643,13 +646,13 @@ class LipSync extends Command
         $this->bashCopy[] = 'mkdir -p ' . dirname($this->chapter . '/CG/' . $destination) . ' && cp ps3/' . $bg . '.png ' . $this->chapter . '/CG/' . $destination;
     }
 
-    private function addBashCopyForOriginal(string $image, string $targeDirectory = ''): void
+    private function addBashCopyForOriginal(string $image, string $targetDirectory = ''): void
     {
-        $destination = ($targeDirectory ? $targeDirectory . '/' : '') . Strings::lower($image) . '.png';
+        $destination = $targetDirectory . Strings::lower($image) . '.png';
 
         $this->bashCopy[] = 'mkdir -p ' . dirname($this->chapter . '/CG/' . $destination) . ' && cp ' . $this->chapter . '-old/CG/' . $image . '.png ' . $this->chapter . '/CG/' . $destination;
 
-        $destination = ($targeDirectory ? $targeDirectory . '/' : '') . Strings::lower($image) . '_j.png';
+        $destination = $targetDirectory . Strings::lower($image) . '_j.png';
 
         $this->bashCopy[] = 'mkdir -p ' . dirname($this->chapter . '/CG/' . $destination) . ' && cp ' . $this->chapter . '-old/CG/' . $image . '_j.png ' . $this->chapter . '/CG/' . $destination;
     }
@@ -676,14 +679,20 @@ class LipSync extends Command
         }
     }
 
-    private function isTextFile(string $bg): bool
+    private function getTextImagePrefix(string $bg): ?string
     {
         foreach ($this->textFilePrefixes as $prefix) {
             if (Strings::startsWith($bg, $prefix)) {
-                return true;
+                return 'text/';
             }
         }
 
-        return false;
+        foreach ($this->tipsFilePrefixes as $prefix) {
+            if (Strings::startsWith($bg, $prefix)) {
+                return 'tips/';
+            }
+        }
+
+        return null;
     }
 }
