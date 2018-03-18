@@ -679,7 +679,7 @@ class LipSync extends Command
         }
     }
 
-    private function getTextImagePrefix(string $bg): ?string
+    private function getTextImagePrefix(string $bg): string
     {
         foreach ($this->textFilePrefixes as $prefix) {
             if (Strings::startsWith($bg, $prefix)) {
@@ -693,6 +693,6 @@ class LipSync extends Command
             }
         }
 
-        return null;
+        return '';
     }
 }
