@@ -164,12 +164,19 @@ class LipSync extends Command
         'tatari_list',
         'si_tatarigorosi',
         'monologue_',
+        'si_himatubusi',
+        'kenkei',
+        'kouan',
+        'okinomiya',
+        's53',
+        's60',
     ];
 
     private $tipsFilePrefixes = [
         'onik0',
         'wata0',
         'tata0',
+        'hima0',
     ];
 
     private $forceCopy = [
