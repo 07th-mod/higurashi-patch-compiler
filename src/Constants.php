@@ -13,7 +13,9 @@ class Constants
 
     public const PATCHES = [
         'console' => [
-            'console_patch' => 'https://github.com/07th-mod/higurashi-console-arcs/archive/master.zip',
+            // Change to adv-mode when running DllUpdate. Change to dll-update when running LipSync.
+            //'console_patch' => 'https://github.com/07th-mod/higurashi-console-arcs/archive/master.zip',
+            'console_patch' => 'https://github.com/07th-mod/higurashi-console-arcs/archive/adv-mode.zip',
         ],
         'onikakushi' => [
             'onikakushi_patch' => 'https://github.com/07th-mod/onikakushi/archive/master.zip',
