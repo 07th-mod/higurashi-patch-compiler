@@ -292,6 +292,12 @@ class LipSync extends Command
             $this->addBashCopyForOriginal($effect);
         }
 
+        if ($match = Strings::match($line, '~^(\s++)ChangeScene\(\s*+"([^"]*+)"\s*+,(.*)$~')) {
+            $rest = Strings::trim($match[3]);
+
+            $line = $this->processDrawScene($match, 'ChangeScene', $rest);
+        }
+
         if ($match = Strings::match($line, '~^(\s++)DrawBustshot\(\s*+([0-9]++)\s*+,\s*+"([^"]++)"\s*+,(.*)$~')) {
             $rest = Strings::trim($match[4]);
 
