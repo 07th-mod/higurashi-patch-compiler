@@ -336,6 +336,10 @@ class LipSync extends Command
     {
         $bg = $match[2];
 
+        if ($this->chapter === 'meakashi') {
+            $bg = strtolower($bg);
+        }
+
         if (array_key_exists($bg, $this->cgRules)) {
             $cg = $this->cgRules[$bg];
 
@@ -373,6 +377,10 @@ class LipSync extends Command
     private function processDrawBustShot(array $match, string $function, string $rest): string
     {
         $bg = $match[3];
+
+        if ($this->chapter === 'meakashi') {
+            $bg = strtolower($bg);
+        }
 
         if (array_key_exists($bg, $this->cgRules)) {
             $cg = $this->cgRules[$bg];
@@ -495,6 +503,10 @@ class LipSync extends Command
         foreach ($this->loadCsv($file) as $data) {
             if (isset($this->bgRules[$data[0]])) {
                 throw new \Exception(sprintf('Duplicate rule found for BG "%s".', $data[0]));
+            }
+
+            if ($this->chapter === 'meakashi') {
+                $data[0] = strtolower($data[0]);
             }
 
             $this->bgRules[$data[0]] = $data[1] ?? $data[0];
