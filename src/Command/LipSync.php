@@ -201,6 +201,7 @@ class LipSync extends Command
         'ex_otsu',
         'ex_otsu_wata',
         'ex_otsu_tata',
+        'ex_otsu_hima',
         'ex_tips',
         'haikei-',
         'haikei',
@@ -219,6 +220,9 @@ class LipSync extends Command
         'up',
         'white',
         'x',
+        't_ed',
+        'staff01',
+        'staff02',
     ];
 
     private $spriteRules = [];
