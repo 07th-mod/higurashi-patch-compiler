@@ -133,6 +133,7 @@ class LipSync extends Command
         '',
         'alphaimage',
         'black',
+        'white',
         'cinema',
         'Title02',
         'logo',
@@ -154,6 +155,17 @@ class LipSync extends Command
         'hina1_2',
         'hina1_3',
         'hina1_4',
+        'no_data',
+        'title02',
+        'toketu1a',
+        'toketu1b',
+        'toketu1c',
+        'nort_mono1',
+        'nort_mono2',
+        'nort_mono3',
+        'nort_mono4',
+        'nort_mono5',
+        'nort_mono6',
     ];
 
     private $textFilePrefixes = [
@@ -404,6 +416,11 @@ class LipSync extends Command
             $this->numbers['rim_'] = 27;
         }
 
+        if ($this->chapter === 'meakashi') {
+            $this->spriteRules = [];
+            $this->loadMeakashiSpritesCsv(__DIR__ . '/../../data/sprites/meakashi.csv');
+        }
+
         if ($this->chapter === 'watanagashi') {
             $this->loadBGsCsv(__DIR__ . '/../../data/bgs/onikakushi.csv');
         }
@@ -436,6 +453,40 @@ class LipSync extends Command
             }
 
             $this->spriteRules[$data[0]] = [$data[1], $data[2]];
+        }
+    }
+
+    private function loadMeakashiSpritesCsv(string $file): void
+    {
+        foreach ($this->loadCsv($file) as $data) {
+            if (isset($this->spriteRules[$data[0]])) {
+                throw new \Exception(sprintf('Duplicate rule found for sprite "%s".', $data[0]));
+            }
+
+            if ($data[2] === 'y') {
+                $directory = 'portrait/';
+            } elseif ($data[2] === 'n') {
+                $directory = 'sprite/';
+            } else {
+                throw new \Exception();
+            }
+
+            $prefix = 'normal/';
+
+            if ($data[1] === 's') {
+                $prefix = 'sunset/';
+            } elseif ($data[1] === 'n') {
+                $prefix = 'night/';
+            } elseif ($data[1] !== '-') {
+                throw new \Exception();
+            }
+
+            $this->spriteRules[$data[0]] = [
+                substr($data[3], 0, -1),
+                substr($data[3], -1),
+                $directory,
+                $prefix,
+            ];
         }
     }
 
@@ -482,39 +533,41 @@ class LipSync extends Command
         $prefix = 'normal/';
         $directory = 'sprite/';
 
-        if (Strings::startsWith($sprite, 'night/')) {
-            $prefix = 'night/';
-            $sprite = Strings::after($sprite, 'night/');
-        }
+        if ($this->chapter !== 'meakashi') {
+            if (Strings::startsWith($sprite, 'night/')) {
+                $prefix = 'night/';
+                $sprite = Strings::after($sprite, 'night/');
+            }
 
-        if (Strings::startsWith($sprite, 'Night/')) {
-            $prefix = 'night/';
-            $sprite = Strings::after($sprite, 'Night/');
-        }
+            if (Strings::startsWith($sprite, 'Night/')) {
+                $prefix = 'night/';
+                $sprite = Strings::after($sprite, 'Night/');
+            }
 
-        if (Strings::endsWith($sprite, '_a')) {
-            $prefix = 'night/';
-            $sprite = Strings::before($sprite, '_a', -1);
-        }
+            if (Strings::endsWith($sprite, '_a')) {
+                $prefix = 'night/';
+                $sprite = Strings::before($sprite, '_a', -1);
+            }
 
-        if (Strings::startsWith($sprite, 'sunset/')) {
-            $prefix = 'sunset/';
-            $sprite = Strings::after($sprite, 'sunset/');
-        }
+            if (Strings::startsWith($sprite, 'sunset/')) {
+                $prefix = 'sunset/';
+                $sprite = Strings::after($sprite, 'sunset/');
+            }
 
-        if (Strings::startsWith($sprite, 'Sunset/')) {
-            $prefix = 'sunset/';
-            $sprite = Strings::after($sprite, 'Sunset/');
-        }
+            if (Strings::startsWith($sprite, 'Sunset/')) {
+                $prefix = 'sunset/';
+                $sprite = Strings::after($sprite, 'Sunset/');
+            }
 
-        if (Strings::endsWith($sprite, '_b')) {
-            $prefix = 'sunset/';
-            $sprite = Strings::before($sprite, '_b', -1);
-        }
+            if (Strings::endsWith($sprite, '_b')) {
+                $prefix = 'sunset/';
+                $sprite = Strings::before($sprite, '_b', -1);
+            }
 
-        if (Strings::endsWith($sprite, '_zoom')) {
-            $directory = 'portrait/';
-            $sprite = Strings::before($sprite, '_zoom', -1);
+            if (Strings::endsWith($sprite, '_zoom')) {
+                $directory = 'portrait/';
+                $sprite = Strings::before($sprite, '_zoom', -1);
+            }
         }
 
         if ($this->chapter === 'tatarigoroshi') {
@@ -542,13 +595,47 @@ class LipSync extends Command
             }
         }
 
-        if (! isset($this->spriteRules[$sprite])) {
+        if ($this->chapter !== 'meakashi' && ! isset($this->spriteRules[$sprite])) {
             printf('No rule found for sprite "%s".' . PHP_EOL, $sprite);
 
             return [$sprite, 0];
         }
 
-        [$sprite, $expression] = $this->spriteRules[$sprite];
+        if ($this->chapter === 'meakashi') {
+            if (
+                Strings::startsWith($sprite, 'ki_')
+                || Strings::startsWith($sprite, 'kuma_')
+                || Strings::startsWith($sprite, 'oryou_')
+                || Strings::startsWith($sprite, 'tetu_')
+                || Strings::startsWith($sprite, 'tomita1_')
+                || Strings::startsWith($sprite, 'oka1_')
+            ) {
+                $expression = '0';
+
+                if (Strings::endsWith($sprite, '--')) {
+                    $prefix = 'night/';
+                } elseif (Strings::endsWith($sprite, '-')) {
+                    $prefix = 'sunset/';
+                }
+
+                $sprite = rtrim($sprite, '-');
+
+                if (Strings::endsWith($sprite, '_zoom')) {
+                    $sprite = Strings::substring($sprite, 0, -5);
+                    $directory = 'portrait/';
+                }
+            } else {
+                if (! isset($this->spriteRules[$sprite])) {
+                    printf('No rule found for sprite "%s".' . PHP_EOL, $sprite);
+
+                    return [$sprite, 0];
+                }
+
+                [$sprite, $expression, $directory, $prefix] = $this->spriteRules[$sprite];
+            }
+        } else {
+            [$sprite, $expression] = $this->spriteRules[$sprite];
+        }
 
         if ($directory === 'portrait/') {
             // TODO: Maybe simply replace re1b_ with re1a_.
