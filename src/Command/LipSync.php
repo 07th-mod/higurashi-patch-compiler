@@ -182,6 +182,16 @@ class LipSync extends Command
         'okinomiya',
         's53',
         's60',
+        'si_meakasi',
+        'nort1',
+        'nort2',
+        'nort4',
+        'nort5',
+        '57a',
+        '57b',
+        '58a',
+        '58b',
+        'are',
     ];
 
     private $tipsFilePrefixes = [
@@ -189,6 +199,7 @@ class LipSync extends Command
         'wata0',
         'tata0',
         'hima0',
+        'gettip_meak',
     ];
 
     private $forceCopy = [
@@ -636,6 +647,8 @@ class LipSync extends Command
                     $sprite = Strings::substring($sprite, 0, -5);
                     $directory = 'portrait/';
                 }
+
+                $sprite = rtrim($sprite, '0');
             } else {
                 if (! isset($this->spriteRules[$sprite])) {
                     printf('No rule found for sprite "%s".' . PHP_EOL, $sprite);
