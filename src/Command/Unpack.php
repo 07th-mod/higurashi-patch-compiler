@@ -29,7 +29,9 @@ class Unpack extends Command
     {
         /** @var string $chapter */
         $chapter = $input->getArgument('chapter');
-        $chapter = Helpers::guessChapter($chapter);
+        if ($chapter) {
+             $chapter = Helpers::guessChapter($chapter);
+        }
 
         if ($chapter && ! isset(Constants::PATCHES[$chapter])) {
             $output->writeln(sprintf('Chapter "%s" not found.', $chapter));
@@ -63,6 +65,21 @@ class Unpack extends Command
                     array_keys(Constants::VOICES)
                 ),
                 sprintf('%s/unpack/voices', TEMP_DIR)
+            );
+
+            $unpacker->unpackMultipleIfNeeded(
+                array_map(
+                    function ($path) {
+                        return sprintf('%s/%s', TEMP_DIR, $path);
+                    },
+                    array_keys(Constants::VOICES_PS2)
+                ),
+                sprintf('%s/unpack/ps2-voices', TEMP_DIR)
+            );
+
+            $unpacker->unpackIfNeeded(
+                sprintf('%s/%s', TEMP_DIR, 'download/spectrum.zip'),
+                sprintf('%s/unpack/spectrum', TEMP_DIR)
             );
         }
 

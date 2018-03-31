@@ -30,7 +30,9 @@ class Download extends Command
     {
         /** @var string $chapter */
         $chapter = $input->getArgument('chapter');
-        $chapter = Helpers::guessChapter($chapter);
+        if ($chapter) {
+            $chapter = Helpers::guessChapter($chapter);
+        }
 
         if ($chapter && ! isset(Constants::PATCHES[$chapter])) {
             $output->writeln(sprintf('Chapter "%s" not found.', $chapter));
@@ -63,6 +65,18 @@ class Download extends Command
                     sprintf('%s/%s', TEMP_DIR, $path)
                 );
             }
+
+            foreach (Constants::VOICES_PS2 as $path => $url) {
+                $downloader->startDownloadIfNeeded(
+                    $url,
+                    sprintf('%s/%s', TEMP_DIR, $path)
+                );
+            }
+
+            $downloader->startDownloadIfNeeded(
+                Constants::SPECTRUM,
+                sprintf('%s/%s', TEMP_DIR, 'download/spectrum.zip')
+            );
         }
 
         $downloader->save();
