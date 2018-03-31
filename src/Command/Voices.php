@@ -8,6 +8,7 @@ use Higurashi\Constants;
 use Higurashi\Helpers;
 use Higurashi\Utils\LineProcessorTrait;
 use Higurashi\Utils\LineStorage;
+use Nette\Utils\FileSystem;
 use Nette\Utils\Finder;
 use Nette\Utils\Strings;
 use Symfony\Component\Console\Command\Command;
@@ -120,6 +121,16 @@ class Voices extends Command
     private $ps2SpectrumDirectory;
     private $ps3SpectrumDirectory;
     private $ps2Map;
+    private $bashCopy;
+
+    private function finish(): void
+    {
+        $bashCopy = array_unique($this->bashCopy);
+
+        $file = sprintf('%s/%s/%s.sh', TEMP_DIR, strtolower((new \ReflectionClass($this))->getShortName()), $this->chapter);
+
+        file_put_contents($file, implode("\n", $bashCopy));
+    }
 
     protected function processLine(string $line, LineStorage $lines, int $lineNumber, string $filename): string
     {
@@ -135,16 +146,16 @@ class Voices extends Command
             $ps3Hash = $this->getFileHash($this->ps3VoicesDirectory, $voice);
 
             if ($voiceHash && $voiceHash === $ps3Hash) {
+                $this->addBashCopyForPS3Voice($voice);
                 $line = sprintf('%sModPlayVoiceLS(%d, %d, "%s", %s', $match[1], $match[2], $match[3], sprintf('ps3/%s', $voice), $match[5]) . "\n";
-                // Copy PS3 voice.
-                // Copy spectrum.
+
                 return $line;
             }
 
             if ($ps3Hash) {
+                $this->addBashCopyForPS3Voice($voice);
                 $line = sprintf('%sModPlayVoiceLS(%d, %d, "%s", %s', $match[1], $match[2], $match[3], sprintf('ps3/%s', $voice), $match[5]) . "\n";
-                // Copy PS3 voice.
-                // Copy spectrum.
+
                 return $line;
             }
 
@@ -164,16 +175,15 @@ class Voices extends Command
             }
 
             if ($ps2VoiceDirectory) {
+                $this->addBashCopyForPS2Voice($voice);
                 $line = sprintf('%sModPlayVoiceLS(%d, %d, "%s", %s', $match[1], $match[2], $match[3], sprintf('ps2/%s/%s', $ps2VoiceDirectory, $baseVoice), $match[5]) . "\n";
-                // Copy PS2 voice.
-                // Copy spectrum.
+
                 return $line;
             }
 
             // Voice exists in current patch but has been somehow customized.
             $line = sprintf('%sModPlayVoiceLS(%d, %d, "%s", %s', $match[1], $match[2], $match[3], sprintf('custom/%s', $baseVoice), $match[5]) . "\n";
-            // Copy current voice.
-            // No spectrum exists.
+            $this->addBashCopyForCustomVoice($match[4], $baseVoice);
 
             return $line;
         }
@@ -214,5 +224,34 @@ class Voices extends Command
         }
 
         return null;
+    }
+
+    private function addBashCopyForPS2Voice(string $voice): void
+    {
+        $destination = $voice . '.ogg';
+
+        $this->bashCopy[] = 'mkdir -p ' . dirname($this->chapter . '/voice/ps2/' . $destination) . ' && cp "voice/ps2/' . $destination . '" "' . $this->chapter . '/voice/ps2/' . $destination . '"';
+
+        $destination = $voice . '.txt';
+
+        $this->bashCopy[] = 'mkdir -p ' . dirname($this->chapter . '/spectrum/ps2/' . $destination) . ' && cp "spectrum/ps2/' . $destination . '" "' . $this->chapter . '/spectrum/ps2/' . $destination . '"';
+    }
+
+    private function addBashCopyForPS3Voice(string $voice): void
+    {
+        $destination = $voice . '.ogg';
+
+        $this->bashCopy[] = 'mkdir -p ' . dirname($this->chapter . '/voice/ps3/' . $destination) . ' && cp "voice/ps3/' . $destination . '" "' . $this->chapter . '/voice/ps3/' . $destination . '"';
+
+        $destination = $voice . '.txt';
+
+        $this->bashCopy[] = 'mkdir -p ' . dirname($this->chapter . '/spectrum/ps3/' . $destination) . ' && cp "spectrum/ps3/' . $destination . '" "' . $this->chapter . '/spectrum/ps3/' . $destination . '"';
+    }
+
+    private function addBashCopyForCustomVoice(string $voice, string $baseVoice): void
+    {
+        $destination = $baseVoice . '.ogg';
+
+        $this->bashCopy[] = 'mkdir -p ' . dirname($this->chapter . '/voice/custom/' . $destination) . ' && cp "' . $this->chapter . '-old/' . $voice . '.ogg" "' . $this->chapter . '/voice/custom/' . $destination . '"';
     }
 }
