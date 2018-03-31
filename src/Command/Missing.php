@@ -111,6 +111,10 @@ class Missing extends Command
             $error = sprintf('File %s/%s does not match the realpath.', $directory, $file);
             $this->reportError($error);
         }
+
+        if ($directory === 'CG' && (Strings::startsWith($file, 'text/') || Strings::startsWith($file, 'tips/'))) {
+            $this->requireFile($directory, Strings::substring($file, 0, -4) . '_j.png');
+        }
     }
 
     private function reportError(string $error): void
