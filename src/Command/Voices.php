@@ -8,6 +8,7 @@ use Higurashi\Constants;
 use Higurashi\Helpers;
 use Higurashi\Utils\LineProcessorTrait;
 use Higurashi\Utils\LineStorage;
+use Nette\Utils\Finder;
 use Nette\Utils\Strings;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -104,6 +105,8 @@ class Voices extends Command
             }
         }
 
+        $this->buildPS2Map();
+
         $directory = sprintf('%s/%s/%s', TEMP_DIR, strtolower((new \ReflectionClass($this))->getShortName()), $chapter);
 
         $this->update($chapter, $directory);
@@ -116,19 +119,95 @@ class Voices extends Command
     private $ps3VoicesDirectory;
     private $ps2SpectrumDirectory;
     private $ps3SpectrumDirectory;
+    private $ps2Map;
 
     protected function processLine(string $line, LineStorage $lines, int $lineNumber, string $filename): string
     {
         if ($match = Strings::match($line, '~^(\s++)ModPlayVoiceLS\(\s*+([0-9]++)\s*+,\s*+([0-9]++)\s*+,\s*+"([^"]++)?"\s*+,\s*+(.*)$~')) {
             $voice = $match[4];
 
+            $voiceHash = $this->getFileHash($this->chapterVoicesDirectory, $voice);
+            $ps3Hash = $this->getFileHash($this->ps3VoicesDirectory, $voice);
 
+            if ($voiceHash && $voiceHash === $ps3Hash) {
+                $line = sprintf('%sModPlayVoiceLS(%d, %d, "%s", %s', $match[1], $match[2], $match[3], sprintf('ps3/%s', $voice), $match[5]) . "\n";
+                // Copy PS3 voice.
+                // Copy spectrum.
+                return $line;
+            }
 
-            //$line = sprintf('%sModPlayVoiceLS(%d, %d, "%s", %s', $match[1], $match[2], $match[3], $match[4], $match[5]) . "\n";
+            if ($ps3Hash) {
+                $line = sprintf('%sModPlayVoiceLS(%d, %d, "%s", %s', $match[1], $match[2], $match[3], sprintf('ps3/%s', $voice), $match[5]) . "\n";
+                // Copy PS3 voice.
+                // Copy spectrum.
+                return $line;
+            }
+
+            $baseVoice = Strings::after($voice, '/', -1);
+
+            if (! $voiceHash) {
+                // Can't identify voice. In reality this should not happen.
+                // If it does happen then try to find in PS2 voices manually and see if it matches.
+                throw new \Exception();
+            }
+
+            $ps2VoiceDirectory = $this->findPs2FileByVoiceAndHash($baseVoice, $voiceHash);
+
+            if ($ps3Hash && $ps2VoiceDirectory) {
+                // PS3 voice exists but PS2 voice is used. In reality this should not happen.
+                throw new \Exception();
+            }
+
+            if ($ps2VoiceDirectory) {
+                $line = sprintf('%sModPlayVoiceLS(%d, %d, "%s", %s', $match[1], $match[2], $match[3], sprintf('ps2/%s/%s', $ps2VoiceDirectory, $baseVoice), $match[5]) . "\n";
+                // Copy PS2 voice.
+                // Copy spectrum.
+                return $line;
+            }
+
+            // Voice exists in current patch but has been somehow customized.
+            $line = sprintf('%sModPlayVoiceLS(%d, %d, "%s", %s', $match[1], $match[2], $match[3], sprintf('custom/%s', $baseVoice), $match[5]) . "\n";
+            // Copy current voice.
+            // No spectrum exists.
+
+            return $line;
         }
 
-
-
         return $line;
+    }
+
+    private function getFileHash(string $directory, string $voice): ?string
+    {
+        $file = sprintf('%s/%s.ogg', $directory, $voice);
+
+        return file_exists($file) ? md5_file($file) : null;
+    }
+
+    private function buildPS2Map(): void
+    {
+        $this->ps2Map = [];
+        $cutLength = Strings::length($this->ps2VoicesDirectory);
+
+        foreach (Finder::findFiles('*.ogg')->from($this->ps2VoicesDirectory) as $file) {
+            $voice = $file->getBasename('.ogg');
+            $this->ps2Map[$voice][] = Strings::substring($file->getPath(), $cutLength + 1);
+        }
+    }
+
+    private function findPs2FileByVoiceAndHash(string $voice, string $voiceHash): ?string
+    {
+        if (! array_key_exists($voice, $this->ps2Map)) {
+            return null;
+        }
+
+        foreach ($this->ps2Map[$voice] as $directory) {
+            $hash = $this->getFileHash($this->ps2VoicesDirectory, $directory . '/' . $voice);
+
+            if ($hash === $voiceHash) {
+                return $directory;
+            }
+        }
+
+        return null;
     }
 }
