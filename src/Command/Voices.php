@@ -175,7 +175,9 @@ class Voices extends Command
             }
 
             if ($ps2VoiceDirectory) {
-                $this->addBashCopyForPS2Voice($voice);
+                $characterDirectory = str_pad($match[3], 2, '0', STR_PAD_LEFT);
+                $this->addBashCopyForPS2Voice($ps2VoiceDirectory . '/' . $baseVoice, $characterDirectory . '/' . $baseVoice);
+                $this->addBashCopyForPS2Spectrum($characterDirectory . '/' . $baseVoice);
                 $line = sprintf('%sModPlayVoiceLS(%d, %d, "%s", %s', $match[1], $match[2], $match[3], sprintf('ps2/%s/%s', $ps2VoiceDirectory, $baseVoice), $match[5]) . "\n";
 
                 return $line;
@@ -226,15 +228,18 @@ class Voices extends Command
         return null;
     }
 
-    private function addBashCopyForPS2Voice(string $voice): void
+    private function addBashCopyForPS2Voice(string $voice, string $spectrum): void
     {
-        $destination = $voice . '.ogg';
+        $destination = $spectrum . '.ogg';
 
-        $this->bashCopy[] = 'mkdir -p ' . dirname($this->chapter . '/voice/ps2/' . $destination) . ' && cp "voice/ps2/' . $destination . '" "' . $this->chapter . '/voice/ps2/' . $destination . '"';
+        $this->bashCopy[] = 'mkdir -p ' . dirname($this->chapter . '/voice/ps2/' . $destination) . ' && cp "voice/ps2/' . $voice . '.txt" "' . $this->chapter . '/voice/ps2/' . $destination . '"';
+    }
 
-        $destination = $voice . '.txt';
+    private function addBashCopyForPS2Spectrum(string $spectrum): void
+    {
+        $destination = $spectrum . '.txt';
 
-        $this->bashCopy[] = 'mkdir -p ' . dirname($this->chapter . '/spectrum/ps2/' . $destination) . ' && cp "spectrum/ps2/' . $destination . '" "' . $this->chapter . '/spectrum/ps2/' . $destination . '"';
+        $this->bashCopy[] = 'mkdir -p ' . dirname($this->chapter . '/spectrum/ps2/' . $destination) . ' && cp "spectrum/ps2/' . $spectrum . '.txt" "' . $this->chapter . '/spectrum/ps2/' . $destination . '"';
     }
 
     private function addBashCopyForPS3Voice(string $voice): void
