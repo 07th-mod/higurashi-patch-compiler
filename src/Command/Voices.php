@@ -127,6 +127,11 @@ class Voices extends Command
             $voice = $match[4];
 
             $voiceHash = $this->getFileHash($this->chapterVoicesDirectory, $voice);
+
+            if (Strings::startsWith($voice, 'ps3/')) {
+                $voice = Strings::substring($voice, 4);
+            }
+
             $ps3Hash = $this->getFileHash($this->ps3VoicesDirectory, $voice);
 
             if ($voiceHash && $voiceHash === $ps3Hash) {
