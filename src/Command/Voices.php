@@ -187,11 +187,7 @@ class Voices extends Command
                 return $line;
             }
 
-            // Voice exists in current patch but has been somehow customized.
-            $line = sprintf('%sModPlayVoiceLS(%d, %d, "%s", %s', $match[1], $match[2], $match[3], sprintf('custom/%s', $baseVoice), $match[5]) . "\n";
-            $this->addBashCopyForCustomVoice($match[4], $baseVoice);
-
-            return $line;
+            throw new \Exception('Voice exists but doesn\'t match neither PS2 voice nor PS3 voice: ' . $voice);
         }
 
         return $line;
@@ -255,12 +251,5 @@ class Voices extends Command
         $destination = $voice . '.txt';
 
         $this->bashCopy[] = 'mkdir -p ' . dirname($this->chapter . '/spectrum/ps3/' . $destination) . ' && cp "spectrum/ps3/' . $destination . '" "' . $this->chapter . '/spectrum/ps3/' . $destination . '"';
-    }
-
-    private function addBashCopyForCustomVoice(string $voice, string $baseVoice): void
-    {
-        $destination = $baseVoice . '.ogg';
-
-        $this->bashCopy[] = 'mkdir -p ' . dirname($this->chapter . '/voice/custom/' . $destination) . ' && cp "' . $this->chapter . '-old/voice/' . $voice . '.ogg" "' . $this->chapter . '/voice/custom/' . $destination . '"';
     }
 }
