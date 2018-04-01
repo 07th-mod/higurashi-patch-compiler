@@ -137,6 +137,10 @@ class Voices extends Command
         if ($match = Strings::match($line, '~^(\s++)ModPlayVoiceLS\(\s*+([0-9]++)\s*+,\s*+([0-9]++)\s*+,\s*+"([^"]++)?"\s*+,\s*+(.*)$~')) {
             $voice = $match[4];
 
+            if (! $voice) {
+                return $line;
+            }
+
             $voiceHash = $this->getFileHash($this->chapterVoicesDirectory, $voice);
 
             if (Strings::startsWith($voice, 'ps3/')) {
@@ -164,14 +168,14 @@ class Voices extends Command
             if (! $voiceHash) {
                 // Can't identify voice. In reality this should not happen.
                 // If it does happen then try to find in PS2 voices manually and see if it matches.
-                throw new \Exception();
+                throw new \Exception('Can\'t identify voice file: ' . $voice);
             }
 
             $ps2VoiceDirectory = $this->findPs2FileByVoiceAndHash($baseVoice, $voiceHash);
 
             if ($ps3Hash && $ps2VoiceDirectory) {
                 // PS3 voice exists but PS2 voice is used. In reality this should not happen.
-                throw new \Exception();
+                throw new \Exception('PS2 voice is used instead of PS3: ' . $voice);
             }
 
             if ($ps2VoiceDirectory) {
@@ -232,7 +236,7 @@ class Voices extends Command
     {
         $destination = $spectrum . '.ogg';
 
-        $this->bashCopy[] = 'mkdir -p ' . dirname($this->chapter . '/voice/ps2/' . $destination) . ' && cp "voice/ps2/' . $voice . '.txt" "' . $this->chapter . '/voice/ps2/' . $destination . '"';
+        $this->bashCopy[] = 'mkdir -p ' . dirname($this->chapter . '/voice/ps2/' . $destination) . ' && cp "voice/ps2/' . $voice . '.ogg" "' . $this->chapter . '/voice/ps2/' . $destination . '"';
     }
 
     private function addBashCopyForPS2Spectrum(string $spectrum): void
@@ -257,6 +261,6 @@ class Voices extends Command
     {
         $destination = $baseVoice . '.ogg';
 
-        $this->bashCopy[] = 'mkdir -p ' . dirname($this->chapter . '/voice/custom/' . $destination) . ' && cp "' . $this->chapter . '-old/' . $voice . '.ogg" "' . $this->chapter . '/voice/custom/' . $destination . '"';
+        $this->bashCopy[] = 'mkdir -p ' . dirname($this->chapter . '/voice/custom/' . $destination) . ' && cp "' . $this->chapter . '-old/voice/' . $voice . '.ogg" "' . $this->chapter . '/voice/custom/' . $destination . '"';
     }
 }
