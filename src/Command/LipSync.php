@@ -797,7 +797,7 @@ class LipSync extends Command
         if (Strings::startsWith($voice, 'ps2/')) {
             $source = Strings::substring($voice, 8);
 
-            // PS2 spectrum directory is missing directory 17 but the files are in directory 21.
+            // Teppei in Tatarigoroshi had wrong character number before lipsync release.
             if (Strings::startsWith($source, '17/')) {
                 $source = '21/' . Strings::substring($source, 3);
             }
