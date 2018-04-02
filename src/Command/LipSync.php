@@ -80,6 +80,7 @@ class LipSync extends Command
         'e1' => 0,
         'toketu' => 0,
         'no_data' => 0,
+        'transparent' => 0,
         'nort' => 0,
         'oni_' => 0,
         'waku_' => 0,
@@ -192,6 +193,8 @@ class LipSync extends Command
         '58a',
         '58b',
         'are',
+        'meak_staff',
+        'meakasi_list',
     ];
 
     private $tipsFilePrefixes = [
@@ -246,6 +249,11 @@ class LipSync extends Command
         't_ed',
         'staff01',
         'staff02',
+        'sgtitle900000',
+        'sgtitle900100',
+        'sgtitle900200',
+        'sgtitle990000',
+        'transparent',
     ];
 
     private $spriteRules = [];
