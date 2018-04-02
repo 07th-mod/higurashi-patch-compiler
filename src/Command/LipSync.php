@@ -657,6 +657,10 @@ class LipSync extends Command
                 }
 
                 $sprite = rtrim($sprite, '0');
+
+                if (!Strings::endsWith($sprite, '_')) {
+                    $sprite .= '_';
+                }
             } else {
                 if (! isset($this->spriteRules[$sprite])) {
                     printf('No rule found for sprite "%s".' . PHP_EOL, $sprite);
