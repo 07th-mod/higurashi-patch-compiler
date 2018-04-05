@@ -141,6 +141,10 @@ class Voices extends Command
                 return $line;
             }
 
+            if (Strings::lower($voice) !== $voice) {
+                echo 'Warning - non lowercase voice: ' . $voice . PHP_EOL;
+            }
+
             $voiceHash = $this->getFileHash($this->chapterVoicesDirectory, $voice);
 
             if (Strings::startsWith($voice, 'ps3/')) {
@@ -149,14 +153,11 @@ class Voices extends Command
 
             $ps3Hash = $this->getFileHash($this->ps3VoicesDirectory, $voice);
 
-            if ($voiceHash && $voiceHash === $ps3Hash) {
-                $this->addBashCopyForPS3Voice($voice);
-                $line = sprintf('%sModPlayVoiceLS(%d, %d, "%s", %s', $match[1], $match[2], $match[3], sprintf('ps3/%s', $voice), $match[5]) . "\n";
-
-                return $line;
-            }
-
             if ($ps3Hash) {
+                if ($voiceHash && $voiceHash !== $ps3Hash) {
+                    echo 'Warning - PS3 voice mismatch: ' . $voice . PHP_EOL;
+                }
+
                 $this->addBashCopyForPS3Voice($voice);
                 $line = sprintf('%sModPlayVoiceLS(%d, %d, "%s", %s', $match[1], $match[2], $match[3], sprintf('ps3/%s', $voice), $match[5]) . "\n";
 
