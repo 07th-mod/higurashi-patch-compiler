@@ -153,11 +153,7 @@ class Voices extends Command
 
             $ps3Hash = $this->getFileHash($this->ps3VoicesDirectory, $voice);
 
-            if ($ps3Hash) {
-                if ($voiceHash && $voiceHash !== $ps3Hash) {
-                    echo 'Warning - PS3 voice mismatch: ' . $voice . PHP_EOL;
-                }
-
+            if ($ps3Hash && (!$voiceHash || $voiceHash === $ps3Hash)) {
                 $this->addBashCopyForPS3Voice($voice);
                 $line = sprintf('%sModPlayVoiceLS(%d, %d, "%s", %s', $match[1], $match[2], $match[3], sprintf('ps3/%s', $voice), $match[5]) . "\n";
 
@@ -176,7 +172,7 @@ class Voices extends Command
 
             if ($ps3Hash && $ps2VoiceDirectory) {
                 // PS3 voice exists but PS2 voice is used. In reality this should not happen.
-                throw new \Exception('PS2 voice is used instead of PS3: ' . $voice);
+                echo 'Warning - PS2 voice is used instead of PS3: ' . $voice . PHP_EOL;
             }
 
             if ($ps2VoiceDirectory) {
