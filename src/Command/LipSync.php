@@ -663,7 +663,9 @@ class LipSync extends Command
                 }
             } else {
                 if (! isset($this->spriteRules[$sprite])) {
-                    printf('No rule found for sprite "%s".' . PHP_EOL, $sprite);
+                    if ($sprite !== 'transparent') {
+                        printf('No rule found for sprite "%s".' . PHP_EOL, $sprite);
+                    }
 
                     return [$sprite, 0];
                 }
