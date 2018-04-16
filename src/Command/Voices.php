@@ -179,7 +179,7 @@ class Voices extends Command
                 $characterDirectory = str_pad($match[3], 2, '0', STR_PAD_LEFT);
                 $this->addBashCopyForPS2Voice($ps2VoiceDirectory . '/' . $baseVoice, $characterDirectory . '/' . $baseVoice);
                 $this->addBashCopyForPS2Spectrum($characterDirectory . '/' . $baseVoice);
-                $line = sprintf('%sModPlayVoiceLS(%d, %d, "%s", %s', $match[1], $match[2], $match[3], sprintf('ps2/%s/%s', $ps2VoiceDirectory, $baseVoice), $match[5]) . "\n";
+                $line = sprintf('%sModPlayVoiceLS(%d, %d, "%s", %s', $match[1], $match[2], $match[3], sprintf('ps2/%s/%s', $characterDirectory, $baseVoice), $match[5]) . "\n";
 
                 return $line;
             }
