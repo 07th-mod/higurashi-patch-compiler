@@ -278,6 +278,8 @@ class LipSync extends Command
 
     private $errors = [];
 
+    private $isConsole = false;
+
     protected function processLine(string $line, LineStorage $lines, int $lineNumber, string $filename): string
     {
         $ignored = false;
@@ -443,6 +445,8 @@ class LipSync extends Command
 
     private function init(): void
     {
+        $this->isConsole = array_key_exists($this->chapter, Constants::CONSOLE_ARCS);
+
         $this->loadSpritesCsv(__DIR__ . '/../../data/sprites/rulefile.csv', false);
         $this->loadSpritesCsv(__DIR__ . '/../../data/sprites/tatahimazoom.csv', false);
 
@@ -464,7 +468,7 @@ class LipSync extends Command
             $this->loadBGsCsv(__DIR__ . '/../../data/bgs/onikakushi.csv');
         }
 
-        if (! array_key_exists($this->chapter, Constants::CONSOLE_ARCS)) {
+        if (! $this->isConsole) {
             $this->loadBGsCsv(__DIR__ . '/../../data/bgs/' . $this->chapter . '.csv');
         }
 
@@ -578,7 +582,7 @@ class LipSync extends Command
         $prefix = 'normal/';
         $directory = 'sprite/';
 
-        if ($this->chapter !== 'meakashi') {
+        if ($this->chapter !== 'meakashi' && ! $this->isConsole) {
             if (Strings::startsWith($sprite, 'night/')) {
                 $prefix = 'night/';
                 $sprite = Strings::after($sprite, 'night/');
@@ -640,7 +644,7 @@ class LipSync extends Command
             }
         }
 
-        if ($this->chapter !== 'meakashi' && ! isset($this->spriteRules[$sprite])) {
+        if ($this->chapter !== 'meakashi' && ! $this->isConsole && ! isset($this->spriteRules[$sprite])) {
             printf('No rule found for sprite "%s".' . PHP_EOL, $sprite);
 
             return [$sprite, 0];
@@ -686,6 +690,17 @@ class LipSync extends Command
 
                 [$sprite, $expression, $directory, $prefix] = $this->spriteRules[$sprite];
             }
+        } elseif ($this->isConsole) {
+            if (Strings::endsWith($sprite, '_night')) {
+                $prefix = 'night/';
+                $sprite = Strings::substring($sprite, 0, -6);
+            } elseif (Strings::endsWith($sprite, '_sunset')) {
+                $prefix = 'sunset/';
+                $sprite = Strings::substring($sprite, 0, -7);
+            }
+
+            $expression = Strings::substring($sprite, -1);
+            $sprite = Strings::substring($sprite, 0, -1);
         } else {
             [$sprite, $expression] = $this->spriteRules[$sprite];
         }
