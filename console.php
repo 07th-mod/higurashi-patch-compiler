@@ -44,5 +44,6 @@ $application->add(new \Higurashi\Command\ListNames());
 $application->add(new \Higurashi\Command\LipSync());
 $application->add(new \Higurashi\Command\Missing());
 $application->add(new \Higurashi\Command\Voices());
+$application->add(new \Higurashi\Command\ConsoleArcUpgrade());
 
 $application->run();
