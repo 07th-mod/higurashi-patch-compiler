@@ -6,6 +6,7 @@ namespace Higurashi\Command;
 
 use Higurashi\Constants;
 use Higurashi\Helpers;
+use Nette\Utils\Finder;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
@@ -13,12 +14,12 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
-class FullUpgrade extends Command
+class ConsoleArcUpgrade extends Command
 {
     protected function configure()
     {
         $this
-            ->setName('higurashi:full')
+            ->setName('higurashi:console-arc-upgrade')
             ->addArgument('chapter', InputArgument::REQUIRED, 'Chapter to update.')
             ->setDescription('Fully upgrades a chapter.');
     }
@@ -29,24 +30,47 @@ class FullUpgrade extends Command
         $chapter = $input->getArgument('chapter');
         $chapter = Helpers::guessChapter($chapter);
 
-        if (! isset(Constants::PATCHES[$chapter]) && ! isset(Constants::CONSOLE_ARCS[$chapter])) {
+        if (! isset(Constants::CONSOLE_ARCS[$chapter])) {
             $output->writeln(sprintf('Chapter "%s" not found.', $chapter));
 
             return 1;
         }
 
         $this->runCommand(
-            'higurashi:adventure',
+            'higurashi:download',
             [
-                'chapter' => $chapter,
+                'chapter' => 'console',
+                '--force' => true,
+            ],
+            $output
+        );
+
+        $this->runCommand(
+            'higurashi:unpack',
+            [
+                'chapter' => 'console',
                 '--force' => true,
             ],
             $output
         );
 
         $filesystem = new Filesystem();
-        $filesystem->remove(sprintf('%s/unpack/%s', TEMP_DIR, $chapter));
-        $filesystem->mirror(sprintf('%s/adv/%s/Update', TEMP_DIR, $chapter), sprintf('%s/unpack/%s/Update', TEMP_DIR, $chapter));
+        $filesystem->mkdir(sprintf('%s/unpack/%s_patch/Update', TEMP_DIR, $chapter));
+
+        foreach (Finder::findFiles(Constants::CONSOLE_ARCS[$chapter] . '_*.txt')->in(sprintf('%s/unpack/console_patch/Update', TEMP_DIR)) as $file => $fileInfo) {
+            $filesystem->copy($file, sprintf('%s/unpack/%s_patch/Update/%s', TEMP_DIR, $chapter, $fileInfo->getFilename()));
+        }
+
+        $this->runCommand(
+            'higurashi:adv',
+            [
+                'chapter' => $chapter,
+            ],
+            $output
+        );
+
+        $filesystem->remove(sprintf('%s/unpack/%s_patch', TEMP_DIR, $chapter));
+        $filesystem->mirror(sprintf('%s/adv/%s/Update', TEMP_DIR, $chapter), sprintf('%s/unpack/%s_patch/Update', TEMP_DIR, $chapter));
 
         $this->runCommand(
             'higurashi:dll-update',
@@ -56,8 +80,8 @@ class FullUpgrade extends Command
             $output
         );
 
-        $filesystem->remove(sprintf('%s/unpack/%s', TEMP_DIR, $chapter));
-        $filesystem->mirror(sprintf('%s/dll/%s/Update', TEMP_DIR, $chapter), sprintf('%s/unpack/%s/Update', TEMP_DIR, $chapter));
+        $filesystem->remove(sprintf('%s/unpack/%s_patch', TEMP_DIR, $chapter));
+        $filesystem->mirror(sprintf('%s/dllupdate/%s/Update', TEMP_DIR, $chapter), sprintf('%s/unpack/%s_patch/Update', TEMP_DIR, $chapter));
 
         $this->runCommand(
             'higurashi:lip-sync',
@@ -67,8 +91,8 @@ class FullUpgrade extends Command
             $output
         );
 
-        $filesystem->remove(sprintf('%s/unpack/%s', TEMP_DIR, $chapter));
-        $filesystem->mirror(sprintf('%s/lip/%s/Update', TEMP_DIR, $chapter), sprintf('%s/full/%s', TEMP_DIR, $chapter));
+        $filesystem->remove(sprintf('%s/unpack/%s_patch', TEMP_DIR, $chapter));
+        $filesystem->mirror(sprintf('%s/lipsync/%s/Update', TEMP_DIR, $chapter), sprintf('%s/console/%s', TEMP_DIR, $chapter));
 
         return 0;
     }

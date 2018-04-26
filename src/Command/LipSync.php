@@ -84,6 +84,8 @@ class LipSync extends Command
         'nort' => 0,
         'oni_' => 0,
         'waku_' => 0,
+        'sora' => 0,
+        'oki_' => 0,
 
         'kei' => 1,
         're' => 2,
@@ -100,7 +102,7 @@ class LipSync extends Command
         'oi' => 11,
 
         '?ha' => 12, // Hanyuu
-        '?aka' => 13, // Akasaka
+        'aks' => 13, // Akasaka
         '?oko' => 14, // Okonogi
 
         'kasa' => 15,
@@ -111,7 +113,7 @@ class LipSync extends Command
         'kuma' => 19,
         'Kuma' => 19,
 
-        '?rin' => 20, // Ritsuko
+        '?rin' => 20, // Ritsuko - POSSIBLE COLLISION WITH RIKA!!
 
         'tetu' => 21,
         'ti' => 22,
@@ -128,6 +130,16 @@ class LipSync extends Command
         'miyuki' => 34,
 
         '?chta' => 48, // Child Takano
+
+        // console characters
+        'chisa' => 37,
+        'huji' => 31,
+        'mado' => 29,
+        'na' => 36,
+        'tama' => 38,
+        'tomo' => 28,
+        'tou' => 39,
+        'yamaoki' => 30,
     ];
 
     private $ignoredFiles = [
@@ -452,7 +464,9 @@ class LipSync extends Command
             $this->loadBGsCsv(__DIR__ . '/../../data/bgs/onikakushi.csv');
         }
 
-        $this->loadBGsCsv(__DIR__ . '/../../data/bgs/' . $this->chapter . '.csv');
+        if (! array_key_exists($this->chapter, Constants::CONSOLE_ARCS)) {
+            $this->loadBGsCsv(__DIR__ . '/../../data/bgs/' . $this->chapter . '.csv');
+        }
 
         if (in_array($this->chapter, ['onikakushi', 'watanagashi', 'himatsubushi'], true)) {
             $this->loadCGsCsv(__DIR__ . '/../../data/cgs/' . $this->chapter . '.csv');

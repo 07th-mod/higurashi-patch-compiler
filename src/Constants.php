@@ -23,8 +23,8 @@ class Constants
     public const PATCHES = [
         'console' => [
             // Change to adv-mode when running DllUpdate. Change to dll-update when running LipSync.
-            //'console_patch' => 'https://github.com/07th-mod/higurashi-console-arcs/archive/master.zip',
-            'console_patch' => 'https://github.com/07th-mod/higurashi-console-arcs/archive/adv-mode.zip',
+            'console_patch' => 'https://github.com/07th-mod/higurashi-console-arcs/archive/master.zip',
+            //'console_patch' => 'https://github.com/07th-mod/higurashi-console-arcs/archive/adv-mode.zip',
         ],
         'onikakushi' => [
             'onikakushi_patch' => 'https://github.com/07th-mod/onikakushi/archive/master.zip',
@@ -51,6 +51,29 @@ class Constants
             //'meakashi_graphics' => 'https://github.com/07th-mod/resources/releases/download/Nipah/Meakashi-CG.zip',
             //'meakashi_steam' => 'https://github.com/07th-mod/resources/releases/download/Nipah/Meakashi-CGAlt.zip',
         ],
+        'someutsushi' => [],
+        'kageboushi' => [],
+        'tsukiotoshi' => [],
+        'taraimawashi' => [],
+        'tokihogushi' => [],
+        'yoigoshi' => [],
+        'omote' => [],
+        'ura' => [],
+        'kotogohushi' => [],
+        'hajisarashi' => [],
+    ];
+
+    public const CONSOLE_ARCS = [
+        'someutsushi' => 'some',
+        'kageboushi' => 'kage',
+        'tsukiotoshi' => 'tsuk',
+        'taraimawashi' => 'tara',
+        'tokihogushi' => 'toki',
+        'yoigoshi' => 'yoi',
+        'omote' => 'omo',
+        'ura' => 'ura',
+        'kotogohushi' => 'koto',
+        'hajisarashi' => 'haji',
     ];
 
     public const MG_SPRITE_PREFIXES = [
