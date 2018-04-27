@@ -11,6 +11,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -21,7 +22,8 @@ class ConsoleArcUpgrade extends Command
         $this
             ->setName('higurashi:console-arc-upgrade')
             ->addArgument('chapter', InputArgument::REQUIRED, 'Chapter to update.')
-            ->setDescription('Fully upgrades a chapter.');
+            ->setDescription('Fully upgrades a chapter.')
+            ->addOption('force', null, InputOption::VALUE_NONE, 'Redownload all resources.');
     }
 
     public function execute(InputInterface $input, OutputInterface $output): int
@@ -29,6 +31,9 @@ class ConsoleArcUpgrade extends Command
         /** @var string $chapter */
         $chapter = $input->getArgument('chapter');
         $chapter = Helpers::guessChapter($chapter);
+
+        /** @var bool $force */
+        $force = $input->getOption('force');
 
         if (! isset(Constants::CONSOLE_ARCS[$chapter])) {
             $output->writeln(sprintf('Chapter "%s" not found.', $chapter));
@@ -40,7 +45,7 @@ class ConsoleArcUpgrade extends Command
             'higurashi:download',
             [
                 'chapter' => 'console',
-                '--force' => true,
+                '--force' => $force,
             ],
             $output
         );
@@ -49,7 +54,7 @@ class ConsoleArcUpgrade extends Command
             'higurashi:unpack',
             [
                 'chapter' => 'console',
-                '--force' => true,
+                '--force' => $force,
             ],
             $output
         );
