@@ -122,7 +122,8 @@ class DLLUpdate extends Command
 
         if (Strings::match($line, '~^\\s++PlayVoice\\(~')) {
             if ($this->playingVoice && ! Strings::match($lines->get(-1), '~^\\s++PlayVoice\\(~')) {
-                echo sprintf('Found voice wait error in %s:%d.', $filename, $lineNumber) . PHP_EOL;
+                // This seems to report more false positives than real errors.
+                // echo sprintf('Found voice wait error in %s:%d.', $filename, $lineNumber) . PHP_EOL;
             }
 
             $this->playingVoice = true;
