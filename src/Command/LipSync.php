@@ -826,13 +826,15 @@ class LipSync extends Command
 
     private function addBashCopyForOriginal(string $image, string $targetDirectory = ''): void
     {
+        $original = $this->isConsole ? 'console' : $this->chapter;
+
         $destination = $targetDirectory . Strings::lower($image) . '.png';
 
-        $this->bashCopy[] = 'mkdir -p ' . dirname($this->chapter . '/CG/' . $destination) . ' && cp ' . $this->chapter . '-old/CG/' . $image . '.png ' . $this->chapter . '/CG/' . $destination;
+        $this->bashCopy[] = 'mkdir -p ' . dirname($this->chapter . '/CG/' . $destination) . ' && cp ' . $original . '-old/CG/' . $image . '.png ' . $this->chapter . '/CG/' . $destination;
 
         $destination = $targetDirectory . Strings::lower($image) . '_j.png';
 
-        $this->bashCopy[] = 'mkdir -p ' . dirname($this->chapter . '/CG/' . $destination) . ' && cp ' . $this->chapter . '-old/CG/' . $image . '_j.png ' . $this->chapter . '/CG/' . $destination;
+        $this->bashCopy[] = 'mkdir -p ' . dirname($this->chapter . '/CG/' . $destination) . ' && cp ' . $original . '-old/CG/' . $image . '_j.png ' . $this->chapter . '/CG/' . $destination;
     }
 
     private function addBashCopyForSpectrum(string $voice): void
