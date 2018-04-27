@@ -207,6 +207,7 @@ class LipSync extends Command
         'are',
         'meak_staff',
         'meakasi_list',
+        'title_some',
     ];
 
     private $tipsFilePrefixes = [
@@ -470,6 +471,11 @@ class LipSync extends Command
 
         if (! $this->isConsole) {
             $this->loadBGsCsv(__DIR__ . '/../../data/bgs/' . $this->chapter . '.csv');
+        }
+
+        if ($this->isConsole) {
+            $this->loadBGsCsv(__DIR__ . '/../../data/bgs/ps3.csv');
+            $this->loadCGsCsv(__DIR__ . '/../../data/cgs/ps3.csv');
         }
 
         if (in_array($this->chapter, ['onikakushi', 'watanagashi', 'himatsubushi'], true)) {
