@@ -203,11 +203,18 @@ class AdventureModeUpdater
         }
 
         foreach ($longLines as $index) {
-            list($prefixLine, $japaneseLine) = explode("\n", $lines[$index]);
+            $delimitedLines = explode("\n", $lines[$index]);
+            if (count($delimitedLines) === 4) {
+                list($previousLine, $prefixLine, $japaneseLine) = $delimitedLines;
+                $previousLine .= "\n";
+            } else {
+                list($prefixLine, $japaneseLine) = $delimitedLines;
+                $previousLine = '';
+            }
             $prefixLine = substr($prefixLine, 16, -2);
             $englishLine = $lines[$index + 1];
             $nvlLine = "\t" . $japaneseLine . "\n\t" . $englishLine;
-            $lines[$index] = "\t" . 'if (AdvMode) {' . "\n\t\t" . $prefixLine . "\n\t" . $japaneseLine . "\n";
+            $lines[$index] = $previousLine . "\t" . 'if (AdvMode) {' . "\n\t\t" . $prefixLine . "\n\t" . $japaneseLine . "\n";
             $match = Strings::match($englishLine, '~^\\s++NULL,\\s++"((?:\\\\"|[^"])*+)"~');
             $englishLine = "\t" . str_replace($match[1], '<size=-2>' . $match[1] . '</size>', $englishLine);
             $lines[$index + 1] = $englishLine . "\t" . '} else {' . "\n" . $nvlLine . "\t" . '}' . "\n";
