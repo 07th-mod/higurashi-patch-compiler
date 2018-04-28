@@ -7,6 +7,7 @@ namespace Higurashi\Command;
 use Higurashi\Constants;
 use Higurashi\Helpers;
 use Higurashi\Service\Cleaner;
+use Nette\NotImplementedException;
 use Nette\Utils\Strings;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -80,12 +81,22 @@ class Missing extends Command
             $this->requireFile('BGM', $match[1] . '.ogg');
         }
 
-        if ($match = Strings::match($line, '~^(?:\s++)(?:DrawBustshot|DrawSceneWithMask|DrawSprite|DrawSpriteWithFiltering)\(\s*+(?:[0-9]++)\s*+,\s*+"([^"]++)"~')) {
+        if ($match = Strings::match($line, '~^(?:\s++)(?:DrawBustshot|DrawSprite)\(\s*+(?:[0-9]++)\s*+,\s*+"([^"]++)"~')) {
             $this->requireFile('CG', $match[1] . '.png');
         }
 
-        if ($match = Strings::match($line, '~^(?:\s++)(?:DrawBG|DrawBGWithMask|DrawScene|DrawSceneWithMask|ChangeScene)\(?:\s*+"([^"]++)"~')) {
+        if ($match = Strings::match($line, '~^(?:\s++)(?:DrawSpriteWithFiltering)\(\s*+(?:[0-9]++)\s*+,\s*+"([^"]++)"\s*+,\s*+"([^"]++)"~')) {
             $this->requireFile('CG', $match[1] . '.png');
+            $this->requireFile('CG', $match[2] . '.png');
+        }
+
+        if ($match = Strings::match($line, '~^(?:\s++)(?:DrawBG|DrawScene|ChangeScene)\(\s*+"([^"]++)"~')) {
+            $this->requireFile('CG', $match[1] . '.png');
+        }
+
+        if ($match = Strings::match($line, '~^(?:\s++)(?:DrawBGWithMask|DrawSceneWithMask)\(\s*+"([^"]++)"\s*+,\s*+"([^"]++)"~')) {
+            $this->requireFile('CG', $match[1] . '.png');
+            $this->requireFile('CG', $match[2] . '.png');
         }
 
         if ($match = Strings::match($line, '~^(?:\s++)(?:ModDrawCharacter|ModDrawCharacterWithFiltering)\(\s*+(?:[0-9]++)\s*+,\s*+(?:[0-9]++)\s*+,\s*+"([^"]++)"\s*+,\s*+"([0-9]++)"~')) {
@@ -112,7 +123,7 @@ class Missing extends Command
             $this->reportError($error);
         }
 
-        if ($directory === 'CG' && (Strings::startsWith($file, 'text/') || Strings::startsWith($file, 'tips/'))) {
+        if ($directory === 'CG' && (Strings::startsWith($file, 'text/') || Strings::startsWith($file, 'tips/') || Strings::startsWith($file, 'scenario/')) && ! Strings::endsWith($file, '_j.png')) {
             $this->requireFile($directory, Strings::substring($file, 0, -4) . '_j.png');
         }
     }
