@@ -212,8 +212,10 @@ class LipSync extends Command
         'are',
         'meak_staff',
         'meakasi_list',
-        'title_some',
+        'title_',
         'some_fre',
+        'oni_gomen',
+        'tuki_',
     ];
 
     private $tipsFilePrefixes = [
