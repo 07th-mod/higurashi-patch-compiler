@@ -103,7 +103,7 @@ class Missing extends Command
             $this->requireFile('CG', $match[1] . 0 . '.png');
             $this->requireFile('CG', $match[1] . 1 . '.png');
             $this->requireFile('CG', $match[1] . 2 . '.png');
-            if (Strings::startsWith($match[1], 'sprite') || Strings::startsWith($match[1], 'portrait')) {
+            if ($this->shouldHaveSteamSprite($match[1])) {
                 $this->requireFile('CGAlt', $match[1] . $match[2] . '.png');
             }
         }
@@ -137,5 +137,58 @@ class Missing extends Command
         $this->errors[$error] = true;
 
         echo $error . PHP_EOL;
+    }
+
+    private function shouldHaveSteamSprite(string $sprite): bool
+    {
+        $sprite = Strings::after($sprite, '/', -1);
+
+        if (
+            Strings::startsWith($sprite, 'tomita') // Tomita, collision with Tomitake
+            || Strings::startsWith($sprite, 'tama') // Tamako, collision with Takano
+        ) {
+            return false;
+        }
+
+        if (
+            Strings::startsWith($sprite, 're') // Reina
+            || Strings::startsWith($sprite, 'me') // Mion
+            || Strings::startsWith($sprite, 'ri') // Rika & Child Rika
+            || Strings::startsWith($sprite, 'sa') // Satoko & Satoshi
+            || Strings::startsWith($sprite, 'oisi') // Oishi
+            || Strings::startsWith($sprite, 'tie') // Chie
+            || Strings::startsWith($sprite, 'tomi') // Tomitake
+            || Strings::startsWith($sprite, 'si') // Shion
+            || Strings::startsWith($sprite, 'ta') // Takano
+            || Strings::startsWith($sprite, 'iri') // Irie
+            || Strings::startsWith($sprite, 'chibimion') // Child Mion
+            || Strings::startsWith($sprite, 'kasa') // Kasai
+            || Strings::startsWith($sprite, 'kei') // Keichi
+        ) {
+            return true;
+        }
+
+        if (
+            Strings::startsWith($sprite, 'oka') // Okamura
+            || Strings::startsWith($sprite, 'kameda') // Kameda
+            || Strings::startsWith($sprite, 'ki') // Kimiyoshi
+            || Strings::startsWith($sprite, 'miyuki') // Miyuki
+            || Strings::startsWith($sprite, 'oryou') // Oryou
+            || Strings::startsWith($sprite, 'kuma') // Kumagai
+            || Strings::startsWith($sprite, 'aka') // Akane
+            || Strings::startsWith($sprite, 'tetu') // Teppei
+            || Strings::startsWith($sprite, 'aks') // Akasaka
+            || Strings::startsWith($sprite, 'chisa') // Chisato
+            || Strings::startsWith($sprite, 'huji') // Fujita
+            || Strings::startsWith($sprite, 'mado') // Madoka
+            || Strings::startsWith($sprite, 'na') // Natsumi
+            || Strings::startsWith($sprite, 'tomo') // Tomoe
+            || Strings::startsWith($sprite, 'tou') // Akira
+            || Strings::startsWith($sprite, 'yamaoki') // Kaoru
+        ) {
+            return false;
+        }
+
+        throw new NotImplementedException(sprintf('Not sure if sprite %s should have steam sprite.', $sprite));
     }
 }
