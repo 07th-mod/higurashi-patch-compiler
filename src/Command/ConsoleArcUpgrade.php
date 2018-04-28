@@ -97,7 +97,18 @@ class ConsoleArcUpgrade extends Command
         );
 
         $filesystem->remove(sprintf('%s/unpack/%s_patch', TEMP_DIR, $chapter));
-        $filesystem->mirror(sprintf('%s/lipsync/%s/Update', TEMP_DIR, $chapter), sprintf('%s/console/%s', TEMP_DIR, $chapter));
+        $filesystem->mirror(sprintf('%s/lipsync/%s/Update', TEMP_DIR, $chapter), sprintf('%s/unpack/%s_patch/Update', TEMP_DIR, $chapter));
+
+        $this->runCommand(
+            'higurashi:voice-pack',
+            [
+                'chapter' => $chapter,
+            ],
+            $output
+        );
+
+        $filesystem->remove(sprintf('%s/unpack/%s_patch', TEMP_DIR, $chapter));
+        $filesystem->mirror(sprintf('%s/voicepack/%s/Update', TEMP_DIR, $chapter), sprintf('%s/console/%s', TEMP_DIR, $chapter));
 
         return 0;
     }
