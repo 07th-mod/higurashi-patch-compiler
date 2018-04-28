@@ -179,6 +179,11 @@ class LipSync extends Command
         'nort_mono4',
         'nort_mono5',
         'nort_mono6',
+        'aka1',
+        'aka2',
+        'sora',
+        'sora2',
+        'oki_tv1',
     ];
 
     private $textFilePrefixes = [
@@ -208,6 +213,7 @@ class LipSync extends Command
         'meak_staff',
         'meakasi_list',
         'title_some',
+        'some_fre',
     ];
 
     private $tipsFilePrefixes = [
@@ -807,7 +813,9 @@ class LipSync extends Command
         $this->bashCopy[] = sprintf($command, 1, 1);
         $this->bashCopy[] = sprintf($command, 2, 2);
 
-        $this->bashCopy[] = sprintf('mkdir -p ' . dirname($this->chapter . '/CGAlt/' . $destination) . ' && cp ' . $this->chapter . '-old/CGAlt/' . $original . '.png ' .  $this->chapter . '/CGAlt/' . $destination, $expression);
+        if (! $this->isConsole) {
+            $this->bashCopy[] = sprintf('mkdir -p ' . dirname($this->chapter . '/CGAlt/' . $destination) . ' && cp ' . $this->chapter . '-old/CGAlt/' . $original . '.png ' .  $this->chapter . '/CGAlt/' . $destination, $expression);
+        }
     }
 
     private function addBashCopyForCG(string $cg): void
@@ -829,12 +837,12 @@ class LipSync extends Command
         $original = $this->isConsole ? 'console' : $this->chapter;
 
         $destination = $targetDirectory . Strings::lower($image) . '.png';
-
         $this->bashCopy[] = 'mkdir -p ' . dirname($this->chapter . '/CG/' . $destination) . ' && cp ' . $original . '-old/CG/' . $image . '.png ' . $this->chapter . '/CG/' . $destination;
 
-        $destination = $targetDirectory . Strings::lower($image) . '_j.png';
-
-        $this->bashCopy[] = 'mkdir -p ' . dirname($this->chapter . '/CG/' . $destination) . ' && cp ' . $original . '-old/CG/' . $image . '_j.png ' . $this->chapter . '/CG/' . $destination;
+        if (Strings::startsWith($targetDirectory, 'text/')) {
+            $destination = $targetDirectory . Strings::lower($image) . '_j.png';
+            $this->bashCopy[] = 'mkdir -p ' . dirname($this->chapter . '/CG/' . $destination) . ' && cp ' . $original . '-old/CG/' . $image . '_j.png ' . $this->chapter . '/CG/' . $destination;
+        }
     }
 
     private function addBashCopyForSpectrum(string $voice): void
@@ -847,12 +855,6 @@ class LipSync extends Command
 
         if (Strings::startsWith($voice, 'ps2/')) {
             $source = Strings::substring($voice, 8);
-
-            // Teppei in Tatarigoroshi had wrong character number before lipsync release.
-            if (Strings::startsWith($source, '17/')) {
-                $source = '21/' . Strings::substring($source, 3);
-            }
-
             $this->bashCopy[] = 'mkdir -p ' . dirname($this->chapter . '/spectrum/' . $destination) . ' && cp "spectrum/ps2/' . $source . '.txt" "' . $this->chapter . '/spectrum/' . $destination . '"';
         } else {
             $this->bashCopy[] = 'mkdir -p ' . dirname($this->chapter . '/spectrum/' . $destination) . ' && cp spectrum/ps3/' . $voice . '.txt ' . $this->chapter . '/spectrum/' . $destination;
