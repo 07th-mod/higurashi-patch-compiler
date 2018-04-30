@@ -114,7 +114,7 @@ INSERT INTO `names` (`id`, `japanese`, `english`, `color`, `color_mg`) VALUES
 (95,	'善朗',	'Yoshirou',	'#f5e6d3',	NULL),
 (96,	'千葉',	'Chiba',	'#f5e6d3',	NULL),
 (97,	'おやっさん',	'Old Man',	'#f5e6d3',	NULL),
-(98,	'守',	'Mori',	'#f5e6d3',	NULL),
+(98,	'守',	'Mamoru',	'#f5e6d3',	NULL),
 (99,	'三四',	'Miyo',	'#f5e6d3',	NULL),
 (100,	'山瀬',	'Yamase',	'#f5e6d3',	NULL),
 (101,	'千秋',	'Chiaki',	'#f5e6d3',	NULL),
