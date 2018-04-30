@@ -77,15 +77,11 @@ class VoicePack extends Command
         );
 
         $this->ps2VoicesDirectory = sprintf('%s/%s', TEMP_DIR, 'unpack/ps2-voices');
-        $this->ps3VoicesDirectory = sprintf('%s/%s', TEMP_DIR, 'unpack/voices');
         $this->ps2SpectrumDirectory = sprintf('%s/%s', TEMP_DIR, 'unpack/spectrum/ps2');
-        $this->ps3SpectrumDirectory = sprintf('%s/%s', TEMP_DIR, 'unpack/spectrum/ps3');
 
         $resourceDirectories = [
             $this->ps2VoicesDirectory,
-            $this->ps3VoicesDirectory,
             $this->ps2SpectrumDirectory,
-            $this->ps3SpectrumDirectory,
         ];
 
         foreach ($resourceDirectories as $resourceDirectory) {
@@ -106,9 +102,7 @@ class VoicePack extends Command
     }
 
     private $ps2VoicesDirectory;
-    private $ps3VoicesDirectory;
     private $ps2SpectrumDirectory;
-    private $ps3SpectrumDirectory;
     private $ps2Map;
     private $bashCopy;
 
@@ -142,13 +136,6 @@ class VoicePack extends Command
         return $line;
     }
 
-    private function getFileHash(string $directory, string $voice): ?string
-    {
-        $file = sprintf('%s/%s.ogg', $directory, $voice);
-
-        return file_exists($file) ? md5_file($file) : null;
-    }
-
     private function buildPS2Map(): void
     {
         $this->ps2Map = [];
@@ -167,11 +154,7 @@ class VoicePack extends Command
         }
 
         foreach ($this->ps2Map[$voice] as $directory) {
-            $hash = $this->getFileHash($this->ps2VoicesDirectory, $directory . '/' . $voice);
 
-            if ($hash === $voiceHash) {
-                return $directory;
-            }
         }
 
         return null;
