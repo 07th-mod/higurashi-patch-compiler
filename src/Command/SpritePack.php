@@ -95,7 +95,7 @@ class SpritePack extends Command
     {
         $bashCopy = array_unique($this->bashCopy);
 
-        $file = sprintf('%s/%s/%s.sh', TEMP_DIR, strtolower((new \ReflectionClass($this))->getShortName()), $this->chapter);
+        $file = sprintf('%s/%s/%s-sprites.sh', TEMP_DIR, strtolower((new \ReflectionClass($this))->getShortName()), $this->chapter);
 
         file_put_contents($file, implode("\n", $bashCopy));
     }
@@ -138,12 +138,12 @@ class SpritePack extends Command
 
         $destination = $directory . $prefix . $spriteName . '%s.png';
 
-        $command = 'mkdir -p ' . dirname($this->chapter . '/CG/' . $destination) . ' && cp sprites/' . $weather . $size . $ps3Sprite . '%s.png ' . $this->chapter . '/CG/' . $destination;
+        $command = 'mkdir -p ' . dirname($this->chapter . '-sprites/CG/' . $destination) . ' && cp sprites/' . $weather . $size . $ps3Sprite . '%s.png ' . $this->chapter . '-sprites/CG/' . $destination;
 
         $this->bashCopy[] = sprintf($command, 0, 0);
         $this->bashCopy[] = sprintf($command, 1, 1);
         $this->bashCopy[] = sprintf($command, 2, 2);
 
-        $this->bashCopy[] = 'mkdir -p ' . dirname($this->chapter . '/CGAlt/' . $destination) . ' && cp sprites/' . $weather . $size . $ps3Sprite . $expression . '.png ' . $this->chapter . '/CGAlt/' . $directory . $prefix . $spriteName . $expression . '.png';
+        $this->bashCopy[] = 'mkdir -p ' . dirname($this->chapter . '-sprites/CGAlt/' . $destination) . ' && cp sprites/' . $weather . $size . $ps3Sprite . $expression . '.png ' . $this->chapter . '-sprites/CGAlt/' . $directory . $prefix . $spriteName . $expression . '.png';
     }
 }

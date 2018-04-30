@@ -110,7 +110,7 @@ class VoicePack extends Command
     {
         $bashCopy = array_unique($this->bashCopy);
 
-        $file = sprintf('%s/%s/%s.sh', TEMP_DIR, strtolower((new \ReflectionClass($this))->getShortName()), $this->chapter);
+        $file = sprintf('%s/%s/%s-voices.sh', TEMP_DIR, strtolower((new \ReflectionClass($this))->getShortName()), $this->chapter);
 
         file_put_contents($file, implode("\n", $bashCopy));
     }
