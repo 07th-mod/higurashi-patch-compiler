@@ -99,13 +99,23 @@ class Missing extends Command
             $this->requireFile('CG', $match[2] . '.png');
         }
 
-        if ($match = Strings::match($line, '~^(?:\s++)(?:ModDrawCharacter|ModDrawCharacterWithFiltering)\(\s*+(?:[0-9]++)\s*+,\s*+(?:[0-9]++)\s*+,\s*+"([^"]++)"\s*+,\s*+"([0-9]++)"~')) {
+        if ($match = Strings::match($line, '~^(?:\s++)ModDrawCharacter\(\s*+(?:[0-9]++)\s*+,\s*+(?:[0-9]++)\s*+,\s*+"([^"]++)"\s*+,\s*+"([0-9]++)"~')) {
             $this->requireFile('CG', $match[1] . 0 . '.png');
             $this->requireFile('CG', $match[1] . 1 . '.png');
             $this->requireFile('CG', $match[1] . 2 . '.png');
             if ($this->shouldHaveSteamSprite($match[1])) {
                 $this->requireFile('CGAlt', $match[1] . $match[2] . '.png');
             }
+        }
+
+        if ($match = Strings::match($line, '~^(?:\s++)ModDrawCharacterWithFiltering\(\s*+(?:[0-9]++)\s*+,\s*+(?:[0-9]++)\s*+,\s*+"([^"]++)"\s*+,\s*+"([0-9]++)",\s*+"([^"]++)"\s*+~')) {
+            $this->requireFile('CG', $match[1] . 0 . '.png');
+            $this->requireFile('CG', $match[1] . 1 . '.png');
+            $this->requireFile('CG', $match[1] . 2 . '.png');
+            if ($this->shouldHaveSteamSprite($match[1])) {
+                $this->requireFile('CGAlt', $match[1] . $match[2] . '.png');
+            }
+            $this->requireFile('CG', $match[3] . '.png');
         }
     }
 
