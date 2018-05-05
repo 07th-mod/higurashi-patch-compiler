@@ -100,7 +100,7 @@ class DLLUpdate extends Command
             && Strings::match($lines->get(-1), '~^\\s++PlayVoice\\(~')
             && (
                 Strings::match($line, '~^\\s++ClearMessage\\(\\);$~')
-                || Strings::match($line, '~\\<\\/color\\>~')
+                || (Strings::match($line, '~\\<\\/color\\>~') && Strings::contains($line, 'GetGlobalFlag(GADVMode)'))
             )
         ) {
             $previous = $lines->get(-1);
@@ -109,7 +109,7 @@ class DLLUpdate extends Command
 
             for (
                 $i = -1;
-                Strings::match($lines->get($i), '~\\<\\/color\\>~') && Strings::match($lines->get($i - 1), '~^\\s++PlayVoice\\(~');
+                Strings::match($lines->get($i), '~\\<\\/color\\>~') && Strings::contains($lines->get($i), 'GetGlobalFlag(GADVMode)') && Strings::match($lines->get($i - 1), '~^\\s++PlayVoice\\(~');
                 --$i
             ) {
                 $previous = $lines->get($i - 1);
