@@ -99,7 +99,7 @@ class Missing extends Command
             $this->requireFile('CG', $match[2] . '.png');
         }
 
-        if ($match = Strings::match($line, '~^(?:\s++)ModDrawCharacter\(\s*+(?:[0-9]++)\s*+,\s*+(?:[0-9]++)\s*+,\s*+"([^"]++)"\s*+,\s*+"([0-9]++)"~')) {
+        if (($match = Strings::match($line, '~^(?:\s++)ModDrawCharacter\(\s*+(?:[0-9]++)\s*+,\s*+(?:[0-9]++)\s*+,\s*+"([^"]++)"\s*+,\s*+"([0-9]++)"~')) && $match[1] !== 'transparent') {
             $this->requireFile('CG', $match[1] . 0 . '.png');
             $this->requireFile('CG', $match[1] . 1 . '.png');
             $this->requireFile('CG', $match[1] . 2 . '.png');
