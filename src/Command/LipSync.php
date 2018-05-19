@@ -286,6 +286,13 @@ class LipSync extends Command
 
     private $isConsole = false;
 
+    private $bustshots = [];
+
+    private function initFile(): void
+    {
+        $this->bustshots = [];
+    }
+
     protected function processLine(string $line, LineStorage $lines, int $lineNumber, string $filename): string
     {
         $ignored = false;
@@ -301,25 +308,87 @@ class LipSync extends Command
         }
 
         if ($match = Strings::match($line, '~^(\s++)DrawBustshot\(\s*+([0-9]++)\s*+,\s*+"([^"]*+)"\s*+,(.*)$~')) {
+            $layer = $match[2];
+
             if ($this->ignoreDrawBustshot($match[3])) {
                 $ignored = true;
             } else {
                 [$sprite, $expression] = $this->getNewSpriteName($match[3]);
-                $line = sprintf('%sModDrawCharacter(%d, %d, "%s", "%s",%s', $match[1], $match[2], $this->getCharacterNumberForSprite($match[3]), $sprite, $expression, $match[4]) . "\n";
+                $line = sprintf('%sModDrawCharacter(%d, %d, "%s", "%s",%s', $match[1], $layer, $this->getCharacterNumberForSprite($match[3]), $sprite, $expression, $match[4]) . "\n";
+                $this->bustshots[$layer] = $line;
             }
         }
 
         if ($match = Strings::match($line, '~^(\s++)DrawBustshotWithFiltering\(\s*+([0-9]++)\s*+,\s*+"([^"]*+)"\s*+,\s*+"([^"]*+)"\s*+,(.*)$~')) {
+            $layer = $match[2];
             $effect = $match[4];
 
             if ($this->ignoreDrawBustshot($match[3])) {
                 $ignored = true;
             } else {
                 [$sprite, $expression] = $this->getNewSpriteName($match[3]);
-                $line = sprintf('%sModDrawCharacterWithFiltering(%d, %d, "%s", "%s", "%s",%s', $match[1], $match[2], $this->getCharacterNumberForSprite($match[3]), $sprite, $expression, $effect, $match[5]) . "\n";
+                $line = sprintf('%sModDrawCharacterWithFiltering(%d, %d, "%s", "%s", "%s",%s', $match[1], $layer, $this->getCharacterNumberForSprite($match[3]), $sprite, $expression, $effect, $match[5]) . "\n";
+                $this->bustshots[$layer] = $line;
             }
 
             $this->addBashCopyForOriginal($effect);
+        }
+
+        if (($match = Strings::match($line, '~^(\s++)ChangeBustshot\(\s*+([0-9]++)\s*+,\s*+"([^"]*+)"\s*+,(.*)$~')) && !Strings::startsWith($match[3], 'end_')) {
+            $layer = $match[2];
+
+            [$sprite, $expression] = $this->getNewSpriteName($match[3]);
+
+            $parameters = [
+                'x' => 0,
+                'y' => 0,
+                'z' => 0,
+                'move' => 'FALSE',
+                'oldx' => 0,
+                'oldy' => 0,
+                'oldz' => 0,
+                'unused1' => 0,
+                'unused2' => 0,
+                'unused3' => 0,
+                'type' => 0,
+                'priority' => 0,
+            ];
+
+            if (!isset($this->bustshots[$layer])) {
+                throw new \Exception('Unable to find DrawBustshot for: ' . trim($line));
+            }
+
+            $call = explode(',', $this->bustshots[$layer]);
+
+            if (Strings::contains($this->bustshots[$layer], 'WithFiltering')) {
+                if (count($call) !== 17) {
+                    throw new \Exception('Unable to parse line: ' . $this->bustshots[$layer]);
+                }
+
+                if (trim($call[8]) !== 'FALSE') {
+                    throw new \Exception('Unsupported DrawBustshot: ' . $this->bustshots[$layer]);
+                }
+
+                $parameters['x'] = trim($call[6]);
+                $parameters['y'] = trim($call[7]);
+                $parameters['z'] = trim($call[12]);
+                $parameters['priority'] = trim($call[14]);
+            } else {
+                if (count($call) !== 18) {
+                    throw new \Exception('Unable to parse line: ' . $this->bustshots[$layer]);
+                }
+
+                if (trim($call[7]) !== 'FALSE') {
+                    throw new \Exception('Unsupported DrawBustshot: ' . $this->bustshots[$layer]);
+                }
+
+                $parameters['x'] = trim($call[4]);
+                $parameters['y'] = trim($call[5]);
+                $parameters['z'] = trim($call[6]);
+                $parameters['priority'] = trim($call[15]);
+            }
+
+            $line = sprintf('%sModDrawCharacter(%d, %d, "%s", "%s", %s,%s', $match[1], $match[2], $this->getCharacterNumberForSprite(strtolower($match[3])), $sprite, $expression, implode(', ', $parameters), $match[4]) . "\n";
         }
 
         if ((Strings::contains($line, 'PlayVoice(') || (Strings::contains($line, 'DrawBustshot') && ! $ignored)) && ! Strings::match($line, '~\s*+//~')) {
@@ -533,6 +602,8 @@ class LipSync extends Command
                 $prefix = 'sunset/';
             } elseif ($data[1] === 'n') {
                 $prefix = 'night/';
+            } elseif ($data[1] === 'f') {
+                $prefix = 'flashback/';
             } elseif ($data[1] !== '-') {
                 throw new \Exception();
             }
