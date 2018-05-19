@@ -111,13 +111,21 @@ class SpritePack extends Command
 
     private function addBashCopyForSprite(string $sprite, string $expression): void
     {
+        if ($sprite === 'transparent') {
+            return;
+        }
+
         $parts = explode('/', $sprite);
 
         if (count($parts) !== 3) {
-            throw new \Exception(sprintf('Unable to parse sprite name %s.', $sprite));
+            throw new \Exception(sprintf('Unable to parse sprite name "%s".', $sprite));
         }
 
         [$directory, $prefix, $spriteName] = $parts;
+
+        if (! isset($this->spriteMap[$spriteName . $expression])) {
+            throw new \Exception(sprintf('Sprite not found in map: "%s".', $spriteName . $expression));
+        }
 
         $directory .= '/';
         $prefix .= '/';
