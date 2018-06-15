@@ -51,6 +51,9 @@ class Constants
             //'meakashi_graphics' => 'https://github.com/07th-mod/resources/releases/download/Nipah/Meakashi-CG.zip',
             //'meakashi_steam' => 'https://github.com/07th-mod/resources/releases/download/Nipah/Meakashi-CGAlt.zip',
         ],
+        'tsumihoroboshi' => [
+            'tsumihoroboshi_patch' => 'https://github.com/07th-mod/tsumihoroboshi/archive/master.zip',
+        ],
         'someutsushi' => [],
         'kageboushi' => [],
         'tsukiotoshi' => [],
