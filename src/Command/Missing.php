@@ -73,7 +73,7 @@ class Missing extends Command
             $this->requireFile('spectrum', $match[1] . '.txt');
         }
 
-        if ($match = Strings::match($line, '~^(?:\s++)PlaySE\(\s*+(?:[0-9]++)\s*+,\s*+"([^"]++)?"~')) {
+        if (($match = Strings::match($line, '~^(?:\s++)PlaySE\(\s*+(?:[0-9]++)\s*+,\s*+"([^"]++)?"~')) && array_key_exists(1, $match)) {
             $this->requireFile('SE', $match[1] . '.ogg');
         }
 
