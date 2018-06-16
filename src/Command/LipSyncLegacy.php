@@ -15,14 +15,14 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class LipSync extends Command
+class LipSyncLegacy extends Command
 {
     use LineProcessorTrait;
 
     protected function configure(): void
     {
         $this
-            ->setName('higurashi:lip-sync')
+            ->setName('higurashi:legacy:lip-sync')
             ->setDescription('Changes scripts for Lip-Sync compatibility.')
             ->addArgument('chapter', InputArgument::REQUIRED, 'Chapter to update.')
             ->addOption('force', null, InputOption::VALUE_NONE, 'Redownload all resources.');
