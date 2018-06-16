@@ -296,7 +296,7 @@ class LipSync extends Command
 
     private function getNewSpriteName(string $sprite): array
     {
-        if (! Strings::startsWith('sprite/', $sprite) && ! Strings::startsWith('portrait/', $sprite)) {
+        if (! Strings::startsWith($sprite, 'sprite/') && ! Strings::startsWith($sprite, 'portrait/')) {
             throw new \Exception('Unknown prefix for sprite: ' . $sprite);
         }
 
@@ -329,7 +329,7 @@ class LipSync extends Command
 
     private function ignoreDrawBustshot(string $sprite): bool
     {
-        return in_array($sprite, $this->ignoredFiles, true) || (Strings::contains($sprite, '/') && !Strings::match($sprite, '~^(?:[Nn]ight|[Ss]unset)/~'));
+        return in_array($sprite, $this->ignoredFiles, true);
     }
 
     private function getCharacterNumberForSprite(string $sprite): int
