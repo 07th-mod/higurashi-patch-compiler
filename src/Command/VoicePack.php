@@ -8,7 +8,6 @@ use Higurashi\Constants;
 use Higurashi\Helpers;
 use Higurashi\Utils\LineProcessorTrait;
 use Higurashi\Utils\LineStorage;
-use Nette\Utils\FileSystem;
 use Nette\Utils\Finder;
 use Nette\Utils\Strings;
 use Symfony\Component\Console\Command\Command;
@@ -16,7 +15,6 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Yaml\Yaml;
 
 class VoicePack extends Command
 {
