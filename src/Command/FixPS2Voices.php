@@ -134,6 +134,7 @@ class FixPS2Voices extends Command
         $spectrumDirectories = $this->ps2SpectrumMap[$baseVoice];
         if (! in_array($directory, $spectrumDirectories, true)) {
             if (count($spectrumDirectories) !== 1) {
+                // TODO: Use Constants::CHARACTER_NUMBERS to narrow it down.
                 printf(
                     'Unable to decide correct directory for voice "%s".',
                     $voice
