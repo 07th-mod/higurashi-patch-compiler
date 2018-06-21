@@ -103,6 +103,12 @@ class VoicePack extends Command
     private $ps2SpectrumDirectory;
     private $ps2Map;
     private $bashCopy;
+    private $characterNumbers;
+
+    private function init(): void
+    {
+        $this->characterNumbers = array_flip(Constants::CHARACTER_NUMBERS);
+    }
 
     private function finish(): void
     {
@@ -116,22 +122,55 @@ class VoicePack extends Command
     protected function processLine(string $line, LineStorage $lines, int $lineNumber, string $filename): string
     {
         if ($match = Strings::match($line, '~^(\s++)ModPlayVoiceLS\(\s*+([0-9]++)\s*+,\s*+([0-9]++)\s*+,\s*+"([^"]++)?"\s*+,\s*+(.*)$~')) {
-            $voice = $match[4];
+            $this->processVoice($match[4]);
+        }
 
-            if (! $voice) {
-                return $line;
-            }
-
-            if (Strings::lower($voice) !== $voice) {
-                echo 'Warning - non lowercase voice: ' . $voice . PHP_EOL;
-            }
-
-            // TODO: Add support for PS2 using similar logic as Voices.php
-
-            $this->addBashCopyForPS3Voice($voice);
+        if ($match = Strings::match($line, '~^(\s++)PlayVoice\(\s*+([0-9]++)\s*+,\s*+"([^"]++)?"\s*+,\s*+(.*)$~')) {
+            $this->processVoice($match[3]);
         }
 
         return $line;
+    }
+
+    private function processVoice(string $voice): void
+    {
+        if (! $voice) {
+            return;
+        }
+
+        if (Strings::lower($voice) !== $voice) {
+            echo 'Warning - non lowercase voice: ' . $voice . PHP_EOL;
+        }
+
+        [$ps, $voicePath] = explode('/', $voice, 2);
+
+        if ($ps === 'ps2') {
+            [$character, $baseVoice] = explode('/', $voicePath, 2);
+
+            if (! array_key_exists($character, $this->characterNumbers)) {
+                throw new \Exception(sprintf('PS2 character number not found for voice "%s".', $voice));
+            }
+
+            if (! array_key_exists($baseVoice, $this->ps2Map)) {
+                throw new \Exception(sprintf('PS2 voice "%s" does not exist.', $voice));
+            }
+
+            $ps2Character = (string) $this->characterNumbers[$character];
+
+            if (! in_array($ps2Character, $this->ps2Map[$baseVoice], true)) {
+                throw new \Exception(sprintf('PS2 voice "%s" does not exist for character number "%s".', $voice, $ps2Character));
+            }
+
+            $this->addBashCopyForPS2Spectrum($voicePath);
+            $this->addBashCopyForPS2Voice(
+                $ps2Character . '/' . $baseVoice,
+                $voicePath
+            );
+        } elseif ($ps === 'ps3') {
+            $this->addBashCopyForPS3Voice($voicePath);
+        } else {
+            throw new \Exception($voice);
+        }
     }
 
     private function buildPS2Map(): void
@@ -143,19 +182,6 @@ class VoicePack extends Command
             $voice = $file->getBasename('.ogg');
             $this->ps2Map[$voice][] = Strings::substring($file->getPath(), $cutLength + 1);
         }
-    }
-
-    private function findPs2FileByVoiceAndHash(string $voice, string $voiceHash): ?string
-    {
-        if (! array_key_exists($voice, $this->ps2Map)) {
-            return null;
-        }
-
-        foreach ($this->ps2Map[$voice] as $directory) {
-
-        }
-
-        return null;
     }
 
     private function addBashCopyForPS2Voice(string $voice, string $spectrum): void
