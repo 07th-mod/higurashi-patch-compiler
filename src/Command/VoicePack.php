@@ -202,10 +202,10 @@ class VoicePack extends Command
     {
         $destination = $voice . '.ogg';
 
-        $this->bashCopy[] = 'mkdir -p ' . dirname($this->chapter . '/voice/' . $destination) . ' && cp "voice/ps3/' . $destination . '" "' . $this->chapter . '/voice/' . $destination . '"';
+        $this->bashCopy[] = 'mkdir -p ' . dirname($this->chapter . '/voice/ps3/' . $destination) . ' && cp "voice/ps3/' . $destination . '" "' . $this->chapter . '/voice/ps3/' . $destination . '"';
 
         $destination = $voice . '.txt';
 
-        $this->bashCopy[] = 'mkdir -p ' . dirname($this->chapter . '/spectrum/' . $destination) . ' && cp "spectrum/ps3/' . $destination . '" "' . $this->chapter . '/spectrum/' . $destination . '"';
+        $this->bashCopy[] = 'mkdir -p ' . dirname($this->chapter . '/spectrum/ps3/' . $destination) . ' && cp "spectrum/ps3/' . $destination . '" "' . $this->chapter . '/spectrum/ps3/' . $destination . '"';
     }
 }
