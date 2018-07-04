@@ -95,12 +95,12 @@ class AdventureModeUpdater
         while (!feof($file) && ($line = fgets($file)) !== false) {
             $line = rtrim($line) . "\n";
 
-            if ($match = Strings::match($line, '~^\\s++PlaySE\\([^,]++,\\s*+"([sS][^_][^"]++)"~')) {
-                $japanese = $this->connection->query('SELECT [name] FROM [voices] WHERE [voice] = %s', $match[1])->fetchSingle();
+            if ($match = Strings::match($line, '~^\\s++PlaySE\\([^,]++,\\s*+"ps3/([^"]++)"~')) {
+                $japanese = $this->connection->query('SELECT [name] FROM [voices] WHERE LOWER([voice]) = %s', $match[1])->fetchSingle();
                 if ($japanese) {
                     $name = $this->connection->query('SELECT * FROM [names] WHERE [japanese] = %s', $japanese)->fetch()->toArray();
                 } else {
-                    $japanese = $this->connection->query('SELECT [name] FROM [voices] WHERE [voice] LIKE %s', '%' . $match[1] . '%')->fetchSingle();
+                    $japanese = $this->connection->query('SELECT [name] FROM [voices] WHERE LOWER([voice]) LIKE %s', '%' . $match[1] . '%')->fetchSingle();
                     if ($japanese) {
                         $japaneseNames = explode("\u{FF06}", $japanese);
                         $name = [];
