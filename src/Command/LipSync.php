@@ -318,7 +318,7 @@ class LipSync extends Command
             return 0;
         }
 
-        $match = Strings::match($voice, '~^(?:ps2/)?[sS][0-9]++/0?([0-9]++)/~');
+        $match = Strings::match($voice, '~^ps[23]/(?:[sS][0-9]++/)?0?([0-9]++)/~');
 
         if (! $match) {
             throw new \Exception(sprintf('Cannot parse voice "%s".', $voice));
@@ -329,7 +329,7 @@ class LipSync extends Command
 
     private function ignoreDrawBustshot(string $sprite): bool
     {
-        return in_array($sprite, $this->ignoredFiles, true);
+        return in_array(Strings::lower($sprite), $this->ignoredFiles, true);
     }
 
     private function getCharacterNumberForSprite(string $sprite): int

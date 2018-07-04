@@ -15,16 +15,21 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
-class ConsoleArcUpgrade extends Command
+class FullArcUpgrade extends Command
 {
     protected function configure()
     {
         $this
-            ->setName('higurashi:console-arc-upgrade')
+            ->setName('higurashi:full-arc-upgrade')
             ->addArgument('chapter', InputArgument::REQUIRED, 'Chapter to update.')
             ->setDescription('Fully upgrades a chapter.')
             ->addOption('force', null, InputOption::VALUE_NONE, 'Redownload all resources.');
     }
+
+    /**
+     * @var bool
+     */
+    private $isConsoleArc;
 
     public function execute(InputInterface $input, OutputInterface $output): int
     {
@@ -32,19 +37,15 @@ class ConsoleArcUpgrade extends Command
         $chapter = $input->getArgument('chapter');
         $chapter = Helpers::guessChapter($chapter);
 
+        $this->isConsoleArc = isset(Constants::CONSOLE_ARCS[$chapter]);
+
         /** @var bool $force */
         $force = $input->getOption('force');
-
-        if (! isset(Constants::CONSOLE_ARCS[$chapter])) {
-            $output->writeln(sprintf('Chapter "%s" not found.', $chapter));
-
-            return 1;
-        }
 
         $this->runCommand(
             'higurashi:download',
             [
-                'chapter' => 'console',
+                'chapter' => $this->isConsoleArc ? 'console' : $chapter,
                 '--force' => $force,
             ],
             $output
@@ -53,7 +54,7 @@ class ConsoleArcUpgrade extends Command
         $this->runCommand(
             'higurashi:unpack',
             [
-                'chapter' => 'console',
+                'chapter' => $this->isConsoleArc ? 'console' : $chapter,
                 '--force' => $force,
             ],
             $output
@@ -62,9 +63,23 @@ class ConsoleArcUpgrade extends Command
         $filesystem = new Filesystem();
         $filesystem->mkdir(sprintf('%s/unpack/%s_patch/Update', TEMP_DIR, $chapter));
 
-        foreach (Finder::findFiles(Constants::CONSOLE_ARCS[$chapter] . '_*.txt')->in(sprintf('%s/unpack/console_patch/Update', TEMP_DIR)) as $file => $fileInfo) {
-            $filesystem->copy($file, sprintf('%s/unpack/%s_patch/Update/%s', TEMP_DIR, $chapter, $fileInfo->getFilename()));
+        if ($this->isConsoleArc) {
+            $files = Finder::findFiles(Constants::CONSOLE_ARCS[$chapter] . '_*.txt')->in(sprintf('%s/unpack/console_patch/Update', TEMP_DIR));
+            foreach ($files as $file => $fileInfo) {
+                $filesystem->copy($file, sprintf('%s/unpack/%s_patch/Update/%s', TEMP_DIR, $chapter, $fileInfo->getFilename()));
+            }
         }
+
+        $this->runCommand(
+            'higurashi:combine',
+            [
+                'chapter' => $chapter,
+            ],
+            $output
+        );
+
+        $filesystem->remove(sprintf('%s/unpack/%s_patch', TEMP_DIR, $chapter));
+        $filesystem->mirror(sprintf('%s/combine/%s/Update', TEMP_DIR, $chapter), sprintf('%s/unpack/%s_patch/Update', TEMP_DIR, $chapter));
 
         $this->runCommand(
             'higurashi:adv',

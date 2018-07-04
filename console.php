@@ -47,7 +47,7 @@ $application->add(new \Higurashi\Command\Missing());
 $application->add(new \Higurashi\Command\Voices());
 $application->add(new \Higurashi\Command\VoicePack());
 $application->add(new \Higurashi\Command\SpritePack());
-$application->add(new \Higurashi\Command\ConsoleArcUpgrade());
+$application->add(new \Higurashi\Command\FullArcUpgrade());
 $application->add(new \Higurashi\Command\FixPS2Voices());
 
 $application->run();
