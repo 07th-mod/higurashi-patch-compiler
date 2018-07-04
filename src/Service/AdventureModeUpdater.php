@@ -202,6 +202,8 @@ class AdventureModeUpdater
             $previousLine = $line;
         }
 
+        $lines[] = $previousLine;
+
         foreach ($longLines as $index) {
             $delimitedLines = explode("\n", $lines[$index]);
             if (count($delimitedLines) === 4) {
@@ -219,8 +221,6 @@ class AdventureModeUpdater
             $englishLine = "\t" . str_replace($match[1], '<size=-2>' . $match[1] . '</size>', $englishLine);
             $lines[$index + 1] = $englishLine . "\t" . '} else {' . "\n" . $nvlLine . "\t" . '}' . "\n";
         }
-
-        $lines[] = $previousLine;
 
         return $lines;
     }
