@@ -14,6 +14,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Filesystem\Filesystem;
 
 class DLLUpdate extends Command
 {
@@ -64,6 +65,13 @@ class DLLUpdate extends Command
         $directory = sprintf('%s/%s/%s', TEMP_DIR, strtolower((new \ReflectionClass($this))->getShortName()), $chapter);
 
         $this->update($chapter, $directory);
+
+        $initFile = sprintf('%s/dllupdate/%s/Update/init.txt', TEMP_DIR, $chapter);
+        if (file_exists($initFile)) {
+            $filesystem = new Filesystem();
+            $filesystem->remove($initFile);
+            $filesystem->copy(sprintf('%s/../data/init.txt', TEMP_DIR), $initFile);
+        }
 
         return 0;
     }
