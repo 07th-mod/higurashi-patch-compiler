@@ -114,6 +114,8 @@ class AdventureModeUpdater
                         }
                     }
                 }
+            } elseif ($match = Strings::match($line, '~^\\s++PlaySE\\([^,]++,\\s*+"ps2/0?+([1-9][0-9]?)/~')) {
+                $name = $this->connection->query('SELECT * FROM [names] WHERE [number] = %s', $match[1])->fetch()->toArray();
             } elseif (Strings::match($previousLine, '~^\\s++OutputLine\\(NULL,~') && $match = Strings::match($line, '~^\\s++NULL,\\s++"((?:\\\\"|[^"])*+)"~')) {
                 $englishText = $match[1];
                 $length = Strings::length($englishText);
