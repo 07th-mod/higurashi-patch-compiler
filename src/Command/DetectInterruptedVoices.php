@@ -122,39 +122,11 @@ class DetectInterruptedVoices extends Command
                 $lineNumber
             );
 
-            $line = "\tOutputLineAll(NULL, \"\", Line_WaitForInput); // autofix interrupted voice\n" . $line;
-            $this->currentVoices = [];
-            $this->removeWait($lines);
+            $line = "\tWaitToFinishVoicePlaying( $channel ); // autofix interrupted voice\n" . $line;
         }
 
         $this->currentVoices[$channel] = $voice;
 
         return $line;
-    }
-
-    private function removeWait(LineStorage $lines): void
-    {
-        $i = -1;
-
-        while ($this->shouldIgnoreLine($lines->get($i))) {
-            --$i;
-        }
-
-        if (
-            Strings::match($lines->get($i - 2), '~^(\s++)SetValidityOfInput\(\s*+FALSE\s*+\);$~')
-            && Strings::match($lines->get($i - 1), '~^(\s++)Wait\(\s*+[0-9]++\s*+\);$~')
-            && Strings::match($lines->get($i), '~^(\s++)SetValidityOfInput\(\s*+TRUE\s*+\);$~')
-        ) {
-            $lines->set($i - 2, "\t// " . ltrim($lines->get($i - 2)));
-            $lines->set($i - 1, "\t// " . ltrim($lines->get($i - 1)));
-            $lines->set($i, "\t// " . ltrim($lines->get($i)));
-        }
-    }
-
-    private function shouldIgnoreLine(string $line): bool
-    {
-        return trim($line) === ''
-            || Strings::contains($line, 'if (GetGlobalFlag(GADVMode)) { OutputLine(')
-            || Strings::startsWith($line, '//');
     }
 }
