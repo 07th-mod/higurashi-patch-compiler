@@ -72,6 +72,8 @@ trait LineProcessorTrait
             ++$i;
         }
 
+        $this->finishFile($lines, $filename);
+
         return $lines;
     }
 
@@ -80,6 +82,10 @@ trait LineProcessorTrait
     }
 
     private function initFile(): void
+    {
+    }
+
+    private function finishFile(LineStorage $lines, string $filename): void
     {
     }
 
