@@ -129,6 +129,10 @@ class VoicePack extends Command
             $this->processVoice($match[3]);
         }
 
+        if ($match = Strings::match($line, '~^(\s++)PlaySE\(\s*+([0-9]++)\s*+,\s*+"(ps[23]/[^"]++)?"\s*+,\s*+(.*)$~')) {
+            $this->processVoice($match[3]);
+        }
+
         return $line;
     }
 
