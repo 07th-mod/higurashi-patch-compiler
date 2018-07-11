@@ -136,7 +136,7 @@ class DetectInterruptedVoices extends Command
     {
         $i = -1;
 
-        while ($lines->get($i) === '') {
+        while ($this->shouldIgnoreLine($lines->get($i))) {
             --$i;
         }
 
@@ -149,5 +149,12 @@ class DetectInterruptedVoices extends Command
             $lines->set($i - 1, "\t// " . ltrim($lines->get($i - 1)));
             $lines->set($i, "\t// " . ltrim($lines->get($i)));
         }
+    }
+
+    private function shouldIgnoreLine(string $line): bool
+    {
+        return trim($line) === ''
+            || Strings::contains($line, 'if (GetGlobalFlag(GADVMode)) { OutputLine(')
+            || Strings::startsWith($line, '//');
     }
 }
