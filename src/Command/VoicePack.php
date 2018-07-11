@@ -121,15 +121,15 @@ class VoicePack extends Command
 
     protected function processLine(string $line, LineStorage $lines, int $lineNumber, string $filename): string
     {
-        if ($match = Strings::match($line, '~^(\s++)ModPlayVoiceLS\(\s*+([0-9]++)\s*+,\s*+([0-9]++)\s*+,\s*+"([^"]++)?"\s*+,\s*+(.*)$~')) {
+        if ($match = Strings::match($line, '~^(\s++)ModPlayVoiceLS\(\s*+([0-9]++)\s*+,\s*+([0-9]++)\s*+,\s*+"([^"]++)"\s*+,\s*+(.*)$~')) {
             $this->processVoice($match[4]);
         }
 
-        if ($match = Strings::match($line, '~^(\s++)PlayVoice\(\s*+([0-9]++)\s*+,\s*+"([^"]++)?"\s*+,\s*+(.*)$~')) {
+        if ($match = Strings::match($line, '~^(\s++)PlayVoice\(\s*+([0-9]++)\s*+,\s*+"([^"]++)"\s*+,\s*+(.*)$~')) {
             $this->processVoice($match[3]);
         }
 
-        if ($match = Strings::match($line, '~^(\s++)PlaySE\(\s*+([0-9]++)\s*+,\s*+"(ps[23]/[^"]++)?"\s*+,\s*+(.*)$~')) {
+        if ($match = Strings::match($line, '~^(\s++)PlaySE\(\s*+([0-9]++)\s*+,\s*+"(ps[23]/[^"]++)"\s*+,\s*+(.*)$~')) {
             $this->processVoice($match[3]);
         }
 
@@ -138,10 +138,6 @@ class VoicePack extends Command
 
     private function processVoice(string $voice): void
     {
-        if (! $voice) {
-            return;
-        }
-
         if (Strings::lower($voice) !== $voice) {
             echo 'Warning - non lowercase voice: ' . $voice . PHP_EOL;
         }
