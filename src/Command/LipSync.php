@@ -169,6 +169,7 @@ class LipSync extends Command
         'hina1_3',
         'hina1_4',
         'no_data',
+        'transparent',
         'title02',
         'toketu1a',
         'toketu1b',
@@ -329,7 +330,7 @@ class LipSync extends Command
 
     private function ignoreDrawBustshot(string $sprite): bool
     {
-        return in_array(Strings::lower($sprite), $this->ignoredFiles, true);
+        return in_array(Strings::lower($sprite), $this->ignoredFiles, true) || Strings::startsWith($sprite, 'scene/');
     }
 
     private function getCharacterNumberForSprite(string $sprite): int

@@ -68,6 +68,8 @@ class AdventureModeUpdater
 
     private function processScript(string $filename): void
     {
+        echo 'Updating ' . Strings::after($filename, '/', -1) . PHP_EOL;
+
         $file = fopen($filename, 'r');
         @unlink($filename . '.new');
         $output = fopen($filename . '.new', 'w');

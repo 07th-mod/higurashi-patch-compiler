@@ -70,6 +70,8 @@ class FullArcUpgrade extends Command
             }
         }
 
+        echo 'Running higurashi:combine' . PHP_EOL;
+
         $this->runCommand(
             'higurashi:combine',
             [
@@ -80,6 +82,8 @@ class FullArcUpgrade extends Command
 
         $filesystem->remove(sprintf('%s/unpack/%s_patch', TEMP_DIR, $chapter));
         $filesystem->mirror(sprintf('%s/combine/%s/Update', TEMP_DIR, $chapter), sprintf('%s/unpack/%s_patch/Update', TEMP_DIR, $chapter));
+
+        echo 'Running higurashi:adv' . PHP_EOL;
 
         $this->runCommand(
             'higurashi:adv',
@@ -92,6 +96,8 @@ class FullArcUpgrade extends Command
         $filesystem->remove(sprintf('%s/unpack/%s_patch', TEMP_DIR, $chapter));
         $filesystem->mirror(sprintf('%s/adv/%s/Update', TEMP_DIR, $chapter), sprintf('%s/unpack/%s_patch/Update', TEMP_DIR, $chapter));
 
+        echo 'Running higurashi:dll-update' . PHP_EOL;
+
         $this->runCommand(
             'higurashi:dll-update',
             [
@@ -102,6 +108,8 @@ class FullArcUpgrade extends Command
 
         $filesystem->remove(sprintf('%s/unpack/%s_patch', TEMP_DIR, $chapter));
         $filesystem->mirror(sprintf('%s/dllupdate/%s/Update', TEMP_DIR, $chapter), sprintf('%s/unpack/%s_patch/Update', TEMP_DIR, $chapter));
+
+        echo 'Running higurashi:lip-sync' . PHP_EOL;
 
         $this->runCommand(
             'higurashi:lip-sync',
@@ -114,6 +122,8 @@ class FullArcUpgrade extends Command
         $filesystem->remove(sprintf('%s/unpack/%s_patch', TEMP_DIR, $chapter));
         $filesystem->mirror(sprintf('%s/lipsync/%s/Update', TEMP_DIR, $chapter), sprintf('%s/unpack/%s_patch/Update', TEMP_DIR, $chapter));
 
+        echo 'Running higurashi:voice-pack' . PHP_EOL;
+
         $this->runCommand(
             'higurashi:voice-pack',
             [
@@ -121,6 +131,8 @@ class FullArcUpgrade extends Command
             ],
             $output
         );
+
+        echo 'Running higurashi:sprite-pack' . PHP_EOL;
 
         $this->runCommand(
             'higurashi:sprite-pack',
