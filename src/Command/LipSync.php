@@ -152,6 +152,7 @@ class LipSync extends Command
         'logo',
         'furiker_a',
         'furiker_b',
+        'furiker_c',
         '01_a',
         '01_b',
         '01_b1',
@@ -315,7 +316,7 @@ class LipSync extends Command
 
     private function getCharacterNumberForVoice(string $voice): int
     {
-        if ($voice === '' || Strings::startsWith($voice, 's00/n/')) {
+        if ($voice === '' || Strings::startsWith($voice, 'ps3/s00/n/')) {
             return 0;
         }
 
@@ -330,7 +331,10 @@ class LipSync extends Command
 
     private function ignoreDrawBustshot(string $sprite): bool
     {
-        return in_array(Strings::lower($sprite), $this->ignoredFiles, true) || Strings::startsWith($sprite, 'scene/');
+        return in_array(Strings::lower($sprite), $this->ignoredFiles, true)
+            || Strings::startsWith($sprite, 'background/')
+            || Strings::startsWith($sprite, 'scene/')
+            || Strings::startsWith($sprite, 'eye/');
     }
 
     private function getCharacterNumberForSprite(string $sprite): int

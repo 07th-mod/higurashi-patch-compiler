@@ -99,6 +99,10 @@ class DLLUpdate extends Command
             $line = "\t" . sprintf('PlayVoice(%d, "%s", %d);', $match[1], $match[2], $match[3]) . "\n";
         }
 
+        if ($match = Strings::match($line, '~^\\s++PlaySE\\(\\s*+([0-9]++)\\s*+,\\s*+"([sS][0-9]{2}/[^"]++)?",\\s*+([0-9]++),\\s*+[^)]+\\);$~')) {
+            $line = "\t" . sprintf('PlayVoice(%d, "%s", %d);', $match[1], 'ps3/' . Strings::lower($match[2]), $match[3]) . "\n";
+        }
+
         $line = str_replace('if (AdvMode) {', 'if (GetGlobalFlag(GADVMode)) {', $line);
         $line = str_replace('if (AdvMode == 0) {', 'if (GetGlobalFlag(GADVMode) == 0) {', $line);
         $line = str_replace('Line_ModeSpecific', 'GetGlobalFlag(GLinemodeSp)', $line);
