@@ -97,7 +97,7 @@ class AdventureModeUpdater
         while (!feof($file) && ($line = fgets($file)) !== false) {
             $line = rtrim($line) . "\n";
 
-            if ($match = Strings::match($line, '~^\\s++PlaySE\\([^,]++,\\s*+"ps3/([^"]++)"~')) {
+            if ($match = Strings::match($line, '~^\\s++PlaySE\\([^,]++,\\s*+"(?:ps3/)?([sS][0-9]{2}/[^"]++)"~')) {
                 $japanese = $this->connection->query('SELECT [name] FROM [voices] WHERE LOWER([voice]) = %s', $match[1])->fetchSingle();
                 if ($japanese) {
                     $name = $this->connection->query('SELECT * FROM [names] WHERE [japanese] = %s', $japanese)->fetch()->toArray();
