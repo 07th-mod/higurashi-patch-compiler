@@ -209,21 +209,8 @@ class AdventureModeUpdater
         $lines[] = $previousLine;
 
         foreach ($longLines as $index) {
-            $delimitedLines = explode("\n", $lines[$index]);
-            if (count($delimitedLines) === 4) {
-                list($previousLine, $prefixLine, $japaneseLine) = $delimitedLines;
-                $previousLine .= "\n";
-            } else {
-                list($prefixLine, $japaneseLine) = $delimitedLines;
-                $previousLine = '';
-            }
-            $prefixLine = substr($prefixLine, 16, -2);
-            $englishLine = $lines[$index + 1];
-            $nvlLine = "\t" . $japaneseLine . "\n\t" . $englishLine;
-            $lines[$index] = $previousLine . "\t" . 'if (AdvMode) {' . "\n\t\t" . $prefixLine . "\n\t" . $japaneseLine . "\n";
-            $match = Strings::match($englishLine, '~^\\s++NULL,\\s++"((?:\\\\"|[^"])*+)"~');
-            $englishLine = "\t" . str_replace($match[1], '<size=-2>' . $match[1] . '</size>', $englishLine);
-            $lines[$index + 1] = $englishLine . "\t" . '} else {' . "\n" . $nvlLine . "\t" . '}' . "\n";
+            throw new \Exception('There is a long line which needs lower font size in adv mode. Remove this exception and check the result.');
+            $lines[$index + 1] = "\tif (GetGlobalFlag(GADVMode)) { OutputLine(NULL, \"\", NULL, \"<size=-2>\", Line_Continue); }\n" . $lines[$index + 1];
         }
 
         return $lines;
