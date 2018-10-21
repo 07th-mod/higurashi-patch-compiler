@@ -185,7 +185,7 @@ INSERT INTO `names` (`id`, `japanese`, `english`, `color`, `color_mg`, `number`)
 (165,	'魅音の父',	'Mion\'s dad',	'#f5e6d3',	NULL,	0),
 (166,	'美代子の父',	'Miyoko\'s dad',	'#f5e6d3',	NULL,	0),
 (167,	'男性',	'Guy',	'#f5e6d3',	NULL,	0),
-(168,	'本田屋',	'Honda',	'#f5e6d3',	NULL,	0),
+(168,	'本田屋',	'Hondaya',	'#f5e6d3',	NULL,	0),
 (169,	'主婦',	'Housewife',	'#f5e6d3',	NULL,	0),
 (170,	'園芸業者',	'Gardener',	'#f5e6d3',	NULL,	0),
 (171,	'門下生',	'Disciple',	'#f5e6d3',	NULL,	0),
