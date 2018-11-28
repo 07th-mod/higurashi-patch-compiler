@@ -51,5 +51,6 @@ $application->add(new \Higurashi\Command\FullArcUpgrade());
 $application->add(new \Higurashi\Command\FixPS2Voices());
 $application->add(new \Higurashi\Command\DetectInterruptedVoices());
 $application->add(new \Higurashi\Command\DetectMultilineVoices());
+$application->add(new \Higurashi\Command\RemoveDisplayWindow());
 
 $application->run();
