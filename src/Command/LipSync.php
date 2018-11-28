@@ -101,9 +101,9 @@ class LipSync extends Command
         'ir' => 10,
         'oi' => 11,
 
-        '?ha' => 12, // Hanyuu
+        'ha' => 12, // Hanyuu
         'aks' => 13, // Akasaka
-        '?oko' => 14, // Okonogi
+        'oko' => 14, // Okonogi
 
         'kasa' => 15,
         'Kasa' => 15,
@@ -122,14 +122,10 @@ class LipSync extends Command
         'tomita' => 24,
         'oka' => 25,
 
-        'chibimion_' => 26,
-        // Correct prefixes for child Mion and Rika are added in init method only for himatsubushi.
-        '?chme' => 26, // Child Mion
-        '?chri' => 27, // Child Rika
-
+        'chibimion' => 26, // Child Mion
+        'rim' => 27, // Child Rika
         'miyuki' => 34,
-
-        '?chta' => 48, // Child Takano
+        'miyo' => 48, // Child Takano
 
         // console characters
         'chisa' => 37,
@@ -140,6 +136,31 @@ class LipSync extends Command
         'tomo' => 28,
         'tou' => 39,
         'yamaoki' => 30,
+        'miono' => null, // Adult Mion
+        'shiono' => null, // Adult Shion
+        'miyuko' => null,
+        'hana' => null,
+        'ama' => null,
+        'nagisa' => null,
+        'oha' => null, // Adult Hanyuu
+        'ouka' => null,
+        'riku' => null,
+        'tsukada' => null,
+        'yae' => null,
+
+        // switch characters
+        'hara' => null,
+        'hhos' => null,
+        'hhot' => null,
+        'hmi' => null,
+        'hnit' => null,
+        'hoda' => null,
+        'hoka' => null,
+        'hri' => null,
+        'hton' => null,
+        'hyos' => null,
+        'tamura' => null,
+        'une' => null,
     ];
 
     private $ignoredFiles = [
