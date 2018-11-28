@@ -113,7 +113,7 @@ class LipSync extends Command
         'kuma' => 19,
         'Kuma' => 19,
 
-        '?rin' => 20, // Ritsuko - POSSIBLE COLLISION WITH RIKA!!
+        'rina' => 20, // Ritsuko
 
         'tetu' => 21,
         'ti' => 22,
