@@ -136,17 +136,17 @@ class LipSync extends Command
         'tomo' => 28,
         'tou' => 39,
         'yamaoki' => 30,
-        'miono' => null, // Adult Mion
-        'shiono' => null, // Adult Shion
-        'miyuko' => null,
-        'hana' => null,
-        'ama' => null,
-        'nagisa' => null,
-        'oha' => null, // Adult Hanyuu
-        'ouka' => null,
-        'riku' => null,
-        'tsukada' => null,
-        'yae' => null,
+        'miono' => 43, // Adult Mion
+        'shiono' => 44, // Adult Shion
+        'miyuko' => 40,
+        'hana' => 32,
+        'ama' => 49,
+        'nagisa' => 35,
+        'oha' => 45, // Adult Hanyuu
+        'ouka' => 47,
+        'riku' => 46,
+        'tsukada' => 33,
+        'yae' => 42,
 
         // switch characters
         'hara' => null,
