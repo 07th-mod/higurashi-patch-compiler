@@ -160,6 +160,8 @@ class LipSync extends Command
         'hri' => null,
         'hton' => null,
         'hyos' => null,
+        'mo' => null,
+        'otobe' => null,
         'tamura' => null,
         'une' => null,
     ];
