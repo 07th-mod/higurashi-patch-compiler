@@ -149,6 +149,7 @@ class LipSync extends Command
         'yae' => 42,
 
         // switch characters
+        'arakawa' => null,
         'hara' => null,
         'hhos' => null,
         'hhot' => null,
