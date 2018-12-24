@@ -6,6 +6,9 @@ use Symfony\Component\Console\Application;
 
 define('TEMP_DIR', __DIR__ . '/temp');
 
+ini_set('display_errors', 'On');
+error_reporting(E_ALL);
+
 $application = new Application();
 
 // Chapter compilation
@@ -52,5 +55,6 @@ $application->add(new \Higurashi\Command\FixPS2Voices());
 $application->add(new \Higurashi\Command\DetectInterruptedVoices());
 $application->add(new \Higurashi\Command\DetectMultilineVoices());
 $application->add(new \Higurashi\Command\RemoveDisplayWindow());
+$application->add(new \Higurashi\Command\UpgradeTranslation());
 
 $application->run();
