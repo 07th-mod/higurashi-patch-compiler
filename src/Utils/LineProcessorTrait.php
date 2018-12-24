@@ -61,7 +61,6 @@ trait LineProcessorTrait
 
     private function updateLines($file, string $filename): iterable
     {
-        $name = null;
         $lines = new LineStorage();
 
         $i = 1;
