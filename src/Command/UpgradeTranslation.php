@@ -112,6 +112,11 @@ class UpgradeTranslation extends Command
      */
     private $missing = 0;
 
+    /**
+     * @var string
+     */
+    private $names;
+
     private function initFile(): void
     {
         $this->order = 0;
@@ -231,6 +236,28 @@ class UpgradeTranslation extends Command
             )->execute();
 
             return $order + 1;
+        }
+
+        if ($match = Strings::match($line, '~OutputLine\\("((?:<color=#[a-f0-9]++>(?:[^<]++)</color>(?:＆)?)*)", NULL, "((?:<color=#[a-f0-9]++>(?:[^<]++)</color>(?: & )?)*)"~')) {
+            $japaneseNames = array_column(Strings::matchAll($match[1], '~>([^<]+)</~'), 1);
+            $translatedNames = array_column(Strings::matchAll($match[2], '~>([^<]+)</~'), 1);
+
+            if (count($japaneseNames) !== count($translatedNames)) {
+                throw new \Exception('Names count does not match: ' . $line);
+            }
+
+            $i = 0;
+            foreach ($japaneseNames as $name) {
+                $translated = $translatedNames[$i];
+
+                if (isset($this->names[$name]) && $this->names[$name] !== $translated) {
+                    // throw new \Exception('Name translation mismatch: ' . $name);
+                }
+
+                $this->names[$name] = $translated;
+
+                ++$i;
+            }
         }
 
         return $order;
