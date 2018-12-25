@@ -79,13 +79,15 @@ class UpgradeTranslation extends Command
         $options['charset'] = 'utf8';
         $this->connection = new Connection($options);
 
-        //$this->connection->query('TRUNCATE TABLE translation RESTART IDENTITY');
+        $this->connection->query('TRUNCATE TABLE translation RESTART IDENTITY');
 
-        //$this->fillTranslationsDatabase($path);
+        $this->fillTranslationsDatabase($path);
 
         $directory = sprintf('%s/%s/%s', TEMP_DIR, strtolower((new \ReflectionClass($this))->getShortName()), $chapter);
 
         $this->update($chapter, $directory);
+
+        $output->writeln(sprintf('Missing %d translations.', $this->missing));
 
         return 0;
     }
@@ -104,6 +106,11 @@ class UpgradeTranslation extends Command
      * @var int
      */
     private $lastOrder;
+
+    /**
+     * @var int
+     */
+    private $missing = 0;
 
     private function initFile(): void
     {
@@ -138,7 +145,7 @@ class UpgradeTranslation extends Command
 
         $files = [$filename];
 
-        if ($match = Strings::match($filename, '~^z([a-z0-9-]+)_vm~')) {
+        if ($match = Strings::match($filename, '~^z([a-z0-9_]+)_vm~')) {
             $files[] = $match[1];
         }
 
@@ -149,6 +156,8 @@ class UpgradeTranslation extends Command
         )->fetchAll();
 
         if (count($result) === 0) {
+            ++$this->missing;
+
             return '<missing translation>';
         }
 
@@ -165,6 +174,8 @@ class UpgradeTranslation extends Command
                 return $row->translated;
             }
         }
+
+        ++$this->missing;
 
         return '<missing translation>';
     }
