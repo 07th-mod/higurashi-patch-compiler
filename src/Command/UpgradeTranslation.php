@@ -141,6 +141,31 @@ class UpgradeTranslation extends Command
             );
         }
 
+        if ($match = Strings::match($line, '~OutputLine\\("((?:<color=#[a-f0-9]++>(?:[^<]++)</color>(?:＆)?)*)", NULL, "((?:<color=#[a-f0-9]++>(?:[^<]++)</color>(?: & )?)*)"~')) {
+            $japaneseNames = array_column(Strings::matchAll($match[1], '~>([^<]+)</~'), 1);
+            $englishNames = array_column(Strings::matchAll($match[2], '~>([^<]+)</~'), 1);
+
+            if (count($japaneseNames) !== count($englishNames)) {
+                throw new \Exception('Names count does not match: ' . $line);
+            }
+
+            $i = 0;
+            foreach ($japaneseNames as $name) {
+                $english = $englishNames[$i];
+
+                if (! isset($this->names[$name])) {
+                    throw new \Exception('Name translation not found: ' . $name);
+                }
+
+                $translated = $this->names[$name];
+
+                $line = str_replace('>' . $english . '<', '>' . $translated . '<', $line);
+
+                ++$i;
+            }
+        }
+
+
         return $line;
     }
 
@@ -251,7 +276,7 @@ class UpgradeTranslation extends Command
                 $translated = $translatedNames[$i];
 
                 if (isset($this->names[$name]) && $this->names[$name] !== $translated) {
-                    // throw new \Exception('Name translation mismatch: ' . $name);
+                    throw new \Exception('Name translation mismatch: ' . $name);
                 }
 
                 $this->names[$name] = $translated;
