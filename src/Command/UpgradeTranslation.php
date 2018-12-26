@@ -185,23 +185,33 @@ class UpgradeTranslation extends Command
             $japanese
         )->fetchAll();
 
-        if (count($result) === 0) {
-            ++$this->missing;
-
-            return '<missing translation>';
-        }
-
-        if (count($result) === 1) {
-            $this->lastOrder = $result[0]->order;
-
-            return $result[0]->translated;
-        }
-
         $expectedOrder = $this->lastOrder + 1;
 
-        foreach ($result as $row) {
-            if ($row->order === $expectedOrder && $row->file === $filename) {
-                $this->lastOrder = $row->order;
+        if (count($result) > 0) {
+            if (count($result) === 1) {
+                $this->lastOrder = $result[0]->order;
+
+                return $result[0]->translated;
+            }
+
+            foreach ($result as $row) {
+                if ($row->order === $expectedOrder && $row->file === $filename) {
+                    $this->lastOrder = $row->order;
+
+                    return $row->translated;
+                }
+            }
+        }
+
+        $row = $this->connection->query(
+            'SELECT [japanese], [translated] FROM [translation] WHERE [file] = %s AND [order] = %i',
+            $filename,
+            $expectedOrder
+        )->fetch();
+
+        if ($row) {
+            if (Strings::length($row->japanese) > 5 && levenshtein($row->japanese, $japanese) <= 6) {
+                $this->lastOrder = $expectedOrder;
 
                 return $row->translated;
             }
