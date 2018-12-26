@@ -200,7 +200,9 @@ class UpgradeTranslation extends Command
         $expectedOrder = $this->lastOrder + 1;
 
         foreach ($result as $row) {
-            if ($row->order >= $expectedOrder && $row->file === $filename) {
+            if ($row->order === $expectedOrder && $row->file === $filename) {
+                $this->lastOrder = $row->order;
+
                 return $row->translated;
             }
         }
