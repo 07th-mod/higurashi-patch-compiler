@@ -72,14 +72,25 @@ class UpgradeTranslation extends Command
             return 2;
         }
 
-        $config = Yaml::parse(file_get_contents(__DIR__ . '/../../config/local.yml'));
-
-        $options = $config['database'];
+        $options = [];
+        $options['dsn'] = 'sqlite:' . __DIR__ . '/../../temp/higurashi.sdb';
         $options['driver'] = 'pdo';
         $options['charset'] = 'utf8';
         $this->connection = new Connection($options);
 
-        $this->connection->query('TRUNCATE TABLE translation RESTART IDENTITY');
+        $this->connection->query('DROP TABLE IF EXISTS translation');
+        $this->connection->query(
+            <<<'newdoc'
+            CREATE TABLE [translation] (
+              [id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+              [file] CHAR(63) NOT NULL,
+              [line] INTEGER NOT NULL,
+              [order] INTEGER NOT NULL,
+              [japanese] TEXT NOT NULL,
+              [translated] TEXT NOT NULL
+            );
+newdoc
+        );
 
         $this->fillTranslationsDatabase($path);
 
@@ -154,7 +165,7 @@ class UpgradeTranslation extends Command
                 $english = $englishNames[$i];
 
                 if (! isset($this->names[$name])) {
-                    throw new \Exception('Name translation not found: ' . $name);
+                    throw new \Exception('Translation for name not found: ' . $name);
                 }
 
                 $translated = $this->names[$name];
@@ -164,7 +175,6 @@ class UpgradeTranslation extends Command
                 ++$i;
             }
         }
-
 
         return $line;
     }
@@ -233,6 +243,12 @@ class UpgradeTranslation extends Command
                 $order = $this->loadTranslationFromLine($file, $i, $order, $line, $lines);
             }
         }
+
+        if (! $files) {
+            die('No txt files found in directory.');
+        }
+
+        printf('Loaded translations from %d files.' . PHP_EOL, $files);
     }
 
     private function generateLines(string $filename): \Generator
