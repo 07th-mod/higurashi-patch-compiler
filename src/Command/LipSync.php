@@ -147,6 +147,7 @@ class LipSync extends Command
         'riku' => 46,
         'tsukada' => 33,
         'yae' => 42,
+        'otobe' => 41,
 
         // switch characters
         'arakawa' => null,
@@ -161,7 +162,6 @@ class LipSync extends Command
         'hton' => null,
         'hyos' => null,
         'mo' => null,
-        'otobe' => null,
         'tamura' => null,
         'une' => null,
     ];
@@ -210,6 +210,8 @@ class LipSync extends Command
         'sora',
         'sora2',
         'oki_tv1',
+        '2choices',
+        'waku_b',
     ];
 
     private $bustshots = [];
@@ -357,6 +359,7 @@ class LipSync extends Command
     {
         return in_array(Strings::lower($sprite), $this->ignoredFiles, true)
             || Strings::startsWith($sprite, 'background/')
+            || Strings::startsWith($sprite, 'overview/')
             || Strings::startsWith($sprite, 'scene/')
             || Strings::startsWith($sprite, 'eye/');
     }

@@ -68,6 +68,8 @@ class FullArcUpgrade extends Command
             foreach ($files as $file => $fileInfo) {
                 $filesystem->copy($file, sprintf('%s/unpack/%s_patch/Update/%s', TEMP_DIR, $chapter, $fileInfo->getFilename()));
             }
+
+            printf('Found %d files.', count($files));
         }
 
         echo 'Running higurashi:combine' . PHP_EOL;

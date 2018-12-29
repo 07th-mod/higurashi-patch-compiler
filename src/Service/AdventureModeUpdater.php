@@ -209,8 +209,14 @@ class AdventureModeUpdater
         $lines[] = $previousLine;
 
         foreach ($longLines as $index) {
-            throw new \Exception('There is a long line which needs lower font size in adv mode. Remove this exception and check the result.');
-            $lines[$index + 1] = "\tif (GetGlobalFlag(GADVMode)) { OutputLine(NULL, \"\", NULL, \"<size=-2>\", Line_Continue); }\n" . $lines[$index + 1];
+            $splitLine = explode("\n", rtrim($lines[$index], "\n"));
+
+            if (count($splitLine) !== 2) {
+                echo $lines[$index];
+                throw new \Exception('There is a long line which needs lower font size in adv mode but is not as simple as normal cases.');
+            }
+
+            $lines[$index] = $splitLine[0] . "\n\tif (GetGlobalFlag(GADVMode)) { OutputLine(NULL, \"\", NULL, \"<size=-2>\", Line_Continue); }\n" . $splitLine[1] . "\n";
         }
 
         return $lines;

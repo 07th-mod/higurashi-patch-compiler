@@ -64,6 +64,7 @@ class Constants
         'ura' => [],
         'kotogohushi' => [],
         'hajisarashi' => [],
+        'prologue' => [],
     ];
 
     public const CONSOLE_ARCS = [
@@ -71,12 +72,13 @@ class Constants
         'kageboushi' => 'kage',
         'tsukiotoshi' => 'tsuk',
         'taraimawashi' => 'tara',
+        'yoigoshi' => 'yoig',
         'tokihogushi' => 'toki',
-        'yoigoshi' => 'yoi',
+        'kotogohushi' => 'koto',
         'omote' => 'omo',
         'ura' => 'ura',
-        'kotogohushi' => 'koto',
         'hajisarashi' => 'haji',
+        'prologue' => 'prol',
     ];
 
     public const MG_SPRITE_PREFIXES = [
