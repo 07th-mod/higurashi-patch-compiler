@@ -63,8 +63,6 @@ class VolumeUpdater
         'ps2/s20/02' => 128,
         // PS2 voices are much quiter than PS3 so we need to boost the volume.
         'ps2/s' => 240,
-        's0' => 128,
-        's1' => 128,
     ];
 
     private function getVolume(string $audio): int
@@ -87,8 +85,12 @@ class VolumeUpdater
         while (!feof($file) && ($line = fgets($file)) !== false) {
             $line = rtrim($line) . "\n";
 
-            if ($match = Strings::match($line, '~^\\s++PlaySE\\(\\s*+([0-9]++)\\s*+,\\s*+"((?:ps2\\/)?[sS][^_][^"]++)",\\s*+[0-9]++,\\s*+([^)]+)\\);$~')) {
-                $line = "\t" . sprintf('PlaySE(%d, "%s", %d, %s);', $match[1], $match[2], $this->getVolume($match[2]), $match[3]) . "\n";
+            if ($match = Strings::match($line, '~^(\s++)PlaySE\\(\\s*+([0-9]++)\\s*+,\\s*+"(ps[^"]++)",\\s*+[0-9]++\\s*+,\\s*+(.*)$~')) {
+                $line = $match[1] . sprintf('PlaySE(%d, "%s", %d, %s', $match[2], $match[3], $this->getVolume($match[3]), $match[4]) . "\n";
+            }
+
+            if ($match = Strings::match($line, '~^(\s++)ModPlayVoiceLS\\(\\s*+([0-9]++)\\s*+,\\s*+([0-9]++)\\s*+,\\s*+"([^"]++)"\\s*+,\\s*+[0-9]++\\s*+,\\s*+(.*)$~')) {
+                $line = $match[1] . sprintf('ModPlayVoiceLS(%d, %d, "%s", %d, %s', $match[2], $match[3], $match[4], $this->getVolume($match[4]), $match[5]) . "\n";
             }
 
             $lines[] = $previousLine;
