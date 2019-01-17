@@ -248,7 +248,7 @@ newdoc
             die('No txt files found in directory.');
         }
 
-        printf('Loaded translations from %d files.' . PHP_EOL, $files);
+        printf('Loaded translations from %d files.' . PHP_EOL, count($files));
     }
 
     private function generateLines(string $filename): \Generator
