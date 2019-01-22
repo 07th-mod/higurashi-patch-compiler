@@ -147,7 +147,7 @@ newdoc
                 $line,
                 '~^(\\s++NULL,\\s++")((?:\\\\"|[^"])*+)"~',
                 function (array $match) use ($filename, $lineNumber, $japanese) {
-                    return $match[1] . $this->findTranslation(pathinfo($filename, PATHINFO_FILENAME), $lineNumber, $japanese) . '"';
+                    return $match[1] . $this->findTranslation(pathinfo($filename, PATHINFO_FILENAME), $lineNumber, $japanese, $match[2]) . '"';
                 }
             );
         }
@@ -179,7 +179,7 @@ newdoc
         return $line;
     }
 
-    private function findTranslation(string $filename, int $lineNumber, string $japanese): string
+    private function findTranslation(string $filename, int $lineNumber, string $japanese, string $english): string
     {
         $this->order += 1;
 
@@ -229,7 +229,7 @@ newdoc
 
         ++$this->missing;
 
-        return '<missing translation>';
+        return '<missing translation> ' . $english;
     }
 
     private function fillTranslationsDatabase(string $path): void
