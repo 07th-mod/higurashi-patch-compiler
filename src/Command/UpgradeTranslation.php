@@ -152,7 +152,7 @@ newdoc
             );
         }
 
-        if ($match = Strings::match($line, '~OutputLine\\("((?:<color=#[a-f0-9]++>(?:[^<]++)</color>(?:＆)?)*)", NULL, "((?:<color=#[a-f0-9]++>(?:[^<]++)</color>(?: & )?)*)"~')) {
+        if ($this->names && $match = Strings::match($line, '~OutputLine\\("((?:<color=#[a-f0-9]++>(?:[^<]++)</color>(?:＆)?)*)", NULL, "((?:<color=#[a-f0-9]++>(?:[^<]++)</color>(?: & )?)*)"~')) {
             $japaneseNames = array_column(Strings::matchAll($match[1], '~>([^<]+)</~'), 1);
             $englishNames = array_column(Strings::matchAll($match[2], '~>([^<]+)</~'), 1);
 
