@@ -39,6 +39,15 @@ class FullArcUpgrade extends Command
 
         $this->isConsoleArc = isset(Constants::CONSOLE_ARCS[$chapter]);
 
+        $filesystem = new Filesystem();
+        if ($this->isConsoleArc) {
+            $filesystem->remove(sprintf('%s/download/console_patch.zip', TEMP_DIR));
+            $filesystem->remove(sprintf('%s/unpack/console_patch', TEMP_DIR));
+        } else {
+            $filesystem->remove(sprintf('%s/download/%s_patch.zip', TEMP_DIR, $chapter));
+        }
+        $filesystem->remove(sprintf('%s/unpack/%s_patch', TEMP_DIR, $chapter));
+
         /** @var bool $force */
         $force = $input->getOption('force');
 
@@ -60,7 +69,6 @@ class FullArcUpgrade extends Command
             $output
         );
 
-        $filesystem = new Filesystem();
         $filesystem->mkdir(sprintf('%s/unpack/%s_patch/Update', TEMP_DIR, $chapter));
 
         if ($this->isConsoleArc) {
@@ -69,7 +77,7 @@ class FullArcUpgrade extends Command
                 $filesystem->copy($file, sprintf('%s/unpack/%s_patch/Update/%s', TEMP_DIR, $chapter, $fileInfo->getFilename()));
             }
 
-            printf('Found %d files.', count($files));
+            printf('Found %d files.' . PHP_EOL, count($files));
         }
 
         echo 'Running higurashi:combine' . PHP_EOL;
@@ -148,6 +156,8 @@ class FullArcUpgrade extends Command
         $filesystem->mirror(sprintf('%s/lipsync/%s/Update', TEMP_DIR, $chapter), sprintf('%s/full-upgrade/%s', TEMP_DIR, $chapter));
         $filesystem->copy(sprintf('%s/voicepack/%s-voices.sh', TEMP_DIR, $chapter), sprintf('%s/full-upgrade/%s-voices.sh', TEMP_DIR, $chapter));
         $filesystem->copy(sprintf('%s/spritepack/%s-sprites.sh', TEMP_DIR, $chapter), sprintf('%s/full-upgrade/%s-sprites.sh', TEMP_DIR, $chapter));
+
+        echo sprintf('Everything finished successfully. See the results in "%s/full-upgrade".', TEMP_DIR);
 
         return 0;
     }
