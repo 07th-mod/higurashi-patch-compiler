@@ -56,13 +56,14 @@ class VolumeUpdater
         rename($filename . '.new', $filename);
     }
 
+    // Disabled for now because current patches are not using different volume for ps2 voices anyway.
     private const VOLUMES = [
         // Rena is lauder than other characters on PS2.
-        'ps2/s03/02' => 220,
+        //'ps2/s03/02' => 220,
         // But strangely enough she has correct volume in PS2 omake.
-        'ps2/s20/02' => 128,
-        // PS2 voices are much quiter than PS3 so we need to boost the volume.
-        'ps2/s' => 240,
+        //'ps2/s20/02' => 128,
+        // PS2 voices are much quieter than PS3 so we need to boost the volume.
+        //'ps2/s' => 240,
     ];
 
     private function getVolume(string $audio): int
@@ -73,7 +74,7 @@ class VolumeUpdater
             }
         }
 
-        return 128;
+        return 256;
     }
 
     private function updateLines($file, string $filename): iterable
@@ -94,7 +95,7 @@ class VolumeUpdater
                         $matches[1],
                         $matches[2],
                         $matches[3],
-                        64,
+                        56,
                         $matches[4]
                     );
                 }
