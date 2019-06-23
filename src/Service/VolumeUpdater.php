@@ -85,9 +85,20 @@ class VolumeUpdater
         while (!feof($file) && ($line = fgets($file)) !== false) {
             $line = rtrim($line) . "\n";
 
-            if ($match = Strings::match($line, '~^(\s++)PlaySE\\(\\s*+([0-9]++)\\s*+,\\s*+"(ps[^"]++)",\\s*+[0-9]++\\s*+,\\s*+(.*)$~')) {
-                $line = $match[1] . sprintf('PlaySE(%d, "%s", %d, %s', $match[2], $match[3], $this->getVolume($match[3]), $match[4]) . "\n";
-            }
+            $line = Strings::replace(
+                $line,
+                '~Play(BGM|SE)\\(\\s*+([0-9]++)\\s*+,\\s*+"([^"]++)",\\s*+[0-9]++\\s*+,\\s*+([^;]*);~',
+                static function (array $matches) {
+                    return sprintf(
+                        'Play%s( %d, "%s", %d, %d );',
+                        $matches[1],
+                        $matches[2],
+                        $matches[3],
+                        64,
+                        $matches[4]
+                    );
+                }
+            );
 
             if ($match = Strings::match($line, '~^(\s++)ModPlayVoiceLS\\(\\s*+([0-9]++)\\s*+,\\s*+([0-9]++)\\s*+,\\s*+"([^"]++)"\\s*+,\\s*+[0-9]++\\s*+,\\s*+(.*)$~')) {
                 $line = $match[1] . sprintf('ModPlayVoiceLS(%d, %d, "%s", %d, %s', $match[2], $match[3], $match[4], $this->getVolume($match[4]), $match[5]) . "\n";
