@@ -123,6 +123,14 @@ class FixPS2Voices extends Command
             }
         }
 
+        if ($match = Strings::match($line, '~^(\s++)PlaySE\(\s*+([0-9]++)\s*+,\s*+"ps2/([^"]++)?"\s*+,\s*+(.*)$~')) {
+            $voice = $match[3];
+            $newVoice = $this->fixPs2VoiceName($voice);
+            if ($newVoice) {
+                $line = sprintf('%sPlaySE(%d, "%s", %s', $match[1], $match[2], 'ps2/' . $newVoice, $match[4]) . "\n";
+            }
+        }
+
         return $line;
     }
 
