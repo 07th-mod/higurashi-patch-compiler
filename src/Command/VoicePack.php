@@ -123,14 +123,36 @@ class VoicePack extends Command
     {
         if ($match = Strings::match($line, '~^(\s++)ModPlayVoiceLS\(\s*+([0-9]++)\s*+,\s*+([0-9]++)\s*+,\s*+"([^"]++)"\s*+,\s*+(.*)$~')) {
             $this->processVoice($match[4]);
+            $line = sprintf(
+                '%sModPlayVoiceLS(%d, %d, "%s", %s' . "\n",
+                $match[1],
+                $match[2],
+                $match[3],
+                Strings::lower($match[4]),
+                $match[5]
+            );
         }
 
         if ($match = Strings::match($line, '~^(\s++)PlayVoice\(\s*+([0-9]++)\s*+,\s*+"([^"]++)"\s*+,\s*+(.*)$~')) {
             $this->processVoice($match[3]);
+            $line = sprintf(
+                '%sPlayVoice(%d, "%s", %s' . "\n",
+                $match[1],
+                $match[2],
+                Strings::lower($match[3]),
+                $match[4]
+            );
         }
 
         if ($match = Strings::match($line, '~^(\s++)PlaySE\(\s*+([0-9]++)\s*+,\s*+"(ps[23]/[^"]++)"\s*+,\s*+(.*)$~')) {
             $this->processVoice($match[3]);
+            $line = sprintf(
+                '%sPlaySE(%d, "%s", %s' . "\n",
+                $match[1],
+                $match[2],
+                Strings::lower($match[3]),
+                $match[4]
+            );
         }
 
         return $line;
