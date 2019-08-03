@@ -133,7 +133,16 @@ class Missing extends Command
             $this->reportError($error);
         }
 
-        if ($directory === 'CG' && (Strings::startsWith($file, 'text/') || Strings::startsWith($file, 'tips/') || Strings::startsWith($file, 'scenario/')) && ! Strings::endsWith($file, '_j.png')) {
+        if (
+            $directory === 'CG'
+            && (
+                Strings::startsWith($file, 'text/')
+                || Strings::startsWith($file, 'tips/')
+                || Strings::startsWith($file, 'scenario/')
+            )
+            && ! Strings::endsWith($file, '_j.png')
+            && ! in_array($file, ['scenario/background.png', 'scenario/stripes.png'], true)
+        ) {
             $this->requireFile($directory, Strings::substring($file, 0, -4) . '_j.png');
         }
     }
