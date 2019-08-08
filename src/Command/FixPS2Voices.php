@@ -139,6 +139,10 @@ class FixPS2Voices extends Command
         $baseVoice = Strings::after($voice, '/');
         $directory = Strings::before($voice, '/');
 
+        if (! array_key_exists($baseVoice, $this->ps2SpectrumMap)) {
+            throw new \Exception(sprintf('Can\'t find spectrum file for voice "%s"', $baseVoice));
+        }
+
         $spectrumDirectories = $this->ps2SpectrumMap[$baseVoice];
         if (! in_array($directory, $spectrumDirectories, true)) {
             if (count($spectrumDirectories) !== 1) {
