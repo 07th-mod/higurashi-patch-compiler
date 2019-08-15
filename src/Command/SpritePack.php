@@ -130,12 +130,13 @@ class SpritePack extends Command
         $directory .= '/';
         $prefix .= '/';
         $ps3Sprite = substr($this->spriteMap[$spriteName . $expression], 0, -1);
+        $baseVariant = Strings::match($prefix, '~^([a-z]++)(?:-[0-9]++)/$~')[1];
 
-        switch ($prefix) {
-            case 'night/':
+        switch ($baseVariant) {
+            case 'night':
                 $weather = 'Night/';
                 break;
-            case 'sunset/':
+            case 'sunset':
                 $weather = 'Sunset/';
                 break;
             default:
