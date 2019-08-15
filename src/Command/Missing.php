@@ -183,6 +183,7 @@ class Missing extends Command
             || Strings::startsWith($sprite, 'chibimion') // Child Mion
             || Strings::startsWith($sprite, 'kasa') // Kasai
             || Strings::startsWith($sprite, 'kei') // Keichi
+            || Strings::startsWith($sprite, 'ha') // Hanyuu
         ) {
             return true;
         }
@@ -204,6 +205,7 @@ class Missing extends Command
             || Strings::startsWith($sprite, 'tomo') // Tomoe
             || Strings::startsWith($sprite, 'tou') // Akira
             || Strings::startsWith($sprite, 'yamaoki') // Kaoru
+            //|| Strings::startsWith($sprite, 'oko') // Okonogi - hi should have a sprite in Matsuribayashi
         ) {
             return false;
         }
