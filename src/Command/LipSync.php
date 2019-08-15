@@ -279,7 +279,14 @@ class LipSync extends Command
             ];
 
             if (!isset($this->bustshots[$layer])) {
-                throw new \Exception('Unable to find DrawBustshot for: ' . trim($line));
+                throw new \Exception(
+                    sprintf(
+                        'Unable to find DrawBustshot for %s:%d: %s',
+                        pathinfo($filename, PATHINFO_BASENAME),
+                        $lineNumber,
+                        trim($line)
+                    )
+                );
             }
 
             $call = explode(',', $this->bustshots[$layer]);
@@ -328,7 +335,7 @@ class LipSync extends Command
             throw new \Exception('Unknown prefix for sprite: ' . $sprite);
         }
 
-        $match = Strings::match($sprite, '~^(sprite|portrait)/(normal|sunset|night|flashback)/([a-zA-Z0-9_]+)([0-2])$~');
+        $match = Strings::match($sprite, '~^(sprite|portrait)/(normal|sunset|night|flashback|transparent)/([a-zA-Z0-9_]+)([0-2])$~');
 
         if (! $match) {
             throw new \Exception('Invalid sprite name: ' . $sprite);
@@ -360,6 +367,7 @@ class LipSync extends Command
         return in_array(Strings::lower($sprite), $this->ignoredFiles, true)
             || Strings::startsWith($sprite, 'background/')
             || Strings::startsWith($sprite, 'overview/')
+            || Strings::startsWith($sprite, 'scenario/')
             || Strings::startsWith($sprite, 'scene/')
             || Strings::startsWith($sprite, 'eye/');
     }
