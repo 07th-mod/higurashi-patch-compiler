@@ -26,7 +26,7 @@ INSERT INTO `names` (`id`, `japanese`, `english`, `color`, `color_mg`, `number`)
 (6,	'梨花',	'Rika',	'#697ad7',	'#6969ab',	5),
 (7,	'巴',	'Tomoe',	'#9d7f69',	NULL,	0),
 (8,	'沙都子',	'Satoko',	'#fee388',	'#fad265',	4),
-(9,	'羽入',	'Hanyuu',	'#f5e6d3',	NULL,	12),
+(9,	'羽入',	'Hanyuu',	'#8179d1',	'#8a72cd',	12),
 (10,	'鷹野',	'Takano',	'#f4d7a4',	'#f8daac',	9),
 (11,	'赤坂',	'Akasaka',	'#797d8a',	NULL,	13),
 (12,	'夏美',	'Natsumi',	'#94a567',	NULL,	0),
@@ -385,7 +385,7 @@ INSERT INTO `names` (`id`, `japanese`, `english`, `color`, `color_mg`, `number`)
 (377,	'体育教師',	'P.E. Teacher',	'#f5e6d3',	NULL,	0),
 (378,	'総務課',	'General Affairs Official',	'#f5e6d3',	NULL,	0),
 (379,	'山科',	'Yamashina',	'#f5e6d3',	NULL,	0),
-(381,	'防衛庁長官',	'Chief of Defense',	'#f5e6d3',	NULL,	0),
+(381,	'防衛庁長官',	'Director General of Defense',	'#f5e6d3',	NULL,	0),
 (382,	'雲雀７',	'Skylark 7',	'#f5e6d3',	NULL,	0),
 (383,	'交通課',	'Transportation Department',	'#f5e6d3',	NULL,	0),
 (386,	'白鷺４',	'Egret 4',	'#f5e6d3',	NULL,	0),
@@ -426,4 +426,4 @@ INSERT INTO `names` (`id`, `japanese`, `english`, `color`, `color_mg`, `number`)
 (463,	'白鷺７',	'Egret 7',	'#f5e6d3',	NULL,	0),
 (464,	'奥野',	'Okuno',	'#f5e6d3',	NULL,	0);
 
--- 2018-07-04 20:52:28
+-- 2019-08-19 20:39:09
