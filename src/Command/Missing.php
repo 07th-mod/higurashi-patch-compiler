@@ -85,7 +85,7 @@ class Missing extends Command
             $this->requireFile('CG', $match[1] . '.png');
         }
 
-        if ($match = Strings::match($line, '~^(?:\s++)(?:DrawSpriteWithFiltering)\(\s*+(?:[0-9]++)\s*+,\s*+"([^"]++)"\s*+,\s*+"([^"]++)"~')) {
+        if ($match = Strings::match($line, '~^(?:\s++)(?:DrawBustshotWithFiltering|DrawSpriteWithFiltering)\(\s*+(?:[0-9]++)\s*+,\s*+"([^"]++)"\s*+,\s*+"([^"]++)"~')) {
             $this->requireFile('CG', $match[1] . '.png');
             $this->requireFile('CG', $match[2] . '.png');
         }
@@ -205,7 +205,7 @@ class Missing extends Command
             || Strings::startsWith($sprite, 'tomo') // Tomoe
             || Strings::startsWith($sprite, 'tou') // Akira
             || Strings::startsWith($sprite, 'yamaoki') // Kaoru
-            //|| Strings::startsWith($sprite, 'oko') // Okonogi - hi should have a sprite in Matsuribayashi
+            //|| Strings::startsWith($sprite, 'oko') // Okonogi - he should have a sprite in Matsuribayashi
         ) {
             return false;
         }
