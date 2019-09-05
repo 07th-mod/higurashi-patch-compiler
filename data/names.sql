@@ -77,7 +77,7 @@ INSERT INTO `names` (`id`, `japanese`, `english`, `color`, `color_mg`, `number`)
 (57,	'工',	'Takumi',	'#f5e6d3',	NULL,	0),
 (58,	'速水',	'Hayami',	'#f5e6d3',	NULL,	0),
 (59,	'野村',	'Nomura',	'#f5e6d3',	NULL,	0),
-(60,	'山狗',	'Yamainu',	'#f5e6d3',	NULL,	0),
+(60,	'山狗',	'Mountain Dog',	'#f5e6d3',	NULL,	0),
 (61,	'小泉',	'Koizumi',	'#f5e6d3',	NULL,	0),
 (62,	'村人',	'Villager',	'#f5e6d3',	NULL,	0),
 (63,	'富田',	'Tomita',	'#a17d6b',	NULL,	24),
