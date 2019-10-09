@@ -98,6 +98,7 @@ class SpriteFilters extends Command
             if (
                 ! array_key_exists($layer, $this->layers)
                 || $this->layers[$layer] !== [$variant, $alpha]
+                // z files are included into the middle of other files so we force layer settings there always for simplicity
                 || Strings::startsWith($filename, 'z')
             ) {
                 $this->layers[$layer] = [$variant, $alpha];
@@ -110,6 +111,11 @@ class SpriteFilters extends Command
                 );
                 $line = $filter . "\n" . $line;
             }
+        }
+
+        // z files might have changed the layer settings.
+        if (Strings::contains($line, 'ModCallScriptSection(')) {
+            $this->layers = [];
         }
 
         return $line;
