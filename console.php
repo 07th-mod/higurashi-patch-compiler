@@ -57,5 +57,6 @@ $application->add(new \Higurashi\Command\DetectInterruptedVoices());
 $application->add(new \Higurashi\Command\DetectMultilineVoices());
 $application->add(new \Higurashi\Command\RemoveDisplayWindow());
 $application->add(new \Higurashi\Command\UpgradeTranslation());
+$application->add(new \Higurashi\Command\SpriteFilters());
 
 $application->run();
