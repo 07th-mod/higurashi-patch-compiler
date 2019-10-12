@@ -106,6 +106,10 @@ class SpritePack extends Command
             $this->addBashCopyForSprite($match[4], $match[5]);
         }
 
+        if ($match = Strings::match($line, '~^\s++sprite_[a-z0-9_]++ = "([^"]*+)";$~')) {
+            $this->addBashCopyForSprite($match[1], '0');
+        }
+
         return $line;
     }
 
