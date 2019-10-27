@@ -89,6 +89,9 @@ class SpriteFilters extends Command
             $layer = $match[2];
             $sprite = $match[4];
             $spriteMatch = Strings::match($sprite, '~^[a-z]++(/([a-z]++)(?:-([0-9]++))?/)~');
+            if (! $spriteMatch) {
+                return $line;
+            }
             $replace = $spriteMatch[1];
             $variant = $spriteMatch[2];
             $variant = $variant === 'normal' ? 'none' : $variant;
