@@ -90,9 +90,14 @@ class SpriteFilters extends Command
             $sprite = $match[4];
             $spriteMatch = Strings::match($sprite, '~^[a-z]++(/([a-z]++)(?:-([0-9]++))?/)~');
             $replace = $spriteMatch[1];
-            $variant = $spriteMatch[2] === 'normal' ? 'none' : $spriteMatch[2];
-            $opacity = $spriteMatch[3] ?? 100;
-            $alpha = round($opacity / 100 * 256);
+            $variant = $spriteMatch[2];
+            $variant = $variant === 'normal' ? 'none' : $variant;
+            if ($variant === 'dream') {
+                $variant = 'none';
+                $alpha = round(70 / 100 * 256);
+            } else {
+                $alpha = round(($spriteMatch[3] ?? 100) / 100 * 256);
+            }
             $line = str_replace($replace, '/normal/', $line);
 
             if (
