@@ -93,7 +93,7 @@ class RyukishiPack extends Command
         $handle = fopen(__DIR__ . '/../../data/ryukishi.csv', 'r');
         fgetcsv($handle);
         while ($line = fgetcsv($handle)) {
-            if (in_array($line[2], ['CHIBI_SPRITE', 'RENA_WITH_SWORD', 'IGNORE_NOT_A_SPRITE'], true) || Strings::startsWith($line[2], 'NEW_CHAR_')) {
+            if (in_array($line[2], ['CHIBI_SPRITE', 'RENA_WITH_SWORD'], true) || Strings::startsWith($line[2], 'NEW_CHAR_')) {
                 continue;
             }
             $this->spriteMap[Strings::after($line[1], 'sprite/')] = $line[2];
@@ -104,6 +104,8 @@ class RyukishiPack extends Command
     private function finish(): void
     {
         $bashCopy = array_unique($this->bashCopy);
+        array_unshift($bashCopy, 'mkdir -p ' . $this->chapter . '-sprites/OGSprites/portrait');
+        array_unshift($bashCopy, 'mkdir -p ' . $this->chapter . '-sprites/OGSprites/sprite');
 
         $file = sprintf('%s/%s/%s-sprites.sh', TEMP_DIR, strtolower((new \ReflectionClass($this))->getShortName()), $this->chapter);
 
@@ -114,6 +116,10 @@ class RyukishiPack extends Command
     {
         if ($match = Strings::match($line, '~^(\s++)(?:ModDrawCharacter|ModDrawCharacterWithFiltering)\(\s*+([0-9]++)\s*+,\s*+([0-9]++)\s*+,\s*+"([^"]*+)"\s*+,\s*+"([^"]*+)"\s*+,(.*)$~')) {
             $this->addBashCopyForSprite($match[4], $match[5]);
+        }
+
+        if ($match = Strings::match($line, '~^\s++sprite_[a-z0-9_]++ = "([^"]*+)";$~')) {
+            $this->addBashCopyForSprite($match[1], '0');
         }
 
         return $line;
@@ -127,31 +133,81 @@ class RyukishiPack extends Command
 
         $parts = explode('/', $sprite);
 
-        if (count($parts) !== 3) {
+        if (count($parts) !== 2) {
             throw new \Exception(sprintf('Unable to parse sprite name "%s".', $sprite));
         }
 
-        [$directory, $prefix, $spriteName] = $parts;
+        [$directory, $spriteName] = $parts;
 
         $directory .= '/';
-        $prefix .= '/';
-        $baseVariant = Strings::match($prefix, '~^([a-z]++)(?:-[0-9]++)?/$~')[1];
-
-        switch ($baseVariant) {
-            default:
-                $weather = 'Normal/';
-        }
-
+        // size is not used for now, we use regular sprites for portraits
         $size = $directory === 'portrait/' ? 'l/' : 'm/';
-        $size = '';
 
-        $destination = $directory . $prefix . $spriteName . $expression . '.png';
+        $destination = $directory . $spriteName . $expression . '.png';
 
         $ryukishiSprite = $this->spriteMap[$spriteName] ?? null;
-        if ($ryukishiSprite) {
-            $this->bashCopy[] = 'mkdir -p ' . dirname($this->chapter . '-sprites/CG/' . $destination) . ' && cp "sprites/' . $weather . $size . $ryukishiSprite . '.png" ' . $this->chapter . '-sprites/CG/' . $destination;
+
+        if ($this->hasAnyPrefix($spriteName, self::MG_SPRITE_PREFIXES)) {
+            if ($ryukishiSprite) {
+                $this->bashCopy[] = 'cp "sprites/' . Strings::lower($ryukishiSprite) . '.png" ' . $this->chapter . '-sprites/OGSprites/' . $destination;
+            } else {
+                throw new \Exception('OG sprite should exist for "' . $spriteName . '".');
+            }
+        } elseif ($this->hasAnyPrefix($spriteName, self::PS_ONLY_SPRITE_PREFIXES)) {
+            if ($ryukishiSprite) {
+                throw new \Exception('OG sprite should NOT exist for "' . $spriteName . '".');
+            } else {
+                $this->bashCopy[] = 'cp transparent.png ' . $this->chapter . '-sprites/OGSprites/' . $destination;
+            }
         } else {
-            $this->bashCopy[] = 'mkdir -p ' . dirname($this->chapter . '-sprites/CG/' . $destination) . ' && cp transparent.png ' . $this->chapter . '-sprites/CG/' . $destination;
+            throw new \Exception('Unable to decide if sprite "' . $spriteName . '" should have OG sprite or not.');
         }
     }
+
+    private function hasAnyPrefix(string $spriteName, array $prefixes): bool
+    {
+        foreach ($prefixes as $prefix) {
+            if (Strings::match($spriteName, '~^' . $prefix . '(?:[0-9][ab]?)?_~')) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private const MG_SPRITE_PREFIXES = [
+        're',
+        'me',
+        'ri',
+        'sa',
+        'oisi',
+        'tomi',
+        'ta',
+        'si',
+        'kei',
+        'sato',
+        'tie',
+        'kasa',
+        'iri',
+        'tetu',
+        'aka',
+        'rina',
+        'rim',
+        'chibimion',
+        'renasen',
+        'ha',
+        'aks',
+    ];
+
+    private const PS_ONLY_SPRITE_PREFIXES = [
+        'oko', // TODO: Okonogi should get sprites in Matsuribayashi
+
+        'tomita',
+        'oka',
+        'kuma',
+        'oryou',
+        'kameda',
+        'ki',
+        'miyuki',
+    ];
 }
