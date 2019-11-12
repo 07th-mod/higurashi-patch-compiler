@@ -105,6 +105,7 @@ class Missing extends Command
             $this->requireFile('CG', $match[1] . 2 . '.png');
             if ($this->shouldHaveSteamSprite($match[1])) {
                 $this->requireFile('CGAlt', $match[1] . $match[2] . '.png');
+                $this->requireFile('OGSprites', $match[1] . $match[2] . '.png');
             }
         }
 
@@ -114,6 +115,7 @@ class Missing extends Command
             $this->requireFile('CG', $match[1] . 2 . '.png');
             if ($this->shouldHaveSteamSprite($match[1])) {
                 $this->requireFile('CGAlt', $match[1] . $match[2] . '.png');
+                $this->requireFile('OGSprites', $match[1] . $match[2] . '.png');
             }
             $this->requireFile('CG', $match[3] . '.png');
         }
