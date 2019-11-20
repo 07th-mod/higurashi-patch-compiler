@@ -121,42 +121,27 @@ class SpritePack extends Command
 
         $parts = explode('/', $sprite);
 
-        if (count($parts) !== 3) {
+        if (count($parts) !== 2) {
             throw new \Exception(sprintf('Unable to parse sprite name "%s".', $sprite));
         }
 
-        [$directory, $prefix, $spriteName] = $parts;
+        [$directory, $spriteName] = $parts;
 
         if (! isset($this->spriteMap[$spriteName . $expression])) {
             throw new \Exception(sprintf('Sprite not found in map: "%s".', $spriteName . $expression));
         }
 
         $directory .= '/';
-        $prefix .= '/';
         $ps3Sprite = substr($this->spriteMap[$spriteName . $expression], 0, -1);
-        $baseVariant = Strings::match($prefix, '~^([a-z]++)(?:-[0-9]++)?/$~')[1];
-
-        switch ($baseVariant) {
-            case 'night':
-                $weather = 'Night/';
-                break;
-            case 'sunset':
-                $weather = 'Sunset/';
-                break;
-            default:
-                $weather = 'Normal/';
-        }
-
         $size = $directory === 'portrait/' ? 'l/' : 'm/';
+        $destination = $directory . $spriteName . '%s.png';
 
-        $destination = $directory . $prefix . $spriteName . '%s.png';
-
-        $command = 'mkdir -p ' . dirname($this->chapter . '-sprites/CG/' . $destination) . ' && cp sprites/' . $weather . $size . $ps3Sprite . '%s.png ' . $this->chapter . '-sprites/CG/' . $destination;
+        $command = 'mkdir -p ' . dirname($this->chapter . '-sprites/CG/' . $destination) . ' && cp sprites/Normal/' . $size . $ps3Sprite . '%s.png ' . $this->chapter . '-sprites/CG/' . $destination;
 
         $this->bashCopy[] = sprintf($command, 0, 0);
         $this->bashCopy[] = sprintf($command, 1, 1);
         $this->bashCopy[] = sprintf($command, 2, 2);
 
-        $this->bashCopy[] = 'mkdir -p ' . dirname($this->chapter . '-sprites/CGAlt/' . $destination) . ' && cp sprites/' . $weather . $size . $ps3Sprite . $expression . '.png ' . $this->chapter . '-sprites/CGAlt/' . $directory . $prefix . $spriteName . $expression . '.png';
+        $this->bashCopy[] = 'mkdir -p ' . dirname($this->chapter . '-sprites/CGAlt/' . $destination) . ' && cp sprites/Normal/' . $size . $ps3Sprite . $expression . '.png ' . $this->chapter . '-sprites/CGAlt/' . $directory . $spriteName . $expression . '.png';
     }
 }
