@@ -43,6 +43,11 @@ class Missing extends Command
 
         $files = glob(sprintf('%s/*.txt', $scriptsDirectory));
 
+        if ($files === []) {
+            echo 'No files scripts found. The path given should usually end with "StreamingAssets".';
+            return 1;
+        }
+
         foreach ($files as $file) {
             foreach ($this->generateLines($file) as $line) {
                 $this->processLine($line);
@@ -118,6 +123,16 @@ class Missing extends Command
                 $this->requireFile('OGSprites', $match[1] . $match[2] . '.png');
             }
             $this->requireFile('CG', $match[3] . '.png');
+        }
+
+        if ($match = Strings::match($line, '~^\s++sprite_[a-z0-9_]++ = "([^"]*+)";$~')) {
+            $this->requireFile('CG', $match[1] . 0 . '.png');
+            $this->requireFile('CG', $match[1] . 1 . '.png');
+            $this->requireFile('CG', $match[1] . 2 . '.png');
+            if ($this->shouldHaveSteamSprite($match[1])) {
+                $this->requireFile('CGAlt', $match[1] . 0 . '.png');
+                $this->requireFile('OGSprites', $match[1] . 0 . '.png');
+            }
         }
     }
 
