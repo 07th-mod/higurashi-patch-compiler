@@ -101,7 +101,7 @@ class SpriteFilters extends Command
             } else {
                 $alpha = round(($spriteMatch[3] ?? 100) / 100 * 256);
             }
-            $line = str_replace($replace, '/normal/', $line);
+            $line = str_replace($replace, '/', $line);
 
             if (
                 ! array_key_exists($layer, $this->layers)
