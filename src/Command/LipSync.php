@@ -211,6 +211,7 @@ class LipSync extends Command
         'sora2',
         'oki_tv1',
         '2choices',
+        '3choices',
         'waku_b',
     ];
 
@@ -335,7 +336,7 @@ class LipSync extends Command
             throw new \Exception('Unknown prefix for sprite: ' . $sprite);
         }
 
-        $match = Strings::match($sprite, '~^(sprite|portrait)/(normal|sunset|night|flashback|transparent)/([a-zA-Z0-9_]+)([0-2])$~');
+        $match = Strings::match($sprite, '~^(sprite|portrait)/((?:normal|sunset|night|flashback|transparent)(?:-[0-9]++)?)/([a-zA-Z0-9_]+)([0-2])$~');
 
         if (! $match) {
             throw new \Exception('Invalid sprite name: ' . $sprite);
