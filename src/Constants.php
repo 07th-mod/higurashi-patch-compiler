@@ -57,6 +57,9 @@ class Constants
         'minagoroshi' => [
             'minagoroshi_patch' => 'https://github.com/07th-mod/minagoroshi/archive/master.zip',
         ],
+        'matsuribayashi' => [
+            'matsuribayashi_patch' => 'https://github.com/07th-mod/matsuribayashi/archive/master.zip'
+        ],
         'someutsushi' => [],
         'kageboushi' => [],
         'tsukiotoshi' => [],
