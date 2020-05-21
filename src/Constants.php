@@ -18,7 +18,7 @@ class Constants
         'download/ps2-voices_2.zip' => 'https://07th-mod.com/archive/HigurashiPS2-Voices02.zip',
     ];
 
-    public const SPECTRUM = 'https://07th-mod.com/archive/Higurashi-Spectrum.tar.bz2';
+    public const SPECTRUM = 'https://07th-mod.com/archive/Higurashi-Spectrum-the-compiler-needs-this-one-but-it-is-literally-the-same-as-the-other-one-except-it-is-a-zip.zip';
 
     public const PATCHES = [
         'console' => [
