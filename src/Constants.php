@@ -7,15 +7,15 @@ namespace Higurashi;
 class Constants
 {
     public const VOICES = [
-        'download/voices_1.zip' => 'https://github.com/07th-mod/resources/releases/download/Nipah/HigurashiPS3-Voices01.zip',
-        'download/voices_2.zip' => 'https://github.com/07th-mod/resources/releases/download/Nipah/HigurashiPS3-Voices02.zip',
-        'download/voices_3.zip' => 'https://github.com/07th-mod/resources/releases/download/Nipah/HigurashiPS3-Voices03.zip',
-        'download/voices_4.zip' => 'https://github.com/07th-mod/resources/releases/download/Nipah/HigurashiPS3-Voices04.zip',
+        'download/voices_1.zip' => 'https://07th-mod.com/archive/HigurashiPS3-Voices01.zip',
+        'download/voices_2.zip' => 'https://07th-mod.com/archive/HigurashiPS3-Voices02.zip',
+        'download/voices_3.zip' => 'https://07th-mod.com/archive/HigurashiPS3-Voices03.zip',
+        'download/voices_4.zip' => 'https://07th-mod.com/archive/HigurashiPS3-Voices04.zip',
     ];
 
     public const VOICES_PS2 = [
-        'download/ps2-voices_1.zip' => 'https://github.com/07th-mod/resources/releases/download/Nipah/HigurashiPS2-Voices01.zip',
-        'download/ps2-voices_2.zip' => 'https://github.com/07th-mod/resources/releases/download/Nipah/HigurashiPS2-Voices02.zip',
+        'download/ps2-voices_1.zip' => 'https://07th-mod.com/archive/HigurashiPS2-Voices01.zip',
+        'download/ps2-voices_2.zip' => 'https://07th-mod.com/archive/HigurashiPS2-Voices02.zip',
     ];
 
     public const SPECTRUM = 'https://github.com/07th-mod/resources/releases/download/Hanyuu/Higurashi-Spectrum.zip';
