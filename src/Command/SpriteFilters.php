@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Higurashi\Command;
 
+use Exception;
 use Higurashi\Constants;
 use Higurashi\Helpers;
 use Higurashi\Utils\LineProcessorTrait;
@@ -75,6 +76,13 @@ class SpriteFilters extends Command
         $this->layers = [];
     }
 
+    private const LAYER_FILTERS = [
+        'none',
+        'flashback',
+        'night',
+        'sunset',
+    ];
+
     protected function processLine(string $line, LineStorage $lines, int $lineNumber, string $filename): string
     {
         if (Strings::startsWith($line, '//')) {
@@ -101,6 +109,11 @@ class SpriteFilters extends Command
             } else {
                 $alpha = round(($spriteMatch[3] ?? 100) / 100 * 256);
             }
+
+            if (! in_array($variant, self::LAYER_FILTERS, true)) {
+                throw new Exception(sprintf('Invalid layer filter %s.', $variant));
+            }
+
             $line = str_replace($replace, '/', $line);
 
             if (
