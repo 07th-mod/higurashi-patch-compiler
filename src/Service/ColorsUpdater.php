@@ -85,13 +85,21 @@ class ColorsUpdater
                 }
 
                 foreach ($japaneseNames as $nameMatch) {
-                    $name = $this->connection->query('SELECT * FROM [names] WHERE [japanese] = %s', $nameMatch[1])->fetch()->toArray();
-                    $line = str_replace($nameMatch[0], self::formatName($name, 'japanese'), $line);
+                    $name = $this->connection->query('SELECT * FROM [names] WHERE [japanese] = %s', $nameMatch[1])->fetch();
+                    if (! $name) {
+                        echo 'Unknown japanese name: ' . $nameMatch[1] . PHP_EOL;
+                        continue;
+                    }
+                    $line = str_replace($nameMatch[0], self::formatName($name->toArray(), 'japanese'), $line);
                 }
 
                 foreach ($englishNames as $nameMatch) {
-                    $name = $this->connection->query('SELECT * FROM [names] WHERE [english] = %s', $nameMatch[1])->fetch()->toArray();
-                    $line = str_replace($nameMatch[0], self::formatName($name, 'english'), $line);
+                    $name = $this->connection->query('SELECT * FROM [names] WHERE [english] = %s', $nameMatch[1])->fetch();
+                    if (! $name) {
+                        echo 'Unknown english name: ' . $nameMatch[1] . PHP_EOL;
+                        continue;
+                    }
+                    $line = str_replace($nameMatch[0], self::formatName($name->toArray(), 'english'), $line);
                 }
             }
 
