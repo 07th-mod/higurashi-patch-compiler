@@ -424,6 +424,14 @@ INSERT INTO `names` (`id`, `japanese`, `english`, `color`, `color_mg`, `number`)
 (449,	'老人たち',	'Old people',	'#f5e6d3',	NULL,	0),
 (458,	'白鷺８',	'Egret 8',	'#f5e6d3',	NULL,	0),
 (463,	'白鷺７',	'Egret 7',	'#f5e6d3',	NULL,	0),
-(464,	'奥野',	'Okuno',	'#f5e6d3',	NULL,	0);
+(464,	'奥野',	'Okuno',	'#f5e6d3',	NULL,	0),
+(465,	'伊知郎',	'Ichirou',	'#f5e6d3',	NULL,	0),
+(466,	'お手伝いさん',	'Housekeeper',	'#f5e6d3',	NULL,	0),
+(467,	'菊子',	'Kikuko',	'#f5e6d3',	NULL,	0),
+(468,	'智美',	'Tomomi',	'#f5e6d3',	NULL,	0),
+(469,	'客人たち',	'Guests',	'#f5e6d3',	NULL,	0),
+(470,	'為政家',	'Politician',	'#f5e6d3',	NULL,	0),
+(471,	'役員',	'Officers',	'#f5e6d3',	NULL,	0),
+(472,	'子よ',	'Child',	'#f5e6d3',	NULL,	0);
 
--- 2019-08-19 20:39:09
+-- 2020-06-20 05:52:26
