@@ -39,7 +39,7 @@ INSERT INTO `names` (`id`, `japanese`, `english`, `color`, `color_mg`, `number`)
 (19,	'まどか',	'Madoka',	'#a4856e',	NULL,	0),
 (20,	'山沖',	'Yamaoki',	'#7d746d',	NULL,	0),
 (21,	'陸',	'Riku',	'#f5e6d3',	NULL,	0),
-(22,	'小此木',	'Okonogi',	'#f5e6d3',	NULL,	14),
+(22,	'小此木',	'Okonogi',	'#394c3c',	'#42624d',	14),
 (23,	'暁',	'Akira',	'#c8647c',	NULL,	0),
 (24,	'珠子',	'Tamako',	'#6f6599',	NULL,	0),
 (25,	'知恵',	'Chie',	'#5a93d5',	'#75c8f4',	22),
