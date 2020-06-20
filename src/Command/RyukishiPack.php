@@ -197,11 +197,10 @@ class RyukishiPack extends Command
         'renasen',
         'ha',
         'aks',
+        'oko',
     ];
 
     private const PS_ONLY_SPRITE_PREFIXES = [
-        'oko', // TODO: Okonogi should get sprites in Matsuribayashi
-
         'tomita',
         'oka',
         'kuma',
@@ -209,5 +208,7 @@ class RyukishiPack extends Command
         'kameda',
         'ki',
         'miyuki',
+        'miyo',
+        'ama',
     ];
 }
