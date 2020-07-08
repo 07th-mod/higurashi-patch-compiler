@@ -90,7 +90,7 @@ INSERT INTO `names` (`id`, `japanese`, `english`, `color`, `color_mg`, `number`)
 (70,	'着物姿の女',	'Woman in Kimono',	'#47cc92',	'#75bfa2',	0),
 (71,	'夏美の祖母',	'Natsumi\'s grandmother',	'#f5e6d3',	NULL,	0),
 (72,	'梨花の父',	'Rika\'s dad',	'#f5e6d3',	NULL,	0),
-(73,	'美代子',	'Miyoko',	'#f5e6d3',	NULL,	0),
+(73,	'美代子',	'Miyoko',	'#efd4a3',	NULL,	0),
 (74,	'医師',	'Doctor',	'#f5e6d3',	NULL,	0),
 (75,	'室長',	'Chief',	'#f5e6d3',	NULL,	0),
 (76,	'誘拐犯',	'Kidnapper',	'#f5e6d3',	NULL,	0),
