@@ -213,6 +213,8 @@ class LipSync extends Command
         '2choices',
         '3choices',
         'waku_b',
+        'waku_b2',
+        'waku_b3',
         'waku_w',
         'filter_hanyu',
         'white_mono1',
@@ -395,7 +397,8 @@ class LipSync extends Command
             || Strings::startsWith($sprite, 'overview/')
             || Strings::startsWith($sprite, 'scenario/')
             || Strings::startsWith($sprite, 'scene/')
-            || Strings::startsWith($sprite, 'eye/');
+            || Strings::startsWith($sprite, 'eye/')
+            || Strings::startsWith($sprite, 'text/');
     }
 
     private function getCharacterNumberForSprite(string $sprite): int
