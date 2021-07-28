@@ -71,6 +71,7 @@ class Constants
         'kakera' => [],
         'kotogohushi' => [],
         'hajisarashi' => [],
+        'miotsukushi' => [],
         'prologue' => [],
     ];
 
@@ -86,6 +87,7 @@ class Constants
         'ura' => 'ura',
         'kakera' => 'kake',
         'hajisarashi' => 'haji',
+        'miotsukushi' => 'mio',
         'prologue' => 'prol',
     ];
 

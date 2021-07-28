@@ -381,10 +381,16 @@ class LipSync extends Command
             return 0;
         }
 
-        $match = Strings::match($voice, '~^ps[23]/(?:[sS][0-9]++/)?0?([0-9]++)/~');
+        $match = Strings::match($voice, '~^(?:ps[23]|switch)/(?:[sS][0-9]++/)?0?([0-9]++)/~');
 
         if (! $match) {
             throw new \Exception(sprintf('Cannot parse voice "%s".', $voice));
+        }
+
+        if ($match[1] === '0' && Strings::contains($voice, 'arakawa')) {
+            // Arakawa has is own sprite and voice directory on switch but console arcs are still using
+            // his PS3 voices from the 00 directory. Luckily his lines seem to contain his name.
+            return $this->numbers['arakawa'];
         }
 
         return (int) $match[1];

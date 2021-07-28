@@ -100,16 +100,20 @@ class AdventureModeUpdater
             if ($match = Strings::match($line, '~^\\s++PlaySE\\([^,]++,\\s*+"(?:ps3/)?([sS][0-9]{2}/[^"]++)"~')) {
                 $japanese = $this->connection->query('SELECT [name] FROM [voices] WHERE LOWER([voice]) = %s', $match[1])->fetchSingle();
                 if ($japanese) {
-                    $name = $this->connection->query('SELECT * FROM [names] WHERE [japanese] = %s', $japanese)->fetch()->toArray();
+                    $name = $this->connection->query('SELECT * FROM [names] WHERE [japanese] = %s ORDER BY [id] LIMIT 1', $japanese)->fetch()->toArray();
                 } else {
                     $japanese = $this->connection->query('SELECT [name] FROM [voices] WHERE LOWER([voice]) LIKE %s', '%' . $match[1] . '%')->fetchSingle();
                     if ($japanese) {
                         $japaneseNames = explode("\u{FF06}", $japanese);
                         $name = [];
                         foreach ($japaneseNames as $search) {
-                            $row = $this->connection->query('SELECT * FROM [names] WHERE [japanese] = %s', $search)->fetch();
+                            $row = $this->connection->query('SELECT * FROM [names] WHERE [japanese] = %s ORDER BY [id] LIMIT 1', $search)->fetch();
                             if (! $row) {
-                                $name = [$this->connection->query('SELECT * FROM [names] WHERE [japanese] = %s', $japanese)->fetch()->toArray()];
+                                $row = $this->connection->query('SELECT * FROM [names] WHERE [japanese] = %s ORDER BY [id] LIMIT 1', $japanese)->fetch();
+                                if ($row === false) {
+                                    throw new \Exception(sprintf('Name not found %s / %s. Line:%s, %s', $search, $japanese, PHP_EOL, $line));
+                                }
+                                $name = [$row->toArray()];
                                 break;
                             }
                             $name[] = $row->toArray();
@@ -117,6 +121,8 @@ class AdventureModeUpdater
                     }
                 }
             } elseif ($match = Strings::match($line, '~^\\s++PlaySE\\([^,]++,\\s*+"ps2/0?+([1-9][0-9]?)/~')) {
+                $name = $this->connection->query('SELECT * FROM [names] WHERE [number] = %s', $match[1])->fetch()->toArray();
+            } elseif ($match = Strings::match($line, '~^\\s++PlaySE\\([^,]++,\\s*+"switch/[sS][0-9]{2}/0?+([1-9][0-9]?)/~')) {
                 $name = $this->connection->query('SELECT * FROM [names] WHERE [number] = %s', $match[1])->fetch()->toArray();
             } elseif (Strings::match($previousLine, '~^\\s++OutputLine\\(NULL,~') && $match = Strings::match($line, '~^\\s++NULL,\\s++"((?:\\\\"|[^"])*+)"~')) {
                 $englishText = $match[1];

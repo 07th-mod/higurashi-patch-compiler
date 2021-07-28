@@ -128,7 +128,8 @@ class SpritePack extends Command
         [$directory, $spriteName] = $parts;
 
         if (! isset($this->spriteMap[$spriteName . $expression])) {
-            throw new \Exception(sprintf('Sprite not found in map: "%s".', $spriteName . $expression));
+            echo sprintf('Sprite not found in map: "%s".' . PHP_EOL, $spriteName . $expression);
+            return;
         }
 
         $directory .= '/';

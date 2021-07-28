@@ -144,7 +144,7 @@ class VoicePack extends Command
             );
         }
 
-        if ($match = Strings::match($line, '~^(\s++)PlaySE\(\s*+([0-9]++)\s*+,\s*+"(ps[23]/[^"]++)"\s*+,\s*+(.*)$~')) {
+        if ($match = Strings::match($line, '~^(\s++)PlaySE\(\s*+([0-9]++)\s*+,\s*+"((?:ps[23]|switch)/[^"]++)"\s*+,\s*+(.*)$~')) {
             $this->processVoice($match[3]);
             $line = sprintf(
                 '%sPlaySE(%d, "%s", %s' . "\n",
@@ -190,6 +190,8 @@ class VoicePack extends Command
             );
         } elseif ($ps === 'ps3') {
             $this->addBashCopyForPS3Voice($voicePath);
+        } elseif ($ps === 'switch') {
+            // skipped, console arcs aren't using the voice pack script
         } else {
             throw new \Exception($voice);
         }

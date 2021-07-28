@@ -88,7 +88,7 @@ class DetectInterruptedVoices extends Command
             $line = $this->processVoice($line, $lines, (int) $match[2], $match[3], $filename, $lineNumber);
         }
 
-        if ($match = Strings::match($line, '~^(\s++)PlaySE\(\s*+([0-9]++)\s*+,\s*+"(ps[23]/[^"]++)"\s*+,\s*+(.*)$~')) {
+        if ($match = Strings::match($line, '~^(\s++)PlaySE\(\s*+([0-9]++)\s*+,\s*+"((?:ps[23]|switch)/[^"]++)"\s*+,\s*+(.*)$~')) {
             $line = $this->processVoice($line, $lines, (int) $match[2], $match[3], $filename, $lineNumber);
         }
 

@@ -32,7 +32,7 @@ INSERT INTO `names` (`id`, `japanese`, `english`, `color`, `color_mg`, `number`)
 (12,	'夏美',	'Natsumi',	'#94a567',	NULL,	0),
 (13,	'入江',	'Irie',	'#c39277',	'#cda188',	10),
 (14,	'千紗登',	'Chisato',	'#fda762',	NULL,	0),
-(15,	'荒川',	'Arakawa',	'#5f5248',	NULL,	0),
+(15,	'荒川',	'Arakawa',	'#5f5248',	NULL,	62),
 (16,	'富竹',	'Tomitake',	'#977568',	'#914220',	8),
 (17,	'美雪',	'Miyuki',	'#aa886c',	NULL,	34),
 (18,	'乙部',	'Otobe',	'#e8af52',	NULL,	0),
@@ -441,6 +441,7 @@ INSERT INTO `names` (`id`, `japanese`, `english`, `color`, `color_mg`, `number`)
 (478,	'梨花',	'Rika',	'#776da2',	NULL,	52), -- Bus Stop Rika, uses same nametag as regular Rika
 (479,	'魅音',	'Mion',	'#bcc96f',	NULL,	53), -- Bus Stop Mion, uses same nametag as regular Mion
 (480,	'イェアソムール',	'Yeasomul',	'#8179d1',	NULL,	45),
-(481,	'リューン＝オーク',	'Ryuun-Ohc',	'#f5e6d3',	NULL,	0);
+(481,	'リューン＝オーク',	'Ryuun-Ohc',	'#f5e6d3',	NULL,	0),
+(482,	'美雪',	'Miyuki',	'#aa886c',	NULL,	40); -- Older Miyuki
 
 -- 2020-06-20 05:52:26
