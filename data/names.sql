@@ -432,6 +432,11 @@ INSERT INTO `names` (`id`, `japanese`, `english`, `color`, `color_mg`, `number`)
 (469,	'客人たち',	'Guests',	'#f5e6d3',	NULL,	0),
 (470,	'為政家',	'Politician',	'#f5e6d3',	NULL,	0),
 (471,	'役員',	'Officers',	'#f5e6d3',	NULL,	0),
-(472,	'子よ',	'Child',	'#f5e6d3',	NULL,	0);
+(472,	'子よ',	'Child',	'#f5e6d3',	NULL,	0),
+(473,	'吾妻',	'Azuma',	'#f5e6d3',	NULL,	0),
+(474,	'天の声',	'Heavenly voice',	'#f5e6d3',	NULL,	0),
+(475,	'田村',	'Tamura',	'#ec7bb8',	NULL,	0),
+(476,	'采',	'Une',	'#85e6e0',	NULL,	0),
+(477,	'ウネ',	'UNE',	'#85e6e0',	NULL,	0);
 
 -- 2020-06-20 05:52:26

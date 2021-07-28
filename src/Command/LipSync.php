@@ -150,20 +150,20 @@ class LipSync extends Command
         'otobe' => 41,
 
         // switch characters
-        'arakawa' => null,
-        'hara' => null,
-        'hhos' => null,
-        'hhot' => null,
-        'hmi' => null,
-        'hnit' => null,
-        'hoda' => null,
-        'hoka' => null,
-        'hri' => null,
-        'hton' => null,
-        'hyos' => null,
-        'mo' => null,
-        'tamura' => null,
-        'une' => null,
+        'arakawa' => 62,
+        'hara' => 55,
+        'hhos' => 58,
+        'hhot' => 61,
+        'hmi' => 53,
+        'hnit' => 57,
+        'hoda' => 60,
+        'hoka' => 59,
+        'hri' => 52,
+        'hton' => 56,
+        'hyos' => 54,
+        'mo' => null, // Various mooks in Outbreak, probably in 00
+        'tamura' => 51,
+        'une' => 50,
     ];
 
     private $ignoredFiles = [
