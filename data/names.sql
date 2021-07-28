@@ -435,8 +435,10 @@ INSERT INTO `names` (`id`, `japanese`, `english`, `color`, `color_mg`, `number`)
 (472,	'子よ',	'Child',	'#f5e6d3',	NULL,	0),
 (473,	'吾妻',	'Azuma',	'#f5e6d3',	NULL,	0),
 (474,	'天の声',	'Heavenly voice',	'#f5e6d3',	NULL,	0),
-(475,	'田村',	'Tamura',	'#ec7bb8',	NULL,	0),
-(476,	'采',	'Une',	'#85e6e0',	NULL,	0),
-(477,	'ウネ',	'UNE',	'#85e6e0',	NULL,	0);
+(475,	'田村',	'Tamura',	'#ec7bb8',	NULL,	51),
+(476,	'采',	'Une',	'#85e6e0',	NULL,	50),
+(477,	'ウネ',	'UNE',	'#85e6e0',	NULL,	50),
+(478,	'梨花',	'Rika',	'#776da2',	NULL,	52), -- Bus Stop Rika, uses same nametag as regular Rika
+(479,	'魅音',	'Mion',	'#bcc96f',	NULL,	53); -- Bus Stop Mion, uses same nametag as regular Mion
 
 -- 2020-06-20 05:52:26
