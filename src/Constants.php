@@ -60,6 +60,9 @@ class Constants
         'matsuribayashi' => [
             'matsuribayashi_patch' => 'https://github.com/07th-mod/matsuribayashi/archive/master.zip'
         ],
+        'rei' => [
+            'rei_patch' => 'https://github.com/07th-mod/higurashi-rei/archive/master.zip'
+        ],
         'someutsushi' => [],
         'kageboushi' => [],
         'tsukiotoshi' => [],
