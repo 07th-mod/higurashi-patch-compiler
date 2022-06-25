@@ -18,7 +18,7 @@ class ParseScript extends Command
     {
         $this
             ->setName('higurashi:parse')
-            ->setDescription('Parses the PS3 script.')
+            ->setDescription('Parses the PS3 or XML script.')
             ->addArgument('script', InputArgument::REQUIRED, 'Path to the script.');
     }
 
@@ -36,7 +36,7 @@ class ParseScript extends Command
         $options['charset'] = 'utf8';
         $connection = new Connection($options);
 
-        $connection->query('TRUNCATE [voices]');
+        // $connection->query('TRUNCATE [voices]');
 
         $count = 0;
         foreach ($parser->parse() as [$name, $voice, $text, $line]) {
