@@ -219,7 +219,7 @@ class VoicePack extends Command
     {
         $destination = $spectrum . '.txt';
 
-        $this->bashCopy[] = 'mkdir -p ' . dirname($this->chapter . '/spectrum/ps2/' . $destination) . ' && cp "spectrum/ps2/' . $spectrum . '.txt" "' . $this->chapter . '/spectrum/ps2/' . $destination . '"';
+        //$this->bashCopy[] = 'mkdir -p ' . dirname($this->chapter . '/spectrum/ps2/' . $destination) . ' && cp "spectrum/ps2/' . $spectrum . '.txt" "' . $this->chapter . '/spectrum/ps2/' . $destination . '"';
     }
 
     private function addBashCopyForPS3Voice(string $voice): void
@@ -230,6 +230,6 @@ class VoicePack extends Command
 
         $destination = $voice . '.txt';
 
-        $this->bashCopy[] = 'mkdir -p ' . dirname($this->chapter . '/spectrum/ps3/' . $destination) . ' && cp "spectrum/ps3/' . $destination . '" "' . $this->chapter . '/spectrum/ps3/' . $destination . '"';
+        //$this->bashCopy[] = 'mkdir -p ' . dirname($this->chapter . '/spectrum/ps3/' . $destination) . ' && cp "spectrum/ps3/' . $destination . '" "' . $this->chapter . '/spectrum/ps3/' . $destination . '"';
     }
 }
