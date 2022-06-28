@@ -442,6 +442,9 @@ INSERT INTO `names` (`id`, `japanese`, `english`, `color`, `color_mg`, `number`)
 (479,	'魅音',	'Mion',	'#bcc96f',	NULL,	53), -- Bus Stop Mion, uses same nametag as regular Mion
 (480,	'イェアソムール',	'Yeasomul',	'#8179d1',	NULL,	45),
 (481,	'リューン＝オーク',	'Ryuun-Ohc',	'#f5e6d3',	NULL,	0),
-(482,	'美雪',	'Miyuki',	'#aa886c',	NULL,	40); -- Older Miyuki
+(482,	'美雪',	'Miyuki',	'#aa886c',	NULL,	40), -- Older Miyuki
+(483,	'Ｋ',	'K',	'#895e5d',	'#a17f7f', 	1), -- Keiichi
+(484,	'相手チーム監督',	'Opposing team manager',	'#f5e6d3', NULL, 0),
+(485,	'観客',	'Spectators',	'#f5e6d3', NULL, 0);
 
 -- 2020-06-20 05:52:26
