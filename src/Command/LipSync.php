@@ -404,7 +404,9 @@ class LipSync extends Command
             || Strings::startsWith($sprite, 'scenario/')
             || Strings::startsWith($sprite, 'scene/')
             || Strings::startsWith($sprite, 'eye/')
-            || Strings::startsWith($sprite, 'text/');
+            || Strings::startsWith($sprite, 'text/')
+            || Strings::startsWith($sprite, 'effect/')
+            || Strings::startsWith($sprite, 'title/');
     }
 
     private function getCharacterNumberForSprite(string $sprite): int
