@@ -3212,4 +3212,11 @@ return [
   'tomi9_b_0' => 'tomi9_b_0',
   'tomi9_b_1' => 'tomi9_b_1',
   'tomi9_b_2' => 'tomi9_b_2',
+  'kei6_komaru_0' => 'kei6_komaru_0',
+  'kei6_nayamu_2' => 'kei6_nayamu_2',
+  'oko3_def_0' => 'oko3_def_0',
+  'oko3_sakebi_1' => 'oko3_sakebi_1',
+  'oko3_odoroki_0' => 'oko3_odoroki_0',
+  'oko3_kumon_2' => 'oko3_kumon_2',
+  'oko3_niyari_2' => 'oko3_niyari_2',
 ];
