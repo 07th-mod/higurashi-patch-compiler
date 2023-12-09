@@ -1,0 +1,36 @@
+version: "3.8"
+services:
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        PUID: ${PUID}
+        PGID: ${PGID}
+    volumes:
+      - .:/app
+    user: ${PUID}
+    entrypoint: ["tail", "-f", "/dev/null"]
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      COMPOSER_ALLOW_SUPERUSER: 1
+      COMPOSER_HOME: /app/var/composer
+
+  mysql:
+    image: mysql:latest
+    ports:
+      - 3306:3306
+    volumes:
+      - ./init:/docker-entrypoint-initdb.d
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: higurashi
+      MYSQL_USER: higurashi
+      MYSQL_PASSWORD: hanyu
+
+  adminer:
+    image: adminer
+    ports:
+      - 8080:8080
