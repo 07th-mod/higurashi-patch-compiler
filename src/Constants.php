@@ -63,6 +63,9 @@ class Constants
         'rei' => [
             'rei_patch' => 'https://github.com/07th-mod/higurashi-rei/archive/master.zip'
         ],
+        'hou-plus' => [
+            'hou-plus_patch' => 'https://github.com/07th-mod/hou-plus/archive/master.zip'
+        ],
         'someutsushi' => [],
         'kageboushi' => [],
         'tsukiotoshi' => [],
