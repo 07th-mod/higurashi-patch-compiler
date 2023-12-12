@@ -111,7 +111,7 @@ INSERT INTO `names` (`id`, `japanese`, `english`, `color`, `color_mg`, `number`)
 (91,	'番犬',	'Watchdog',	'#f5e6d3',	NULL,	0),
 (92,	'佐藤',	'Sato',	'#f5e6d3',	NULL,	0),
 (93,	'雲雀１３',	'Skylark 13',	'#f5e6d3',	NULL,	0),
-(94,	'義郎',	'Yoshio',	'#f5e6d3',	NULL,	0),
+(94,	'義郎',	'Yoshiro',	'#f5e6d3',	NULL,	0),
 (95,	'善朗',	'Yoshirou',	'#f5e6d3',	NULL,	0),
 (96,	'千葉',	'Chiba',	'#f5e6d3',	NULL,	0),
 (97,	'おやっさん',	'Old Man',	'#f5e6d3',	NULL,	0),
@@ -445,6 +445,27 @@ INSERT INTO `names` (`id`, `japanese`, `english`, `color`, `color_mg`, `number`)
 (482,	'美雪',	'Miyuki',	'#aa886c',	NULL,	40), -- Older Miyuki
 (483,	'Ｋ',	'K',	'#895e5d',	'#a17f7f', 	1), -- Keiichi
 (484,	'相手チーム監督',	'Opposing team manager',	'#f5e6d3', NULL, 0),
-(485,	'観客',	'Spectators',	'#f5e6d3', NULL, 0);
+(485,	'観客',	'Spectators',	'#f5e6d3', NULL, 0),
+(486,	'災害対策本部',	'Disaster Prevention Center',	'#f5e6d3', NULL, 0),
+(487,	'暴徒たち',	'Rioters',	'#f5e6d3', NULL, 0),
+(488,	'暴徒',	'Rioter',	'#f5e6d3', NULL, 0),
+(489,	'利根川',	'Tonegawa',	'#ccaa95', NULL, 56),
+(490,	'荒川',	'Arakawa',	'#7d666d', NULL, 55),
+(491,	'吉村',	'Yoshimura',	'#715348', NULL, 54),
+(492,	'柿沼の声',	'Kakinuma’s Voice',	'#f5e6d3', NULL, 0),
+(493,	'岡野',	'Okano',	'#574f58', NULL, 59),
+(494,	'星野',	'Hoshino',	'#ffedab', NULL, 58),
+(495,	'近藤の声',	'Kondou’s Voice',	'#f5e6d3', NULL, 0),
+(496,	'加藤の声',	'Katou’s Voice',	'#f5e6d3', NULL, 0),
+(497,	'新田',	'Nitta',	'#6b493e', NULL, 57),
+(498,	'織田',	'Oda',	'#646570', NULL, 60),
+(499,	'保土田',	'Hotoda',	'#e99348', NULL, 61),
+(500,	'オヤシロさま',	'Oyashiro-sama',	'#f5e6d3', NULL, 0),
+(501,	'男たち',	'Men',	'#f5e6d3', NULL, 0),
+(502,	'圭一と男たち',	'Keiichi and the men',	'#f5e6d3', NULL, 0),
+(503,	'詩音・沙都子',	'Shion & Satoko',	'#f5e6d3', NULL, 0),
+(504,	'親衛隊',	'Bodyguards',	'#f5e6d3', NULL, 0),
+(505,	'イケメン',	'Hotties',	'#f5e6d3', NULL, 0),
+(506,	'女の子たち',	'Girls',	'#f5e6d3', NULL, 0);
 
 -- 2020-06-20 05:52:26
