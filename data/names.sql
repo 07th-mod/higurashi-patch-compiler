@@ -231,7 +231,7 @@ INSERT INTO `names` (`id`, `japanese`, `english`, `color`, `color_mg`, `number`)
 (211,	'大人魅音',	'Adult Mion',	'#f5e6d3',	NULL,	0),
 (212,	'レナの母',	'Rena\'s mother',	'#f5e6d3',	NULL,	0),
 (214,	'若い男',	'Young Guy',	'#f5e6d3',	NULL,	0),
-(215,	'研究員',	'Investigor',	'#f5e6d3',	NULL,	0),
+(215,	'研究員',	'Investigator',	'#f5e6d3',	NULL,	0),
 (216,	'アナウンサー',	'Announcer',	'#f5e6d3',	NULL,	0),
 (217,	'犯人',	'Criminal',	'#f5e6d3',	NULL,	0),
 (218,	'町金融',	'Town Treasurer',	'#f5e6d3',	NULL,	0),
