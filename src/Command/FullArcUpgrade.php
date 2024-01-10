@@ -93,18 +93,18 @@ class FullArcUpgrade extends Command
 //        $filesystem->remove(sprintf('%s/unpack/%s_patch', TEMP_DIR, $chapter));
 //        $filesystem->mirror(sprintf('%s/combine/%s/Update', TEMP_DIR, $chapter), sprintf('%s/unpack/%s_patch/Update', TEMP_DIR, $chapter));
 
-        echo 'Running higurashi:adv' . PHP_EOL;
-
-        $this->runCommand(
-            'higurashi:adv',
-            [
-                'chapter' => $chapter,
-            ],
-            $output
-        );
-
-        $filesystem->remove(sprintf('%s/unpack/%s_patch', TEMP_DIR, $chapter));
-        $filesystem->mirror(sprintf('%s/adv/%s/Update', TEMP_DIR, $chapter), sprintf('%s/unpack/%s_patch/Update', TEMP_DIR, $chapter));
+//        echo 'Running higurashi:adv' . PHP_EOL;
+//
+//        $this->runCommand(
+//            'higurashi:adv',
+//            [
+//                'chapter' => $chapter,
+//            ],
+//            $output
+//        );
+//
+//        $filesystem->remove(sprintf('%s/unpack/%s_patch', TEMP_DIR, $chapter));
+//        $filesystem->mirror(sprintf('%s/adv/%s/Update', TEMP_DIR, $chapter), sprintf('%s/unpack/%s_patch/Update', TEMP_DIR, $chapter));
 
 //        echo 'Running higurashi:dll-update' . PHP_EOL;
 //
@@ -119,56 +119,56 @@ class FullArcUpgrade extends Command
 //        $filesystem->remove(sprintf('%s/unpack/%s_patch', TEMP_DIR, $chapter));
 //        $filesystem->mirror(sprintf('%s/dllupdate/%s/Update', TEMP_DIR, $chapter), sprintf('%s/unpack/%s_patch/Update', TEMP_DIR, $chapter));
 
-//        echo 'Running higurashi:lip-sync' . PHP_EOL;
-//
-//        $this->runCommand(
-//            'higurashi:lip-sync',
-//            [
-//                'chapter' => $chapter,
-//            ],
-//            $output
-//        );
-//
-//        $filesystem->remove(sprintf('%s/unpack/%s_patch', TEMP_DIR, $chapter));
-//        $filesystem->mirror(sprintf('%s/lipsync/%s/Update', TEMP_DIR, $chapter), sprintf('%s/unpack/%s_patch/Update', TEMP_DIR, $chapter));
-//
-//        echo 'Running higurashi:sprite-filters' . PHP_EOL;
-//
-//        $this->runCommand(
-//            'higurashi:sprite-filters',
-//            [
-//                'chapter' => $chapter,
-//            ],
-//            $output
-//        );
-//
-//        $filesystem->remove(sprintf('%s/unpack/%s_patch', TEMP_DIR, $chapter));
-//        $filesystem->mirror(sprintf('%s/spritefilters/%s/Update', TEMP_DIR, $chapter), sprintf('%s/unpack/%s_patch/Update', TEMP_DIR, $chapter));
+        echo 'Running higurashi:lip-sync' . PHP_EOL;
 
-//        echo 'Running higurashi:voice-pack' . PHP_EOL;
-//
-//        $this->runCommand(
-//            'higurashi:voice-pack',
-//            [
-//                'chapter' => $chapter,
-//            ],
-//            $output
-//        );
+        $this->runCommand(
+            'higurashi:lip-sync',
+            [
+                'chapter' => $chapter,
+            ],
+            $output
+        );
 
-//        echo 'Running higurashi:sprite-pack' . PHP_EOL;
-//
-//        $this->runCommand(
-//            'higurashi:sprite-pack',
-//            [
-//                'chapter' => $chapter,
-//            ],
-//            $output
-//        );
+        $filesystem->remove(sprintf('%s/unpack/%s_patch', TEMP_DIR, $chapter));
+        $filesystem->mirror(sprintf('%s/lipsync/%s/Update', TEMP_DIR, $chapter), sprintf('%s/unpack/%s_patch/Update', TEMP_DIR, $chapter));
+
+        echo 'Running higurashi:sprite-filters' . PHP_EOL;
+
+        $this->runCommand(
+            'higurashi:sprite-filters',
+            [
+                'chapter' => $chapter,
+            ],
+            $output
+        );
+
+        $filesystem->remove(sprintf('%s/unpack/%s_patch', TEMP_DIR, $chapter));
+        $filesystem->mirror(sprintf('%s/spritefilters/%s/Update', TEMP_DIR, $chapter), sprintf('%s/unpack/%s_patch/Update', TEMP_DIR, $chapter));
+
+        echo 'Running higurashi:voice-pack' . PHP_EOL;
+
+        $this->runCommand(
+            'higurashi:voice-pack',
+            [
+                'chapter' => $chapter,
+            ],
+            $output
+        );
+
+        echo 'Running higurashi:sprite-pack' . PHP_EOL;
+
+        $this->runCommand(
+            'higurashi:sprite-pack',
+            [
+                'chapter' => $chapter,
+            ],
+            $output
+        );
 
         $filesystem->remove(sprintf('%s/unpack/%s_patch', TEMP_DIR, $chapter));
         $filesystem->mirror(sprintf('%s/adv/%s/Update', TEMP_DIR, $chapter), sprintf('%s/full-upgrade/%s', TEMP_DIR, $chapter));
-//        $filesystem->copy(sprintf('%s/voicepack/%s-voices.sh', TEMP_DIR, $chapter), sprintf('%s/full-upgrade/%s-voices.sh', TEMP_DIR, $chapter));
-//        $filesystem->copy(sprintf('%s/spritepack/%s-sprites.sh', TEMP_DIR, $chapter), sprintf('%s/full-upgrade/%s-sprites.sh', TEMP_DIR, $chapter));
+        $filesystem->copy(sprintf('%s/voicepack/%s-voices.sh', TEMP_DIR, $chapter), sprintf('%s/full-upgrade/%s-voices.sh', TEMP_DIR, $chapter));
+        $filesystem->copy(sprintf('%s/spritepack/%s-sprites.sh', TEMP_DIR, $chapter), sprintf('%s/full-upgrade/%s-sprites.sh', TEMP_DIR, $chapter));
 
         echo sprintf('Everything finished successfully. See the results in "%s/full-upgrade".', TEMP_DIR);
 
