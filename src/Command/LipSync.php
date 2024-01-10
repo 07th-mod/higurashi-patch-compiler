@@ -161,9 +161,13 @@ class LipSync extends Command
         'hri' => 52,
         'hton' => 56,
         'hyos' => 54,
-        'mo' => null, // Various mooks in Outbreak, probably in 00
+        'mo' => 0, // Various mooks in Outbreak, probably in 00
         'tamura' => 51,
         'une' => 50,
+
+        // hou+ characters
+        'mura' => 0,
+        'kumi' => 0,
     ];
 
     private $ignoredFiles = [
@@ -218,6 +222,7 @@ class LipSync extends Command
         'waku_w',
         'filter_hanyu',
         'white_mono1',
+        'red',
     ];
 
     private $bustshots = [];
@@ -381,7 +386,7 @@ class LipSync extends Command
             return 0;
         }
 
-        $match = Strings::match($voice, '~^(?:ps[23]|switch)/(?:[sS][0-9]++/)?0?([0-9]++)/~');
+        $match = Strings::match($voice, '~^(?:ps[23]|switch)/(?:[sS][0-9]++/|meha/)?0?([0-9]++)/~');
 
         if (! $match) {
             throw new \Exception(sprintf('Cannot parse voice "%s".', $voice));
