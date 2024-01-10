@@ -97,7 +97,7 @@ class AdventureModeUpdater
         while (!feof($file) && ($line = fgets($file)) !== false) {
             $line = rtrim($line) . "\n";
 
-            if ($match = Strings::match($line, '~^\\s++PlaySE\\([^,]++,\\s*+"(?:ps3/)?([sS][0-9]{2}/[^"]++)"~')) {
+            if ($match = Strings::match($line, '~^\\s++PlaySE\\([^,]++,\\s*+"(?:ps3/)?((?:[sS][0-9]{2}|meha)/[^"]++)"~')) {
                 $japanese = $this->connection->query('SELECT [name] FROM [voices] WHERE LOWER([voice]) = %s', $match[1])->fetchSingle();
                 if ($japanese) {
                     $name = $this->connection->query('SELECT * FROM [names] WHERE [japanese] = %s ORDER BY [id] LIMIT 1', $japanese)->fetch()->toArray();
@@ -219,6 +219,7 @@ class AdventureModeUpdater
 
             if (count($splitLine) !== 2) {
                 echo $lines[$index];
+                continue;
                 throw new \Exception('There is a long line which needs lower font size in adv mode but is not as simple as normal cases.');
             }
 
