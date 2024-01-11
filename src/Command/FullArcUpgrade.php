@@ -166,7 +166,7 @@ class FullArcUpgrade extends Command
         );
 
         $filesystem->remove(sprintf('%s/unpack/%s_patch', TEMP_DIR, $chapter));
-        $filesystem->mirror(sprintf('%s/adv/%s/Update', TEMP_DIR, $chapter), sprintf('%s/full-upgrade/%s', TEMP_DIR, $chapter));
+        $filesystem->mirror(sprintf('%s/spritefilters/%s/Update', TEMP_DIR, $chapter), sprintf('%s/full-upgrade/%s', TEMP_DIR, $chapter));
         $filesystem->copy(sprintf('%s/voicepack/%s-voices.sh', TEMP_DIR, $chapter), sprintf('%s/full-upgrade/%s-voices.sh', TEMP_DIR, $chapter));
         $filesystem->copy(sprintf('%s/spritepack/%s-sprites.sh', TEMP_DIR, $chapter), sprintf('%s/full-upgrade/%s-sprites.sh', TEMP_DIR, $chapter));
 
