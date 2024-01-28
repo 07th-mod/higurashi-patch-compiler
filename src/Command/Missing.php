@@ -70,12 +70,12 @@ class Missing extends Command
     {
         if ($match = Strings::match($line, '~^(?:\s++)PlayVoice\(\s*+(?:[0-9]++)\s*+,\s*+"([^"]++)"~')) {
             $this->requireFile('voice', $match[1] . '.ogg');
-            $this->requireFile('spectrum', $match[1] . '.txt');
+            //$this->requireFile('spectrum', $match[1] . '.txt');
         }
 
         if ($match = Strings::match($line, '~^(?:\s++)ModPlayVoiceLS\(\s*+(?:[0-9]++)\s*+,\s*+(?:[0-9]++)\s*+,\s*+"([^"]++)"~')) {
             $this->requireFile('voice', $match[1] . '.ogg');
-            $this->requireFile('spectrum', $match[1] . '.txt');
+            //$this->requireFile('spectrum', $match[1] . '.txt');
         }
 
         if (($match = Strings::match($line, '~^(?:\s++)PlaySE\(\s*+(?:[0-9]++)\s*+,\s*+"([^"]++)?"~')) && array_key_exists(1, $match)) {
@@ -182,6 +182,7 @@ class Missing extends Command
         if (
             Strings::startsWith($sprite, 'tomita') // Tomita, collision with Tomitake
             || Strings::startsWith($sprite, 'tama') // Tamako, collision with Takano
+            || Strings::startsWith($sprite, 'hara') // Busstop sprite, collision with Hanyuu
         ) {
             return false;
         }
@@ -202,20 +203,27 @@ class Missing extends Command
             || Strings::startsWith($sprite, 'kei') // Keichi
             || Strings::startsWith($sprite, 'ha') // Hanyuu
             || Strings::startsWith($sprite, 'oko') // Okonogi
+            || Strings::startsWith($sprite, 'mo1') // Outbreak mobs
+            || Strings::startsWith($sprite, 'mo2')
+            || Strings::startsWith($sprite, 'mo3')
+            || Strings::startsWith($sprite, 'mura')
+            || Strings::startsWith($sprite, 'une') // Une
+            || Strings::startsWith($sprite, 'tamura') // Tamurahime
+            // Somehow these were incorrectly listed as not having steam sprites until now?
+            || Strings::startsWith($sprite, 'tetu') // Teppei
+            || Strings::startsWith($sprite, 'aka') // Akane
+            || Strings::startsWith($sprite, 'aks') // Akasaka
+            || Strings::startsWith($sprite, 'kameda') // Kameda
         ) {
             return true;
         }
 
         if (
             Strings::startsWith($sprite, 'oka') // Okamura
-            || Strings::startsWith($sprite, 'kameda') // Kameda
             || Strings::startsWith($sprite, 'ki') // Kimiyoshi
             || Strings::startsWith($sprite, 'miyuki') // Miyuki
             || Strings::startsWith($sprite, 'oryou') // Oryou
             || Strings::startsWith($sprite, 'kuma') // Kumagai
-            || Strings::startsWith($sprite, 'aka') // Akane
-            || Strings::startsWith($sprite, 'tetu') // Teppei
-            || Strings::startsWith($sprite, 'aks') // Akasaka
             || Strings::startsWith($sprite, 'chisa') // Chisato
             || Strings::startsWith($sprite, 'huji') // Fujita
             || Strings::startsWith($sprite, 'mado') // Madoka
@@ -225,6 +233,17 @@ class Missing extends Command
             || Strings::startsWith($sprite, 'yamaoki') // Kaoru
             || Strings::startsWith($sprite, 'miyo') // Child Takano
             || Strings::startsWith($sprite, 'ama') // Amakusa
+            || Strings::startsWith($sprite, 'kumi') // Bodyguards
+            // Busstop sprites, they technically do exist but are ugly. ~Olga
+            || Strings::startsWith($sprite, 'hmi2a')
+            || Strings::startsWith($sprite, 'hri2a')
+            || Strings::startsWith($sprite, 'hton1a')
+            || Strings::startsWith($sprite, 'hyos1a')
+            || Strings::startsWith($sprite, 'hoka1a')
+            || Strings::startsWith($sprite, 'hhos1a')
+            || Strings::startsWith($sprite, 'hhot1a')
+            || Strings::startsWith($sprite, 'hoda1a')
+            || Strings::startsWith($sprite, 'hnit1a')
         ) {
             return false;
         }
