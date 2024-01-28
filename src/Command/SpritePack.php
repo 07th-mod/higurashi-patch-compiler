@@ -137,12 +137,12 @@ class SpritePack extends Command
         $size = $directory === 'portrait/' ? 'l/' : 'm/';
         $destination = $directory . $spriteName . '%s.png';
 
-        $command = 'mkdir -p ' . dirname($this->chapter . '-sprites/CG/' . $destination) . ' && cp sprites/Normal/' . $size . $ps3Sprite . '%s.png ' . $this->chapter . '-sprites/CG/' . $destination;
+        $command = 'mkdir -p ' . dirname($this->chapter . '-sprites/CG/' . $destination) . ' && cp sprites/normal/' . $size . $ps3Sprite . '%s.png ' . $this->chapter . '-sprites/CG/' . $destination;
 
         $this->bashCopy[] = sprintf($command, 0, 0);
         $this->bashCopy[] = sprintf($command, 1, 1);
         $this->bashCopy[] = sprintf($command, 2, 2);
 
-        $this->bashCopy[] = 'mkdir -p ' . dirname($this->chapter . '-sprites/CGAlt/' . $destination) . ' && cp sprites/Normal/' . $size . $ps3Sprite . $expression . '.png ' . $this->chapter . '-sprites/CGAlt/' . $directory . $spriteName . $expression . '.png';
+        $this->bashCopy[] = 'mkdir -p ' . dirname($this->chapter . '-sprites/CGAlt/' . $destination) . ' && cp sprites/normal/' . $size . $ps3Sprite . $expression . '.png ' . $this->chapter . '-sprites/CGAlt/' . $directory . $spriteName . $expression . '.png';
     }
 }
