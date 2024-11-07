@@ -7,6 +7,11 @@ At the moment higurashi patches are difficult to install or update. You need to 
 - [PHP 7.1+](http://php.net/)
 - [Composer](https://getcomposer.org/)
 - Windows (only if the chapter has case sensitivity issues)
+    - **WARNING**: We use an old version of Symfony which is suceptible to the following vulnerability:
+      - On Windows, when an executable file named cmd.exe is located in the current working directory it will be called by the Process class when preparing command arguments, leading to possible hijacking.
+      - So before running the patch compiler, **ensure there is no suspicious cmd.exe in the current directory**
+      - See here for more details: https://github.com/advisories/GHSA-qq5c-677p-737q
+      - If anyone can upgrade and confirm the patch compiler still works with newer Symfony, this warning can be removed
 
 ## Installation
 
