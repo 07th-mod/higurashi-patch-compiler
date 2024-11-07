@@ -9,7 +9,7 @@
         "jenssegers/imagehash": "^0.4",
         "symfony/yaml": "^3.2",
         "dibi/dibi": "^3.0",
-        "symfony/process": "^3.2"
+        "symfony/process": "^5.4"
     },
     "autoload": {
         "psr-4": {
