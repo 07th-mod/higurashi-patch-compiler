@@ -4,6 +4,16 @@ At the moment higurashi patches are difficult to install or update. You need to 
 
 ## Known issues
 
+- **WARNING**: We use an old version of Symfony which is suceptible to multiple vulnerabilities. Therefore, please run the patch compiler in a secure environment, and validate inputs, and do not expose it to the internet (not that it would ever be accessed from the internet anyway). The known CVEs are as below:
+ - CVE-2026-46644
+ - CVE-2026-45305
+ - CVE-2026-45304
+ - CVE-2026-45133
+ - CVE-2026-24739 (Windows Only)
+ - CVE-2024-51736 (Windows Only)
+
+These could be resolved by updating various libaries, but possibly the code needs to be updated to use the newer version of libraries and the output of the patch compiler checked for regressions.
+
 ### Windows
 
 - **WARNING**: We use an old version of Symfony which is suceptible to the following vulnerability:
