@@ -2,6 +2,16 @@
 
 At the moment higurashi patches are difficult to install or update. You need to download the voices, the PS3 graphics patch, the voice patch and optionally the steam sprites patch. This project aims to do all of that automatically and improve the final patch by deleting all the unnecessary voice files. Our aim is to eventually use this compiler to provide easy-to-install patches for every chapter.
 
+## WARNING Regarding Security Vulnerabilities
+
+While this repo is written in PHP, it was only ever intended to be an infrequently run, completely local script. Therefore, we generally do not update the dependencies unless we need to, to avoid extra work or unintentinally breaking the scripts.
+
+However, this has resulted in Github's security scanner notifying us of various vulnerabilities due to old dependencies, which could technically apply, but would be extremely unlikely for our use case.
+
+Previously we listed the known issues, but from this point onwards (2026-06-12), **we won't continue to list them or fix them unless it seems like something which could really be a problem**.
+
+**Please run the PHP scripts at your own risk (preferably in docker, with internet access disabled (I think the scripts don't use internet anyway))**
+
 ## Known issues
 
 - **WARNING**: We use an old version of Symfony which is suceptible to multiple vulnerabilities. Therefore, please run the patch compiler in a secure environment, and validate inputs, and do not expose it to the internet (not that it would ever be accessed from the internet anyway). The known CVEs are as below:
